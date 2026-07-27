@@ -1,0 +1,47 @@
+generated: '2026-07-27'
+method: searched
+result: none
+summary: >-
+  FERC serves no /.well-known/ discovery document on any host. Twenty probes across four hosts on
+  2026-07-27 returned 404 or, on ecollection.ferc.gov, the Angular single-page-app HTML shell with a
+  200 status — a catch-all route, not a document. No security.txt, no OIDC or OAuth metadata, no
+  api-catalog, no ai-plugin. Recorded so the absence is evidence rather than an unasked question.
+hosts:
+  - host: https://api.data.ferc.gov
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+    note: Gateway returns {"error":{"code":"NOT_FOUND"}} for each.
+  - host: https://data.ferc.gov
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+    note: Next.js 404 page.
+  - host: https://ecollection.ferc.gov
+    documents:
+      - {path: /.well-known/security.txt, status: 200, content_type: text/html, real_document: false}
+      - {path: /.well-known/openid-configuration, status: 200, content_type: text/html, real_document: false}
+      - {path: /.well-known/oauth-authorization-server, status: 200, content_type: text/html, real_document: false}
+      - {path: /.well-known/api-catalog, status: 200, content_type: text/html, real_document: false}
+      - {path: /.well-known/ai-plugin.json, status: 200, content_type: text/html, real_document: false}
+    note: >-
+      Every path returns the same 1,120-byte Angular index.html. A 200 here means "SPA catch-all",
+      not "document present" — do not treat these as discovery documents.
+  - host: https://www.ferc.gov
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+    note: >-
+      Also probed https://ferc.gov/.well-known/security.txt — 404. CISA BOD 20-01 expects a
+      security.txt on a federal agency domain; FERC's VDP exists but only as a PDF. See
+      security/ferc-vulnerability-disclosure.yml.
+saved_files: []

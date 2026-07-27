@@ -1,0 +1,602 @@
+openapi: 3.1.0
+info:
+  title: FERC eForms (eCollection) API
+  version: '2026-07-27'
+  description: >-
+    Machine-readable description of the FERC eForms XBRL API hosted at
+    https://ecollection.ferc.gov/api. FERC publishes NO OpenAPI for this API. This document is
+    DERIVED, not harvested: every path below is a literal URL string taken from FERC's own shipped
+    production JavaScript bundle (https://ecollection.ferc.gov/main.6c69ecbce3fd46f494eb.js,
+    `environment.apiURL = "https://eCollection.ferc.gov/api/"`), or from FERC's published Postman
+    collection and Submission API step-by-step guide, and each was probed live on 2026-07-27 with the
+    HTTP status recorded in `x-evidence`. Response schemas are derived ONLY from responses actually
+    observed on those probes — no field is invented. Endpoints that answered 401 are described by
+    path and method only, with no invented request or response body.
+
+
+    Two surfaces live here. (1) An ANONYMOUS PUBLIC READ surface — the public submission history of
+    every FERC eForms filing, per-filing detail, the XBRL taxonomy version history and taxonomy
+    packages, the form list, and the submission constraints — none of which is advertised on
+    data.ferc.gov or in FERC's developer documentation. (2) The CREDENTIALED WRITE surface — the
+    OAuth2 password-grant token endpoint and the external filing endpoint documented in FERC's
+    vendor files library for regulated filers.
+
+
+    PERSONAL DATA NOTICE: GET /PublicSubmissionHistory returns a `filerEmail` field carrying the
+    work email address of the individual who submitted each filing, served anonymously with no
+    authentication. The field is documented here structurally; no example in this repository carries
+    a real value, and no agent skill or MCP tool in this repository is built on this endpoint.
+  contact:
+    name: FERC Online Support
+    url: https://www.ferc.gov/ferc-online/overview
+  license:
+    name: U.S. Government Work (public domain, 17 U.S.C. 105)
+    url: https://data.ferc.gov/disclaimer/
+  x-provenance:
+    generated: '2026-07-27'
+    method: derived
+    sources:
+      - https://ecollection.ferc.gov/main.6c69ecbce3fd46f494eb.js
+      - collections/ferc-xbrl-submission-api.postman_collection.json
+      - https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+      - live HTTP probes 2026-07-27
+    note: >-
+      Not published by FERC. Derived by API Evangelist from FERC's own production client bundle plus
+      live anonymous probes. Report inaccuracies rather than treating this as an authoritative
+      contract.
+servers:
+  - url: https://ecollection.ferc.gov/api
+    description: Production
+tags:
+  - name: Public Filings
+    description: Anonymous read access to the public FERC eForms submission record.
+  - name: Taxonomy
+    description: XBRL taxonomy versions, packages and sample forms for the FERC eForms.
+  - name: Filing
+    description: Credentialed machine-to-machine submission of XBRL filings.
+  - name: Reference
+    description: Form lists and submission constraints.
+paths:
+  /token:
+    post:
+      tags: [Filing]
+      operationId: getFilerToken
+      summary: Exchange FERC eRegistration credentials for a bearer token
+      description: >-
+        OAuth 2.0 Resource Owner Password Credentials grant (RFC 6749 section 4.3). Credentials are
+        the filer's FERC eRegistration / Company Registration username (email) and password; the
+        filer must be authorized to submit for the company. Documented in FERC's Postman collection
+        and step-by-step guide.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [username, password, grant_type, role]
+              properties:
+                username:
+                  type: string
+                  description: Email address of the filer, eligible to submit for the company.
+                password:
+                  type: string
+                  format: password
+                grant_type:
+                  type: string
+                  const: password
+                role:
+                  type: string
+                  const: filer
+      responses:
+        '200':
+          description: Bearer token issued.
+        '400':
+          description: >-
+            Grant or credential failure. Observed bodies: `{"error":"unsupported_grant_type"}` on a
+            GET/empty body, and `{"error":"Failed validating user in company registration"}` for an
+            unregistered filer.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+      x-evidence:
+        probed: '2026-07-27'
+        method: GET (no body)
+        status: 400
+        body: '{"error":"unsupported_grant_type"}'
+        source: collections/ferc-xbrl-submission-api.postman_collection.json
+  /SubmissionHistory/ExternalFiling:
+    post:
+      tags: [Filing]
+      operationId: postExternalFiling
+      summary: Submit a zipped XBRL filing
+      description: >-
+        Machine-to-machine submission of a FERC eForms XBRL filing. Requires the bearer token from
+        POST /token. Parameter semantics and the numeric form mapping are taken verbatim from FERC's
+        published step-by-step guide.
+      security:
+        - filerBearer: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [zipFiling, cid, reportYear, reportPeriod, email, form]
+              properties:
+                zipFiling:
+                  type: string
+                  format: binary
+                  description: >-
+                    Zip archive containing the XBRL instance and any additional files required by
+                    the XBRL specification. Only the .zip extension is accepted.
+                cid:
+                  type: string
+                  description: Company CID from FERC Company Registration, e.g. C006939.
+                  examples: ['C006939']
+                reportYear:
+                  type: string
+                  description: Four-digit report year the filing is made for.
+                reportPeriod:
+                  type: string
+                  description: >-
+                    Q1, Q2 or Q3 for quarterly forms; Q4 for annual forms.
+                  enum: [Q1, Q2, Q3, Q4]
+                email:
+                  type: string
+                  format: email
+                  description: Email address of the filer, eligible to submit for the company.
+                form:
+                  type: string
+                  description: >-
+                    Numeric form identifier. Published mapping — Form 1:1, Form 1F:2,
+                    Form 3Q Electric:3, Form 2:4, Form 2A:5, Form 3Q Natural Gas:6, Form 6:7,
+                    Form 6Q:8, Form 60:9, Form 714:10.
+                  enum: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+                test:
+                  type: string
+                  description: Indicate whether this is a test submission.
+                  enum: ['true', 'false']
+                additionalNotes:
+                  type: string
+                  description: Notes accompanying the submission.
+      responses:
+        '200':
+          description: Submission accepted for processing.
+        '401':
+          description: Missing or invalid bearer token.
+      x-evidence:
+        probed: false
+        note: >-
+          Write endpoint against production regulatory filing; deliberately NOT exercised. Described
+          from FERC's published Postman collection and step-by-step guide only.
+        source: https://www.ferc.gov/vendor-files-library
+  /PublicSubmissionHistory:
+    get:
+      tags: [Public Filings]
+      operationId: listPublicSubmissionHistory
+      summary: List the public FERC eForms submission history
+      description: >-
+        Returns the complete public record of eForms submissions. Answers anonymously with no API
+        key and no token. Observed 2026-07-27 returning 37,588 records in a single 10.6 MB JSON
+        array with no pagination. A `formID` query parameter appears in FERC's client but the
+        observed response was identical in size with and without it.
+      security: []
+      parameters:
+        - name: formID
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Form identifier (1-10). Observed to have no effect on the anonymous response.
+      responses:
+        '200':
+          description: Array of public submission records.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PublicSubmission'
+      x-evidence:
+        probed: '2026-07-27'
+        status: 200
+        record_count: 37588
+        bytes: 10677047
+        authentication: none
+  /SubmissionDetail/{filingID}:
+    get:
+      tags: [Public Filings]
+      operationId: getSubmissionDetail
+      summary: Get the detail and attachment manifest for one filing
+      description: >-
+        Returns the accession number, additional notes, CPA certification flags and the attachment
+        manifest (XBRL instance file and HTML rendering) for a single filing. Answers anonymously.
+      security: []
+      parameters:
+        - name: filingID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: filingID from GET /PublicSubmissionHistory.
+      responses:
+        '200':
+          description: Submission detail.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmissionDetail'
+      x-evidence:
+        probed: '2026-07-27'
+        status: 200
+        authentication: none
+  /SubmissionHistory/forms:
+    get:
+      tags: [Reference]
+      operationId: listForms
+      summary: List the eForms form names and identifiers
+      description: >-
+        Returns the form names, their numeric identifiers, and which identifiers are annual forms.
+      security: []
+      responses:
+        '200':
+          description: Form reference lists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormList'
+      x-evidence:
+        probed: '2026-07-27'
+        status: 200
+        authentication: none
+  /getTestStatus:
+    get:
+      tags: [Reference]
+      operationId: getTestStatus
+      summary: Get submission constraints and test-mode status
+      description: >-
+        Returns whether the environment is in test status plus the submission constraints the filing
+        client enforces — maximum XBRL name length, maximum file name length, maximum file size in
+        bytes, and the allowed additional-file tags.
+      security: []
+      responses:
+        '200':
+          description: Submission constraints.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestStatus'
+      x-evidence:
+        probed: '2026-07-27'
+        status: 200
+        authentication: none
+  /TaxonomyHistory:
+    get:
+      tags: [Taxonomy]
+      operationId: listTaxonomyHistory
+      summary: List published XBRL taxonomy versions
+      description: >-
+        Returns every published FERC eForms XBRL taxonomy version with the reporting window it
+        applies to and the schema (.xsd) URLs for each form in the release. Answers anonymously.
+        Observed 2026-07-27 returning 25 versions across Form 1, Form 2, Form 6, Form 60 and
+        Form 714.
+      security: []
+      responses:
+        '200':
+          description: Taxonomy version history.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaxonomyVersion'
+      x-evidence:
+        probed: '2026-07-27'
+        status: 200
+        record_count: 25
+        authentication: none
+  /TaxonomyHistory/TaxonomyFile/{versionID}:
+    get:
+      tags: [Taxonomy]
+      operationId: getTaxonomyFile
+      summary: Download the taxonomy file bundle for a version
+      security: []
+      parameters:
+        - name: versionID
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Zip archive.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+      x-evidence:
+        probed: '2026-07-27'
+        status: 200
+        bytes: 1509992
+        authentication: none
+  /TaxonomyHistory/SampleForm/{versionID}:
+    get:
+      tags: [Taxonomy]
+      operationId: getTaxonomySampleForm
+      summary: Download the sample/blank rendered form bundle for a taxonomy version
+      security: []
+      parameters:
+        - name: versionID
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Zip archive.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+      x-evidence:
+        probed: '2026-07-27'
+        status: 200
+        bytes: 462378
+        authentication: none
+  /TaxonomyHistory/getReleaseFiles:
+    get:
+      tags: [Taxonomy]
+      operationId: getTaxonomyReleaseFiles
+      summary: Get the taxonomy release notes document
+      description: Returns a base64-encoded PDF of the current taxonomy release notes.
+      security: []
+      responses:
+        '200':
+          description: Base64-encoded PDF document.
+          content:
+            application/json:
+              schema:
+                type: string
+                contentEncoding: base64
+                contentMediaType: application/pdf
+      x-evidence:
+        probed: '2026-07-27'
+        status: 200
+        bytes: 455998
+        authentication: none
+  /faq:
+    get:
+      tags: [Reference]
+      operationId: listFaq
+      summary: List eForms portal FAQ entries
+      security: []
+      responses:
+        '200':
+          description: FAQ entries. Observed as an empty array on 2026-07-27.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      x-evidence:
+        probed: '2026-07-27'
+        status: 200
+        body: '[]'
+        authentication: none
+  /claims:
+    get:
+      tags: [Filing]
+      operationId: getFilerClaims
+      summary: Get the authenticated filer's claims
+      description: >-
+        Credentialed. Returns 401 `{"message":"Authorization has been denied for this request."}`
+        anonymously; the response body for an authenticated caller was not observed and is
+        deliberately not described.
+      security:
+        - filerBearer: []
+      responses:
+        '200':
+          description: Filer claims. Shape not observed.
+        '401':
+          description: Authorization denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-evidence:
+        probed: '2026-07-27'
+        status: 401
+  /SubmissionHistory:
+    get:
+      tags: [Filing]
+      operationId: listFilerSubmissionHistory
+      summary: List the authenticated filer's submission history
+      description: >-
+        Credentialed. Returns 401 anonymously; the authenticated response shape was not observed and
+        is deliberately not described.
+      security:
+        - filerBearer: []
+      responses:
+        '200':
+          description: Filer submission history. Shape not observed.
+        '401':
+          description: Authorization denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-evidence:
+        probed: '2026-07-27'
+        status: 401
+  /TaxonomyRevision:
+    get:
+      tags: [Taxonomy]
+      operationId: listTaxonomyRevisions
+      summary: List taxonomy revisions (administrative)
+      description: Credentialed. Returns 401 anonymously; authenticated shape not observed.
+      security:
+        - filerBearer: []
+      responses:
+        '200':
+          description: Taxonomy revisions. Shape not observed.
+        '401':
+          description: Authorization denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-evidence:
+        probed: '2026-07-27'
+        status: 401
+components:
+  securitySchemes:
+    filerBearer:
+      type: http
+      scheme: bearer
+      description: >-
+        Bearer token issued by POST /token via the OAuth 2.0 password grant with role=filer.
+  schemas:
+    PublicSubmission:
+      type: object
+      description: >-
+        One public eForms filing record. Field set observed verbatim on 2026-07-27; no field added.
+      properties:
+        filingID:
+          type: integer
+        cid:
+          type: string
+          description: FERC Company Registration company identifier, e.g. C0#####.
+        companyName:
+          type: string
+        formName:
+          type: string
+          description: e.g. "Form 1", "Form 3Q Electric", "Form 714".
+        year:
+          type: integer
+        period:
+          type: string
+          description: Q1, Q2, Q3 or Q4.
+        submittedOn:
+          type: string
+          format: date-time
+        status:
+          type: string
+          description: e.g. "Accepted".
+        isConfidential:
+          type: boolean
+        isTestSubmission:
+          type: string
+          description: e.g. "Not Test".
+        filerEmail:
+          type: string
+          format: email
+          description: >-
+            PERSONAL DATA. The work email address of the individual filer, served anonymously. Do
+            not harvest; no example value is recorded in this repository.
+          x-personal-data: true
+    SubmissionDetail:
+      type: object
+      properties:
+        additionalNotes:
+          type: string
+        accessionNumber:
+          type: string
+          description: FERC accession number, e.g. 20260727-8000.
+        privilegedAccessionNumber:
+          type: [string, 'null']
+        attachments:
+          type: array
+          items:
+            type: object
+            properties:
+              fileID:
+                type: integer
+              fileType:
+                type: string
+                description: e.g. XBRL_INSTANCE_FILE, HTML_RENDERING.
+              fileName:
+                type: string
+              isConfidential:
+                type: boolean
+              fileBlob:
+                type: string
+        cpaCertRequired:
+          type: boolean
+        cpaCertUploaded:
+          type: boolean
+        isFiledThrougheForms:
+          type: boolean
+    FormList:
+      type: object
+      properties:
+        formList:
+          type: array
+          items:
+            type: string
+        formIDList:
+          type: array
+          items:
+            type: integer
+        annualForms:
+          type: array
+          items:
+            type: integer
+    TestStatus:
+      type: object
+      properties:
+        status:
+          type: boolean
+        maxAllowedXbrlName:
+          type: integer
+        maxAllowedFileName:
+          type: integer
+        maxAllowedFileSize:
+          type: integer
+          description: Bytes.
+        allowedFileTags:
+          type: string
+        showReleaseNotesButton:
+          type: boolean
+    TaxonomyVersion:
+      type: object
+      properties:
+        versionID:
+          type: integer
+        formID:
+          type: [integer, 'null']
+        formName:
+          type: string
+        startYear:
+          type: integer
+        startPeriod:
+          type: string
+        endYear:
+          type: [integer, 'null']
+        endPeriod:
+          type: [string, 'null']
+        version:
+          type: string
+          description: Taxonomy version date, e.g. 2026-04-01.
+        versionCount:
+          type: [integer, 'null']
+        publishString:
+          type: string
+          description: >-
+            JSON-encoded string of the published schema URLs for the release, keyed url0, url1, ...
+        revisionNumber:
+          type: integer
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        error:
+          type: string

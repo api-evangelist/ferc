@@ -1,0 +1,236 @@
+generated: '2026-07-27'
+method: generated
+source: openapi/ferc-data-api-openapi.json, openapi/ferc-eforms-api-openapi-derived.yml
+description: Recommended x-agentic-access execution contracts, classified heuristically from
+  the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
+  audience per deployment. See research/curity/agentic-governance/.
+curated: partial
+curation_note: >-
+  Two operations were raised by hand above the heuristic default and are marked `curated: true` —
+  postExternalFiling (mandated, irreversible regulatory filing → safety-critical, human-in-the-loop
+  required) and listPublicSubmissionHistory (anonymous but returns personal data → subject and audit
+  required). The summary counts below reflect those corrections.
+summary:
+  operations: 18
+  by_action_class:
+    connected: 16
+    acting: 2
+  by_consequence:
+    read: 16
+    write: 1
+    safety-critical: 1
+  human_in_the_loop_required: 1
+  personal_data_operations: 1
+operations:
+- path: /data-assets/
+  method: get
+  operationId: data-asset-id
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /dataset/{id}/details/
+  method: get
+  operationId: detail-id
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /dataset/{id}/data/
+  method: get
+  operationId: data-id
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /dataset/{id}/dictionary/
+  method: get
+  operationId: dictionary-id
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /token
+  method: post
+  operationId: getFilerToken
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /SubmissionHistory/ExternalFiling
+  method: post
+  operationId: postExternalFiling
+  curated: true
+  curation_note: >-
+    Raised by hand from the heuristic default (write / conditional). This operation submits a
+    MANDATED regulatory filing to FERC production on behalf of a named credentialed filer. It is
+    irreversible, legally consequential, carries no idempotency key, and a repeat call creates a
+    second filing. Human-in-the-loop is required, not conditional.
+  x-agentic-access:
+    action-class: acting
+    consequence: safety-critical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 120
+      exchange: required
+      proof-of-possession: required
+      purpose-required: true
+    escalation:
+      human-in-the-loop: required
+      triggers:
+      - always
+    audit: required
+- path: /PublicSubmissionHistory
+  method: get
+  operationId: listPublicSubmissionHistory
+  curated: true
+  curation_note: >-
+    Read-only and anonymous, but the response carries filerEmail — a named individual's work email
+    address — for ~37,600 filings. Treated as personal data: subject required, audit required, and
+    excluded from the agent skills and the candidate MCP tool set. See
+    security/ferc-vulnerability-disclosure.yml.
+  personal_data: true
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: required
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - bulk-export
+      - personal-data
+    audit: required
+- path: /SubmissionDetail/{filingID}
+  method: get
+  operationId: getSubmissionDetail
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /SubmissionHistory/forms
+  method: get
+  operationId: listForms
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /getTestStatus
+  method: get
+  operationId: getTestStatus
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /TaxonomyHistory
+  method: get
+  operationId: listTaxonomyHistory
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /TaxonomyHistory/TaxonomyFile/{versionID}
+  method: get
+  operationId: getTaxonomyFile
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /TaxonomyHistory/SampleForm/{versionID}
+  method: get
+  operationId: getTaxonomySampleForm
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /TaxonomyHistory/getReleaseFiles
+  method: get
+  operationId: getTaxonomyReleaseFiles
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /faq
+  method: get
+  operationId: listFaq
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /claims
+  method: get
+  operationId: getFilerClaims
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /SubmissionHistory
+  method: get
+  operationId: listFilerSubmissionHistory
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /TaxonomyRevision
+  method: get
+  operationId: listTaxonomyRevisions
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none

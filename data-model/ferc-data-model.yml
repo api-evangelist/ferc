@@ -1,0 +1,166 @@
+generated: '2026-07-27'
+method: derived
+source: >-
+  openapi/ferc-data-api-openapi.json, openapi/ferc-eforms-api-openapi-derived.yml,
+  https://data.ferc.gov/datacatalog/
+summary: >-
+  Two disjoint entity graphs. The Open Data API models a two-level catalog — a DataAsset holds many
+  Datasets, and a Dataset resolves to rows plus a column dictionary — with the dataset ID as the only
+  join key. The eForms API models the regulatory filing record — a Company (CID) makes Filings of a
+  Form for a reporting period, each Filing has Attachments and an accession number, and each Form is
+  governed by a dated TaxonomyVersion. Nothing joins the two graphs: a company in the Market-Based
+  Rate Database and a filer CID in eForms share no published identifier.
+entities:
+  - name: DataAsset
+    api: ferc:ferc-open-data-api
+    description: >-
+      A collection of data elements and/or datasets grouped to serve a key business function.
+    id_field: id
+    id_type: integer
+    fields: [id, title, description, program_office, url, point_of_contact_email, point_of_contact_name, source]
+    source_operation: openapi/ferc-data-api-openapi.json#data-asset-id
+    known_instances:
+      - Annual Charges
+      - Company Registration
+      - 'FERC Form 556: Certification of Qualifying Facility Status'
+      - FERC Information Collections Management
+      - Form No. 552 - Download Data
+      - Market-Based Rate Database
+      - NEPA Schedule for Pending Infrastructure Projects
+    instances_source: https://data.ferc.gov/datacatalog/
+    instances_note: >-
+      Seven data assets listed in the public Data Catalog on 2026-07-27. FERC describes the
+      collection as growing; resolve the live list from the Data-Assets endpoint, never from this
+      file.
+  - name: Dataset
+    api: ferc:ferc-open-data-api
+    description: A logical collection of data, such as a single table.
+    id_field: id
+    id_type: integer
+    id_stability: unstable
+    fields: [id, title, url, description]
+    detail_fields: [description, industry, last_updated, source_url, point_of_contact]
+    source_operation: openapi/ferc-data-api-openapi.json#detail-id
+  - name: DatasetRow
+    api: ferc:ferc-open-data-api
+    description: >-
+      An untyped row of the dataset. The schema is per-dataset and is described by the Dictionary
+      endpoint, not by the OpenAPI — the spec types the payload only as an array of objects.
+    source_operation: openapi/ferc-data-api-openapi.json#data-id
+  - name: DictionaryColumn
+    api: ferc:ferc-open-data-api
+    description: Column definition for a dataset. Not every dataset has one; a missing one returns 404.
+    fields: [column_id, column_name, data_type, description, description_url]
+    source_operation: openapi/ferc-data-api-openapi.json#dictionary-id
+  - name: Company
+    api: ferc:ferc-eforms-xbrl-submission-api
+    description: A FERC-registered filing entity.
+    id_field: cid
+    id_type: string
+    id_format: "C followed by 6 digits"
+    fields: [cid, companyName]
+  - name: Form
+    api: ferc:ferc-eforms-xbrl-submission-api
+    description: A FERC eForm. Ten identifiers, seven of them annual.
+    id_field: formID
+    id_type: integer
+    enumeration:
+      1: Form 1
+      2: Form 1F
+      3: Form 3Q Electric
+      4: Form 2
+      5: Form 2A
+      6: Form 3Q Gas
+      7: Form 6
+      8: Form 6Q
+      9: Form 60
+      10: Form 714
+    source_operation: openapi/ferc-eforms-api-openapi-derived.yml#listForms
+  - name: Filing
+    api: ferc:ferc-eforms-xbrl-submission-api
+    description: One submitted XBRL filing of a form by a company for a reporting period.
+    id_field: filingID
+    id_type: integer
+    fields:
+      [filingID, cid, companyName, formName, year, period, submittedOn, status, isConfidential,
+       isTestSubmission, filerEmail]
+    personal_data_fields: [filerEmail]
+    personal_data_note: >-
+      filerEmail is the individual filer's work email address and is served anonymously. Documented
+      structurally; never harvested, never exemplified with a real value in this repository.
+    source_operation: openapi/ferc-eforms-api-openapi-derived.yml#listPublicSubmissionHistory
+  - name: FilingDetail
+    api: ferc:ferc-eforms-xbrl-submission-api
+    fields:
+      [accessionNumber, privilegedAccessionNumber, additionalNotes, cpaCertRequired, cpaCertUploaded,
+       isFiledThrougheForms]
+    external_key: >-
+      accessionNumber (YYYYMMDD-NNNN) resolves the filing in FERC eLibrary at
+      https://elibrary.ferc.gov/eLibrary/docinfo?accession_num=
+    source_operation: openapi/ferc-eforms-api-openapi-derived.yml#getSubmissionDetail
+  - name: Attachment
+    api: ferc:ferc-eforms-xbrl-submission-api
+    fields: [fileID, fileType, fileName, isConfidential, fileBlob]
+    file_types: [XBRL_INSTANCE_FILE, HTML_RENDERING]
+    filename_convention: '{filingID}-{cid}-{Form_Name}-{year}-{period}.{ext}'
+  - name: TaxonomyVersion
+    api: ferc:ferc-eforms-xbrl-submission-api
+    description: >-
+      A dated XBRL taxonomy release governing which concepts a filing may use for a reporting window.
+    id_field: versionID
+    id_type: integer
+    fields:
+      [versionID, formID, formName, startYear, startPeriod, endYear, endPeriod, version,
+       versionCount, publishString, revisionNumber]
+    source_operation: openapi/ferc-eforms-api-openapi-derived.yml#listTaxonomyHistory
+relationships:
+  - from: DataAsset
+    to: Dataset
+    type: has_many
+    via: data-sets[].id
+    evidence: Data-Assets response nests a data-sets array inside each data asset.
+  - from: Dataset
+    to: DatasetRow
+    type: has_many
+    via: '{id} path parameter on /dataset/{id}/data/'
+  - from: Dataset
+    to: DictionaryColumn
+    type: has_many
+    via: '{id} path parameter on /dataset/{id}/dictionary/'
+    cardinality_note: zero-or-many — datasets without a dictionary return 404.
+  - from: Company
+    to: Filing
+    type: has_many
+    via: cid
+  - from: Form
+    to: Filing
+    type: has_many
+    via: formName / formID
+  - from: Filing
+    to: FilingDetail
+    type: has_one
+    via: filingID
+  - from: FilingDetail
+    to: Attachment
+    type: has_many
+    via: attachments[]
+  - from: Form
+    to: TaxonomyVersion
+    type: has_many
+    via: formName
+    note: >-
+      Each version is bound to a reporting window; a filing is validated against the version whose
+      window contains its year/period.
+  - from: Filing
+    to: TaxonomyVersion
+    type: belongs_to
+    via: 'year + period matched against startYear/startPeriod..endYear/endPeriod'
+    confidence: medium
+    note: Inferred from the window fields; FERC does not publish the join on the filing record.
+traversal:
+  open_data: >-
+    GET /data-assets/ -> pick data-sets[].id -> GET /dataset/{id}/details/ (row count, industry,
+    contact) -> GET /dataset/{id}/dictionary/ (column meanings) -> GET /dataset/{id}/data/ (rows).
+  eforms: >-
+    GET /SubmissionHistory/forms (form ids) -> GET /PublicSubmissionHistory (filings) -> GET
+    /SubmissionDetail/{filingID} (accession number + attachments) -> eLibrary by accession number.

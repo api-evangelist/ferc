@@ -1,0 +1,132 @@
+generated: '2026-07-27'
+method: searched
+source: live anonymous probes of https://ecollection.ferc.gov/api on 2026-07-27
+summary: >-
+  Real responses captured from the anonymous read endpoints of the FERC eForms API. Values are
+  verbatim EXCEPT where noted as redacted. One field is redacted on purpose: PublicSubmissionHistory
+  returns a filerEmail carrying a named individual's work email address, and no real value of it is
+  recorded anywhere in this repository. The record shown is otherwise a genuine filing from the
+  public regulatory record.
+response_examples:
+  - operationId: listPublicSubmissionHistory
+    request: GET https://ecollection.ferc.gov/api/PublicSubmissionHistory
+    auth: none
+    status: 200
+    record_count: 37588
+    bytes: 10677047
+    redacted_fields: [filerEmail]
+    body_first_element:
+      filingID: 350243
+      cid: C010446
+      companyName: Wilderness Line Holdings, Llc
+      formName: Form 3Q Electric
+      year: 2026
+      period: Q2
+      submittedOn: '2026-07-27T12:41:17.013Z'
+      status: Accepted
+      isConfidential: false
+      isTestSubmission: Not Test
+      filerEmail: '[REDACTED — personal data; see security/ferc-vulnerability-disclosure.yml]'
+  - operationId: getSubmissionDetail
+    request: GET https://ecollection.ferc.gov/api/SubmissionDetail/350243
+    auth: none
+    status: 200
+    body:
+      additionalNotes: No Additional Comments
+      accessionNumber: '20260727-8000'
+      privilegedAccessionNumber: null
+      attachments:
+        - fileID: 450970
+          fileType: XBRL_INSTANCE_FILE
+          fileName: 350243-C010446-Form_3Q_Electric-2026-Q2.xbrl
+          isConfidential: false
+          fileBlob: ''
+        - fileID: 450971
+          fileType: HTML_RENDERING
+          fileName: 350243-C010446-Form_3Q_Electric-2026-Q2_350243.html
+          isConfidential: false
+          fileBlob: ''
+      cpaCertRequired: false
+      cpaCertUploaded: false
+      isFiledThrougheForms: false
+  - operationId: listForms
+    request: GET https://ecollection.ferc.gov/api/SubmissionHistory/forms
+    auth: none
+    status: 200
+    body:
+      formList: [Form 1, Form 1F, Form 3Q Electric, Form 2, Form 2A, Form 3Q Gas, Form 6, Form 6Q,
+                 Form 60, Form 714]
+      formIDList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      annualForms: [1, 2, 4, 5, 7, 9, 10]
+  - operationId: getTestStatus
+    request: GET https://ecollection.ferc.gov/api/getTestStatus
+    auth: none
+    status: 200
+    body:
+      status: false
+      maxAllowedXbrlName: 50
+      maxAllowedFileName: 60
+      maxAllowedFileSize: 52428800
+      allowedFileTags: FileNameOfSystemMap,OrganizationChart
+      showReleaseNotesButton: true
+  - operationId: listTaxonomyHistory
+    request: GET https://ecollection.ferc.gov/api/TaxonomyHistory
+    auth: none
+    status: 200
+    record_count: 25
+    body_first_element:
+      versionID: 23
+      formID: null
+      formName: Form 6
+      startYear: 2000
+      startPeriod: Q4
+      endYear: 2022
+      endPeriod: Q4
+      version: '2022-01-01'
+      versionCount: null
+      publishString: >-
+        {"url0": "https://eCollection.ferc.gov/taxonomy/form6/2022-01-01/form/form6/form-6_2022-01-01.xsd"
+        , "url1": "https://eCollection.ferc.gov/taxonomy/form6/2022-01-01/form/form6Q/form-6Q_2022-01-01.xsd"}
+      revisionNumber: 692
+  - operationId: listFaq
+    request: GET https://ecollection.ferc.gov/api/faq
+    auth: none
+    status: 200
+    body: []
+error_examples:
+  - operationId: getFilerToken
+    request: GET https://ecollection.ferc.gov/api/token
+    status: 400
+    body:
+      error: unsupported_grant_type
+  - operationId: getFilerToken
+    request: POST https://ecollection.ferc.gov/api/token (grant_type=password, role=filer, invalid credentials)
+    status: 400
+    body:
+      error: Failed validating user in company registration
+    note: Recorded from the 2026-07-27 provider review; credentials used were not valid ones.
+  - operationId: getFilerClaims
+    request: GET https://ecollection.ferc.gov/api/claims
+    status: 401
+    body:
+      message: Authorization has been denied for this request.
+request_examples:
+  - name: Obtain a filer bearer token
+    operationId: getFilerToken
+    source: collections/ferc-xbrl-submission-api.postman_collection.json
+    curl: >-
+      curl -X POST "https://ecollection.ferc.gov/api/token" -H "Content-Type:
+      application/x-www-form-urlencoded" -d "username=<filer-username>@company.com"
+      -d "password=<filer-password>" -d "grant_type=password" -d "role=filer"
+  - name: Submit a test XBRL filing
+    operationId: postExternalFiling
+    source: collections/ferc-xbrl-submission-api.postman_collection.json
+    curl: >-
+      curl -X POST "https://ecollection.ferc.gov/api/SubmissionHistory/ExternalFiling"
+      -H "Authorization: Bearer <token>" -F "zipFiling=@filing.zip" -F "cid=C006939"
+      -F "reportYear=2026" -F "reportPeriod=Q4" -F "email=filer@company.com" -F "form=1"
+      -F "test=true" -F "additionalNotes=This is a test submission"
+    note: >-
+      Placeholders only. Not executed — this writes to FERC's production filing system. Form
+      identifier mapping is published in FERC's step-by-step guide; see
+      openapi/ferc-eforms-api-openapi-derived.yml.

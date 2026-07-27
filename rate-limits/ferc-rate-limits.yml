@@ -1,0 +1,46 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+provider: FERC
+providerId: ferc
+generated: '2026-07-27'
+method: searched
+created: '2026-07-27'
+modified: '2026-07-27'
+tags:
+  - Rate Limiting
+  - Open Data
+  - Government
+description: >-
+  FERC publishes one rate limit, on the Open Data API: 1,000 requests per hour per API key, reset on
+  a rolling basis, enforced by the api.data.gov API Umbrella gateway. Exceeding it temporarily blocks
+  the key. Higher limits are granted by contacting support — no published tier ladder. The eForms
+  XBRL API publishes no rate limit.
+sources:
+  - https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  - https://data.ferc.gov/developer/helpandsupport/api-faqs/
+headers:
+  limit: X-RateLimit-Limit
+  remaining: X-RateLimit-Remaining
+  requestId: x-api-umbrella-request-id
+responseCodes:
+  throttled: 429
+limits:
+  - name: Open Data API requests
+    api: ferc:ferc-open-data-api
+    scope: api-key
+    metric: requests_per_hour
+    limit: 1000
+    timeFrame: hour
+    window: rolling
+    onExceed: >-
+      HTTP 429 Too Many Requests; the API key is temporarily blocked from making further requests.
+    raiseLimit: contact support
+notes:
+  - >-
+    FERC's documentation contains a typo in its own worked example — it prints "X-Ratelimit-Limit:
+    1000 / X-Ratelimit-Limit: 998" where the second header is X-RateLimit-Remaining. Recorded as
+    published; the header names above are the correct pair.
+  - >-
+    No rate limit is documented or observed on the eForms API at ecollection.ferc.gov, including its
+    anonymous public read endpoints — GET /PublicSubmissionHistory returns a 10.6 MB array with no
+    key and no throttle headers.

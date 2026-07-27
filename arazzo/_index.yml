@@ -1,0 +1,13 @@
+generated: '2026-07-27'
+method: derived
+source: arazzo/*.yml
+workflows:
+  - file: ferc-dataset-discovery-and-retrieval.yml
+    workflowId: discoverAndRetrieveFercDataset
+    title: FERC open data — discover a dataset and retrieve it
+    summary: >-
+      List the FERC data catalog, resolve a dataset ID from the nested data-sets array (IDs are not
+      stable, so they are always re-resolved), read the record count and metadata, fetch the column
+      dictionary tolerating the documented 404, then pull the full row set.
+    api: openapi/ferc-data-api-openapi.json
+    operations: [data-asset-id, detail-id, dictionary-id, data-id]

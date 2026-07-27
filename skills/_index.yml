@@ -1,0 +1,41 @@
+generated: '2026-07-27'
+method: generated
+source: >-
+  openapi/ferc-data-api-openapi.json, openapi/ferc-eforms-api-openapi-derived.yml,
+  conventions/ferc-conventions.yml, errors/ferc-problem-types.yml
+note: >-
+  Packaged agent skills for FERC's two APIs. Every step is grounded in an operationId that exists
+  verbatim in the referenced spec; every rule (403-not-401, no pagination, unstable dataset IDs, the
+  console's 100-row truncation, the Form 2 = id 4 mapping, the WAF 200) comes from FERC's own
+  documentation or from a live probe on 2026-07-27.
+skills:
+  - file: ferc-retrieve-open-data-dataset.md
+    name: Retrieve a FERC open dataset
+    api: openapi/ferc-data-api-openapi.json
+    base_url: https://api.data.ferc.gov/v1
+    auth: X-Api-Key
+    operations: [data-asset-id, detail-id, dictionary-id, data-id]
+  - file: ferc-track-eforms-taxonomy.md
+    name: Track the FERC eForms XBRL taxonomy and resolve a filing
+    api: openapi/ferc-eforms-api-openapi-derived.yml
+    base_url: https://ecollection.ferc.gov/api
+    auth: none
+    operations:
+      [listForms, listTaxonomyHistory, getTaxonomyFile, getTaxonomySampleForm,
+       getTaxonomyReleaseFiles, getSubmissionDetail]
+excluded:
+  - operation: listPublicSubmissionHistory
+    spec: openapi/ferc-eforms-api-openapi-derived.yml
+    reason: >-
+      DELIBERATE OMISSION. GET /PublicSubmissionHistory returns ~37,600 filing records with no
+      authentication, each carrying a filerEmail field holding a named individual's work email
+      address. Packaging it as a skill would ship a working bulk personal-data harvester. The
+      endpoint is documented for transparency and the exposure is recorded in
+      security/ferc-vulnerability-disclosure.yml; it is not a skill and should not become one. The
+      taxonomy skill uses getSubmissionDetail with a known filingID instead.
+  - operation: postExternalFiling
+    spec: openapi/ferc-eforms-api-openapi-derived.yml
+    reason: >-
+      Writes a mandated regulatory filing to FERC production on behalf of a credentialed filer, with
+      no idempotency key and no undo. Not an agent-appropriate action; the taxonomy skill covers
+      preparation and validation and stops before submission.

@@ -1,0 +1,215 @@
+generated: '2026-07-27'
+method: searched
+source: https://ecollection.ferc.gov/api/TaxonomyHistory
+docs: https://ecollection.ferc.gov/taxonomyHistory
+scheme: dated XBRL taxonomy releases (YYYY-MM-DD), bound to a reporting window
+current_version: '2026-04-01'
+note: FERC publishes no dated changelog or release notes for either HTTP API. The one real, dated version
+  history it does publish is the eForms XBRL taxonomy release history, harvested here verbatim from FERC's
+  own anonymous TaxonomyHistory endpoint on 2026-07-27 (25 releases across five form families). Release
+  notes for the current taxonomy are served as a base64 PDF from GET /api/TaxonomyHistory/getReleaseFiles.
+  The Open Data API at api.data.ferc.gov has no changelog of any kind — new data assets appear in the
+  Data Catalog unannounced.
+entries:
+- version: '2026-04-01'
+  date: '2026-04-01'
+  type: xbrl-taxonomy-release
+  forms:
+  - Form 1
+  - Form 2
+  - Form 6
+  - Form 60
+  - Form 714
+  breaking: null
+  highlights: FERC eForms XBRL taxonomy release 2026-04-01 covering Form 1, Form 2, Form 6, Form 60, Form
+    714.
+  schemas:
+  - form: Form 1
+    versionID: 68
+    applies_from: 2026 Q1
+    applies_through: open
+    revisionNumber: 1345
+  - form: Form 2
+    versionID: 69
+    applies_from: 2026 Q1
+    applies_through: open
+    revisionNumber: 1346
+  - form: Form 6
+    versionID: 67
+    applies_from: 2026 Q1
+    applies_through: open
+    revisionNumber: 1343
+  - form: Form 60
+    versionID: 66
+    applies_from: 2025 Q4
+    applies_through: open
+    revisionNumber: 1342
+  - form: Form 714
+    versionID: 65
+    applies_from: 2025 Q4
+    applies_through: open
+    revisionNumber: 1344
+- version: '2025-04-01'
+  date: '2025-04-01'
+  type: xbrl-taxonomy-release
+  forms:
+  - Form 1
+  - Form 2
+  - Form 6
+  - Form 714
+  breaking: null
+  highlights: FERC eForms XBRL taxonomy release 2025-04-01 covering Form 1, Form 2, Form 6, Form 714.
+  schemas:
+  - form: Form 1
+    versionID: 56
+    applies_from: 2025 Q1
+    applies_through: 2025 Q4
+    revisionNumber: 1290
+  - form: Form 2
+    versionID: 59
+    applies_from: 2025 Q1
+    applies_through: 2025 Q4
+    revisionNumber: 1291
+  - form: Form 6
+    versionID: 58
+    applies_from: 2025 Q1
+    applies_through: 2025 Q4
+    revisionNumber: 1292
+  - form: Form 714
+    versionID: 55
+    applies_from: 2024 Q4
+    applies_through: 2024 Q4
+    revisionNumber: 1294
+- version: '2024-04-01'
+  date: '2024-04-01'
+  type: xbrl-taxonomy-release
+  forms:
+  - Form 1
+  - Form 2
+  - Form 6
+  - Form 60
+  - Form 714
+  breaking: null
+  highlights: FERC eForms XBRL taxonomy release 2024-04-01 covering Form 1, Form 2, Form 6, Form 60, Form
+    714.
+  schemas:
+  - form: Form 1
+    versionID: 48
+    applies_from: 2024 Q1
+    applies_through: 2024 Q4
+    revisionNumber: 1098
+  - form: Form 2
+    versionID: 49
+    applies_from: 2024 Q1
+    applies_through: 2024 Q4
+    revisionNumber: 1097
+  - form: Form 6
+    versionID: 47
+    applies_from: 2024 Q1
+    applies_through: 2024 Q4
+    revisionNumber: 1101
+  - form: Form 60
+    versionID: 45
+    applies_from: 2023 Q4
+    applies_through: 2024 Q4
+    revisionNumber: 1108
+  - form: Form 714
+    versionID: 46
+    applies_from: 2023 Q4
+    applies_through: 2023 Q4
+    revisionNumber: 1103
+- version: '2023-11-01'
+  date: '2023-11-01'
+  type: xbrl-taxonomy-release
+  forms:
+  - Form 1
+  breaking: null
+  highlights: FERC eForms XBRL taxonomy release 2023-11-01 covering Form 1.
+  schemas:
+  - form: Form 1
+    versionID: 39
+    applies_from: 2023 Q4
+    applies_through: 2023 Q4
+    revisionNumber: 1028
+- version: '2023-04-01'
+  date: '2023-04-01'
+  type: xbrl-taxonomy-release
+  forms:
+  - Form 1
+  - Form 2
+  - Form 6
+  - Form 60
+  - Form 714
+  breaking: null
+  highlights: FERC eForms XBRL taxonomy release 2023-04-01 covering Form 1, Form 2, Form 6, Form 60, Form
+    714.
+  schemas:
+  - form: Form 1
+    versionID: 37
+    applies_from: 2023 Q1
+    applies_through: 2023 Q3
+    revisionNumber: 976
+  - form: Form 2
+    versionID: 38
+    applies_from: 2023 Q1
+    applies_through: 2023 Q4
+    revisionNumber: 977
+  - form: Form 6
+    versionID: 36
+    applies_from: 2023 Q1
+    applies_through: 2023 Q4
+    revisionNumber: 975
+  - form: Form 60
+    versionID: 35
+    applies_from: 2023 Q1
+    applies_through: 2023 Q3
+    revisionNumber: 974
+  - form: Form 714
+    versionID: 34
+    applies_from: 2023 Q1
+    applies_through: 2023 Q3
+    revisionNumber: 973
+- version: '2022-04-01'
+  date: '2022-04-01'
+  type: xbrl-taxonomy-release
+  forms:
+  - Form 60
+  breaking: null
+  highlights: FERC eForms XBRL taxonomy release 2022-04-01 covering Form 60.
+  schemas:
+  - form: Form 60
+    versionID: 28
+    applies_from: 2000 Q4
+    applies_through: 2022 Q4
+    revisionNumber: 805
+- version: '2022-01-01'
+  date: '2022-01-01'
+  type: xbrl-taxonomy-release
+  forms:
+  - Form 1
+  - Form 2
+  - Form 6
+  - Form 714
+  breaking: null
+  highlights: FERC eForms XBRL taxonomy release 2022-01-01 covering Form 1, Form 2, Form 6, Form 714.
+  schemas:
+  - form: Form 1
+    versionID: 24
+    applies_from: 2000 Q4
+    applies_through: 2022 Q4
+    revisionNumber: 688
+  - form: Form 2
+    versionID: 25
+    applies_from: 2000 Q4
+    applies_through: 2022 Q4
+    revisionNumber: 689
+  - form: Form 6
+    versionID: 23
+    applies_from: 2000 Q4
+    applies_through: 2022 Q4
+    revisionNumber: 692
+  - form: Form 714
+    versionID: 27
+    applies_from: 2000 Q4
+    applies_through: 2022 Q4
+    revisionNumber: 679

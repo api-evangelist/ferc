@@ -39,6 +39,11 @@ tags:
 - Oil Pipelines
 created: '2026-07-27'
 modified: '2026-07-27'
+x-artifacts-note: >-
+  No WellKnown pointer and no MCPServer pointer are wired for FERC on purpose. FERC serves no
+  /.well-known/ document on any host (twenty probes, 2026-07-27 — see well-known/ferc-well-known.yml)
+  and publishes no MCP server (mcp/ferc-mcp.yml is a candidate tool surface only). Both artifacts
+  record the absence; neither claims a capability FERC does not have.
 specificationVersion: '0.19'
 apis:
 - aid: ferc:ferc-open-data-api
@@ -84,14 +89,22 @@ apis:
     url: https://data.ferc.gov/faq/
 - aid: ferc:ferc-eforms-xbrl-submission-api
   name: FERC eForms XBRL Submission API
-  description: The machine-to-machine filing API for FERC's mandated eForms. Credentialed
+  description: The machine-to-machine API behind FERC's mandated eForms. Credentialed
     filers exchange their FERC eRegistration and Company Registration username and
     password for a bearer token at POST /api/token (OAuth2 password grant, role=filer),
     then POST a zipped XBRL submission to /api/SubmissionHistory/ExternalFiling with
-    the company CID, report year, report period, and form identifier. This is a write
-    API for regulated filers, not a read API for developers — there is no public data
-    retrieval surface here. Verified live 2026-07-27 — POST /api/token without valid
-    credentials returns HTTP 400 with "Failed validating user in company registration".
+    the company CID, report year, report period, and form identifier. FERC documents
+    only that write path, but the API is not write-only — a second-round probe on 2026-07-27
+    found an undocumented ANONYMOUS read surface on the same host — GET /api/PublicSubmissionHistory
+    (37,588 filing records, 10.6 MB, no key), /api/SubmissionDetail/{filingID} (accession
+    number and attachment manifest), /api/SubmissionHistory/forms, /api/getTestStatus,
+    /api/faq, and the full XBRL taxonomy release history at /api/TaxonomyHistory with
+    its taxonomy packages, sample forms and release notes. Those endpoints are described
+    in a DERIVED OpenAPI in this repo (FERC publishes none), built from FERC's own production
+    JavaScript bundle plus its published Postman collection, with every path probed live.
+    Verified 2026-07-27 — POST /api/token without valid credentials returns HTTP 400
+    with "Failed validating user in company registration", and the credentialed endpoints
+    (/api/claims, /api/SubmissionHistory, /api/TaxonomyRevision) return HTTP 401.
   humanURL: https://www.ferc.gov/vendor-files-library
   baseURL: https://ecollection.ferc.gov/api
   tags:
@@ -100,6 +113,9 @@ apis:
   - eForms
   - Compliance
   properties:
+  - type: OpenAPI
+    url: openapi/ferc-eforms-api-openapi-derived.yml
+    name: Derived OpenAPI 3.1 (not published by FERC)
   - type: PostmanCollection
     url: collections/ferc-xbrl-submission-api.postman_collection.json
   - type: Documentation
@@ -113,13 +129,70 @@ apis:
   - type: Documentation
     url: https://www.ferc.gov/filing-forms/eforms-refresh
 common:
+- type: OpenAPI
+  url: openapi/ferc-data-api-openapi.json
+  name: FERC Open Data API — OpenAPI 3.0 published by FERC
+- type: OpenAPI
+  url: openapi/ferc-eforms-api-openapi-derived.yml
+  name: FERC eForms API — OpenAPI 3.1 derived by API Evangelist
+- type: Overlay
+  url: overlays/ferc-data-api-overlay.yaml
+- type: AgenticAccess
+  url: agentic-access/ferc-agentic-access.yml
+- type: DomainSecurity
+  url: security/ferc-domain-security.yml
+- type: Authentication
+  url: authentication/ferc-authentication.yml
+- type: Conventions
+  url: conventions/ferc-conventions.yml
+- type: ErrorCatalog
+  url: errors/ferc-problem-types.yml
+- type: Examples
+  url: examples/ferc-data-api-examples.yml
+- type: Examples
+  url: examples/ferc-eforms-api-examples.yml
+- type: RateLimits
+  url: rate-limits/ferc-rate-limits.yml
+- type: Lifecycle
+  url: lifecycle/ferc-lifecycle.yml
+- type: ChangeLog
+  url: changelog/ferc-changelog.yml
+  name: FERC eForms XBRL taxonomy release history
+- type: DataModel
+  url: data-model/ferc-data-model.yml
+- type: Conformance
+  url: conformance/ferc-conformance.yml
+- type: Sandbox
+  url: sandbox/ferc-sandbox.yml
+- type: Console
+  url: https://data.ferc.gov/developer/apiendpoints/
+  name: Interactive Swagger console — authorize a key and execute every endpoint
+- type: Packages
+  url: packages/ferc-packages.yml
+  name: No official SDKs — registries probed, community packages recorded
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Arazzo
+  url: arazzo/ferc-dataset-discovery-and-retrieval.yml
+  name: Discover a FERC dataset and retrieve it
+- type: LLMsTxt
+  url: llms/ferc-llms.txt
+- type: Postman
+  url: collections/ferc-xbrl-submission-api.postman_collection.json
+  name: FERC-XBRL submission collection published by FERC
 - type: Website
   url: https://www.ferc.gov
 - type: Portal
   url: https://data.ferc.gov/
 - type: Documentation
   url: https://data.ferc.gov/developer/gettingstarted/
-- type: Signup
+- type: APIReference
+  url: https://data.ferc.gov/developer/apiendpoints/
+- type: GettingStarted
+  url: https://data.ferc.gov/developer/gettingstarted/understanding-our-apis/
+- type: DataCatalog
+  url: https://data.ferc.gov/datacatalog/
+- type: SignUp
   url: https://data.ferc.gov/developer/gettingstarted/sign-up-form/
 - type: Authentication
   url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
@@ -127,10 +200,17 @@ common:
   url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
 - type: Support
   url: https://data.ferc.gov/developer/helpandsupport/
+- type: FAQ
+  url: https://data.ferc.gov/developer/helpandsupport/api-faqs/
 - type: TermsOfService
   url: https://data.ferc.gov/disclaimer/
 - type: PrivacyPolicy
   url: https://www.ferc.gov/privacy
+- type: Security
+  url: https://www.ferc.gov/media/ferc-vulnerability-disclosure-policy
+  name: FERC Vulnerability Disclosure Policy v3.0 (CISA BOD 20-01)
+- type: VulnerabilityDisclosure
+  url: security/ferc-vulnerability-disclosure.yml
 - type: VulnerabilityDisclosure
   url: https://www.ferc.gov/vulnerability-disclosure-policy
 - type: Strategy

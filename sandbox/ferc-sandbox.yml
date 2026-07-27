@@ -1,0 +1,86 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  https://data.ferc.gov/developer/apiendpoints/,
+  https://data.ferc.gov/developer/gettingstarted/dataset-retrieval/,
+  collections/ferc-xbrl-submission-api.postman_collection.json,
+  https://ecollection.ferc.gov/api/getTestStatus
+summary: >-
+  FERC ships no developer sandbox with synthetic data. What it does ship is (a) an interactive
+  Swagger console on the API Endpoints page where a real key can be authorized and every operation
+  executed in the browser, and (b) a genuine test-submission mode on the eForms filing API, flagged
+  per request, whose results are labelled in the public submission record. There are no test keys,
+  no test credentials and no fixture data — a real API key and, for filing, real FERC registration
+  are required.
+console:
+  url: https://data.ferc.gov/developer/apiendpoints/
+  type: swagger-ui
+  auth: >-
+    "Authorize" button; paste the 40-character API key issued to your email. Access to the executable
+    console and to the generated code snippets requires completing authorization first.
+  behaviour: >-
+    Executing an endpoint from the console returns only the FIRST 100 ROWS. The same call made from a
+    client or the browser returns the complete dataset. This is documented by FERC and is the single
+    most common source of confusion with this API.
+  code_snippets:
+    languages: [Python, JavaScript, Java, 'curl (bash)', 'curl (cmd)']
+    note: >-
+      Generated per endpoint in the console after a successful execute; preconfigured with the
+      correct query structure.
+test_mode:
+  - api: ferc:ferc-eforms-xbrl-submission-api
+    mechanism: request parameter
+    parameter: test
+    values: ['true', 'false']
+    description: >-
+      Set on POST /SubmissionHistory/ExternalFiling to mark the filing as a test submission. FERC's
+      own published Postman collection ships with test=true and additionalNotes "This is a test
+      submission for PROD" — the test flag is applied against the PRODUCTION host, there is no
+      separate test host in the published collection.
+    visible_in_public_record: >-
+      Yes. GET /PublicSubmissionHistory carries an isTestSubmission field ("Not Test" for live
+      filings), so test submissions are distinguishable in the public record.
+    source: collections/ferc-xbrl-submission-api.postman_collection.json
+  - api: ferc:ferc-eforms-xbrl-submission-api
+    mechanism: environment flag
+    endpoint: GET https://ecollection.ferc.gov/api/getTestStatus
+    description: >-
+      Anonymous endpoint reporting whether the eForms environment is in test status, plus the
+      submission constraints the client enforces. Observed 2026-07-27.
+    observed:
+      status: false
+      maxAllowedXbrlName: 50
+      maxAllowedFileName: 60
+      maxAllowedFileSize: 52428800
+      allowedFileTags: FileNameOfSystemMap,OrganizationChart
+      showReleaseNotesButton: true
+test_credentials:
+  available: false
+  note: >-
+    No test API key, no sandbox key prefix, no shared demo credentials. The Open Data API key is free
+    and self-serve, which is FERC's substitute for a sandbox. Filing requires a real individual FERC
+    eRegistration plus Company Registration authority for a real company CID — there is no way to
+    exercise the write path without being a regulated filer.
+fixtures:
+  - name: Blank rendered forms and sample instance files
+    url: https://ecollection.ferc.gov/taxonomyHistory
+    api_endpoint: GET https://ecollection.ferc.gov/api/TaxonomyHistory/SampleForm/{versionID}
+    description: >-
+      Per-taxonomy-version zip of blank rendered forms and sample XBRL instance files — the real
+      fixture set for building and validating a filing. Anonymous; observed 462 KB for versionID 24.
+  - name: XULE validation rulesets
+    url: https://www.ferc.gov/vendor-files-library
+    description: >-
+      Validation rules coded in XULE and published as a ruleset file per form category (Form 1, 2, 6,
+      60, 714). Run them locally against a candidate filing before submitting.
+  - name: FERC rendering tool (Arelle plugin)
+    url: https://www.ferc.gov/vendor-files-library
+    description: >-
+      Renders an XBRL instance as Inline XBRL HTML using FERC's form-specific template set, so a
+      filing can be previewed exactly as FERC will render it.
+related_test_environments:
+  - name: eTariff Sandbox Electronic Test Site
+    scope: eTariff filings, not the APIs profiled here
+    note: >-
+      FERC operates a separate sandbox for eTariff electronic filings. It is a filing test site, not
+      an API sandbox, and is listed here only so it is not mistaken for one.

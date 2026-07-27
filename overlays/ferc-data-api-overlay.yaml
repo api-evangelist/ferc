@@ -1,0 +1,79 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the FERC Open Data API
+  version: 1.0.0
+extends: openapi/ferc-data-api-openapi.json
+x-provenance:
+  generated: '2026-07-27'
+  method: generated
+  source: >-
+    https://data.ferc.gov/developer/gettingstarted/api-key-usage/,
+    https://data.ferc.gov/developer/gettingstarted/understanding-our-apis/, live probes 2026-07-27
+  note: >-
+    FERC's published OpenAPI is a 3.0.0 document that still carries the Swagger 2.0 `host` and
+    `schemes` keys, names a STAGING host, omits info.version and info.contact, declares only the
+    query-parameter API key, and documents 401 for an auth failure where the live gateway returns
+    403. Every action below corrects one of those against something FERC itself publishes or against
+    an observed response. The original file is never mutated.
+actions:
+  - target: $.info
+    description: Add version, contact and licence, and record the API Evangelist provenance.
+    update:
+      version: '2026-07-27'
+      contact:
+        name: FERC Online Support
+        url: https://data.ferc.gov/developer/helpandsupport/
+      license:
+        name: U.S. Government Work (public domain, 17 U.S.C. 105)
+        url: https://data.ferc.gov/disclaimer/
+      x-apievangelist-enriched: '2026-07-27'
+      x-rate-limit: 1000 requests per hour per API key, rolling
+  - target: $
+    description: >-
+      Add the real production servers block. FERC's document has no `servers` and its `host` key
+      names api-staging.data.ferc.gov; the production base URL published on the API Key Usage page
+      and verified live is https://api.data.ferc.gov/v1.
+    update:
+      servers:
+        - url: https://api.data.ferc.gov/v1
+          description: Production — documented at data.ferc.gov and verified live 2026-07-27.
+  - target: $.components.securitySchemes
+    description: >-
+      Add the X-Api-Key header scheme. FERC documents the header as the RECOMMENDED method and the
+      query parameter as the less secure alternative, but only the query parameter is in the spec.
+    update:
+      ApiKeyHeaderAuth:
+        type: apiKey
+        in: header
+        name: X-Api-Key
+        description: >-
+          Recommended. Keeps the key out of URLs and logs. Documented at
+          https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  - target: $.paths['/data-assets/'].get
+    description: >-
+      Record the observed gateway behaviour — the documented 401 is not what the API Umbrella gateway
+      returns for a missing or invalid key.
+    update:
+      responses:
+        '403':
+          description: >-
+            Forbidden — API_KEY_MISSING (no key supplied) or API_KEY_INVALID (bad key). Observed
+            2026-07-27; this, not the documented 401, is what the gateway returns.
+      x-response-headers:
+        - X-RateLimit-Limit
+        - X-RateLimit-Remaining
+        - x-api-umbrella-request-id
+  - target: $.paths['/dataset/{id}/data/'].get
+    description: Warn that the response is unbounded and unfilterable.
+    update:
+      x-pagination: none
+      x-caution: >-
+        Returns the entire dataset — no filtering, no paging. Read the record count from
+        /dataset/{id}/details/ before calling. The interactive console truncates to 100 rows; a
+        client call does not.
+  - target: $.paths['/dataset/{id}/dictionary/'].get
+    description: Note that a dictionary is optional per dataset.
+    update:
+      x-optional-resource: >-
+        Not every dataset has a data dictionary; a 404 here means "no dictionary published", not
+        "bad dataset id".

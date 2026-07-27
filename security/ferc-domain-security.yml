@@ -1,0 +1,68 @@
+generated: '2026-07-27'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: www.ferc.gov
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 12 10:19:17 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: data.ferc.gov
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 23 15:14:32 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: api.data.ferc.gov
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 24 18:21:24 2026 GMT
+  cert_issuer: Let's Encrypt
+  hsts: true
+  hsts_max_age: 31536000
+  hsts_include_subdomains: true
+  hsts_preload: true
+  hsts_note: >-
+    The automated probe recorded hsts null because the gateway answers HEAD / differently; a live
+    GET on 2026-07-27 returned "strict-transport-security: max-age=31536000; includeSubDomains;
+    preload". Corrected from the observed response.
+  security_headers:
+  - 'x-content-type-options: nosniff'
+  - 'x-frame-options: DENY'
+  - 'x-xss-protection: 1; mode=block'
+  - 'access-control-allow-origin: *'
+  gateway: api.data.gov API Umbrella on cloud.gov
+- host: ecollection.ferc.gov
+  https: true
+  tls_version: TLSv1.2
+  tls_cipher: ECDHE-RSA-AES256-GCM-SHA384
+  cert_expires: Feb 11 23:59:59 2027 GMT
+  cert_issuer: DigiCert Global G2 TLS RSA SHA256 2020 CA1
+  hsts: true
+  hsts_max_age: 31536000
+  hsts_include_subdomains: true
+  hsts_preload: false
+  security_headers:
+  - 'content-security-policy: frame-ancestors https://*.ferc.gov:*'
+  - 'x-xss-protection: 1; mode=block'
+  - 'x-frame-options: ALLOW-FROM https://'
+  note: >-
+    Added by hand — the eForms API base host was not covered by the automated probe. It is the only
+    FERC host observed negotiating TLS 1.2 rather than 1.3, and its X-Frame-Options value
+    ("ALLOW-FROM https://") is malformed and ignored by modern browsers; the CSP frame-ancestors
+    directive is what actually protects it.
+  probed: '2026-07-27'
+domains:
+- domain: ferc.gov
+  dnssec: true
+  caa:
+  - 0 iodef "hostmaster@ferc.gov"
+  - 0 issue "digicert.com"
+  - 0 issue "godaddy.com"
+  - 0 issue "letsencrypt.org"
+  - 0 issuewild "digicert.com"
+  - 0 issuewild "godaddy.com"
+  spf: true
+  dmarc: true
+  dmarc_policy: reject

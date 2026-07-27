@@ -425,19 +425,85 @@ artifacts:
     (POST /api/SubmissionHistory/ExternalFiling).
 
     '
+enrichmentRound2026_07_27:
+  note: >-
+    Second-round enrichment pass. One material correction to the first-round finding, plus a new
+    surface FERC does not document.
+  corrections:
+  - claim: >-
+      "This is a write API for regulated filers, not a read API for developers — there is no public
+      data retrieval surface here." (first-round description of the eForms XBRL Submission API)
+    status: incorrect
+    correction: >-
+      The eForms API at ecollection.ferc.gov carries a substantial ANONYMOUS read surface that FERC
+      does not document anywhere. Discovered by mining FERC's own shipped production JavaScript
+      bundle (main.6c69ecbce3fd46f494eb.js, environment.apiURL) for literal API path strings, then
+      probing each. Verified 2026-07-27 with no credential of any kind — GET /api/PublicSubmissionHistory
+      (HTTP 200, 37,588 filing records, 10.6 MB), GET /api/SubmissionDetail/{filingID} (200),
+      GET /api/SubmissionHistory/forms (200), GET /api/getTestStatus (200), GET /api/faq (200),
+      GET /api/TaxonomyHistory (200, 25 taxonomy releases), GET /api/TaxonomyHistory/TaxonomyFile/{id}
+      (200, 1.5 MB zip), GET /api/TaxonomyHistory/SampleForm/{id} (200, 462 KB zip),
+      GET /api/TaxonomyHistory/getReleaseFiles (200, base64 PDF). The credentialed endpoints
+      (/api/claims, /api/SubmissionHistory, /api/TaxonomyRevision, /api/AuthenticateUser) correctly
+      return HTTP 401.
+    artifact: openapi/ferc-eforms-api-openapi-derived.yml
+  observations:
+  - kind: anonymous-personal-data
+    surface: GET https://ecollection.ferc.gov/api/PublicSubmissionHistory
+    finding: >-
+      Each of the ~37,600 records carries a filerEmail field holding the work email address of the
+      named individual who submitted the filing, served with no authentication and no rate limit.
+      The filings themselves are public regulatory record; the bulk machine-readable email list is a
+      harvesting surface FERC may not have intended to publish. No individual is named anywhere in
+      this repository, the one captured example has the field redacted, and the endpoint is
+      deliberately excluded from skills/_index.yml and mcp/ferc-mcp.yml with the reason recorded in
+      both. Worth reporting to FERC at vdpfeedback@ferc.gov.
+    reportedToFerc: false
+  - kind: vdp-scope-gap
+    finding: >-
+      FERC's Vulnerability Disclosure Policy v3.0 scopes only www.ferc.gov and its subdomains,
+      www.eLibrary.ferc.gov and its subdomains, and ferconline.ferc.gov. Neither production API host
+      — api.data.ferc.gov or ecollection.ferc.gov — is named, so both sit outside the literal wording
+      of FERC's own VDP.
+  - kind: information-disclosure
+    finding: >-
+      ecollection.ferc.gov 404 bodies echo an internal origin URI (https://localhost:443/...).
+      Low severity.
+  - kind: waf-status-mismatch
+    finding: >-
+      GET /api/TaxonomyHistory/TaxonomyPackage/{id} serves a WAF "Request Rejected" HTML interstitial
+      with HTTP 200, so a naive client reads a block as a success.
+  - kind: spec-defect
+    finding: >-
+      FERC's published OpenAPI names api-staging.data.ferc.gov in the Swagger-2.0-style `host` key,
+      has no `servers` block, no info.version and no info.contact, declares only the query-parameter
+      API key (not the X-Api-Key header it recommends in prose), and documents 401 for an auth
+      failure where the live gateway returns 403. All five are corrected in
+      overlays/ferc-data-api-overlay.yaml without mutating the harvested original.
+  - kind: security-txt-gap
+    finding: >-
+      CISA BOD 20-01 expects a machine-discoverable /.well-known/security.txt on a federal agency
+      domain. FERC's VDP is thorough but published only as a PDF; security.txt returns 404 on
+      www.ferc.gov, ferc.gov, data.ferc.gov and api.data.ferc.gov (probed 2026-07-27).
 notFound:
 - Green Button / ESPI endpoint or reference of any kind
 - Consumer or customer usage/billing API
 - Public eLibrary API (SPA only; the only wrapper is a third-party community project)
 - EQR API (bulk web download only)
 - GraphQL endpoint
-- MCP server
-- llms.txt
+- MCP server (a candidate tool surface is derived in mcp/ferc-mcp.yml; FERC publishes none)
+- llms.txt (generated in llms/ferc-llms.txt; FERC publishes none)
 - SDKs or client libraries published by FERC
 - Public GitHub organization for FERC
 - Status page for the Open Data API
 - Webhooks or event/notification API
 - data.json (Project Open Data) catalog
+- /.well-known/security.txt or any other /.well-known/ document, on any FERC host
+- OpenAPI for the eForms API (FERC publishes none; a derived one is in this repo)
+- Changelog or release notes for either HTTP API
+- Deprecation policy, Sunset/Deprecation header support, or SLA
+- Bug bounty program, trust center, or any security certification (SOC 2 / ISO 27001 / FedRAMP)
+- CLI, embedded UI components, or pricing/plans (both APIs are free)
 sources:
 - url: https://data.ferc.gov/developer/gettingstarted/
   type: Documentation
@@ -461,7 +527,7 @@ sources:
   note: The eForms XBRL collection programme.
 actions:
   openapiHarvested: true
-  specsCount: 1
+  specsCount: 2
   collectionsHarvested: 1
   apisYmlCreated: true
   reason: 'FERC has a real, self-serve, documented public API with a downloadable

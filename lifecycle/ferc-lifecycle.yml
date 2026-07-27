@@ -1,0 +1,68 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  https://data.ferc.gov/developer/, https://ecollection.ferc.gov/api/TaxonomyHistory,
+  https://www.ferc.gov/vendor-files-library
+versioning:
+  - api: ferc:ferc-open-data-api
+    scheme: uri-path
+    current: v1
+    base: https://api.data.ferc.gov/v1
+    policy_url: null
+    note: >-
+      No published versioning policy, no version-negotiation header, no changelog. v1 is the only
+      version ever observed. FERC's own OpenAPI carries no `info.version` field.
+  - api: ferc:ferc-eforms-xbrl-submission-api
+    scheme: none
+    current: null
+    base: https://ecollection.ferc.gov/api
+    note: >-
+      The HTTP API is unversioned. The versioned artefact is the XBRL taxonomy: each release is dated
+      YYYY-MM-DD and bound to an explicit reporting window (startYear/startPeriod to
+      endYear/endPeriod). Filings are validated against the taxonomy in force for the reporting
+      period, which is a stricter and more legible contract than the REST surface.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  note: >-
+    No deprecation policy, no RFC 8594 Sunset or Deprecation header support on either API. The
+    closest thing FERC publishes is the taxonomy end-of-window: a taxonomy version carries an
+    endYear/endPeriod after which it no longer applies, and the superseding version's window begins.
+    That is a data-contract retirement schedule, not an API deprecation policy.
+  taxonomy_windows_example:
+    - form: Form 1
+      version: '2025-04-01'
+      applies: 2025 Q1 through 2025 Q4
+      superseded_by: '2026-04-01'
+sla:
+  url: null
+  uptime_target: null
+  note: No SLA, no uptime commitment published for either API.
+status_page: null
+status_page_note: >-
+  FERC publishes no API or system status page. Outage and maintenance information is handled through
+  FERC Online Support (866-208-3676) and ad-hoc notices. Verified 2026-07-27 — no status.ferc.gov,
+  no status page linked from data.ferc.gov or ecollection.ferc.gov.
+support:
+  channel: email + phone
+  url: https://data.ferc.gov/developer/helpandsupport/
+  phone: 866-208-3676
+  note: FERC Online Support. No ticketing portal, forum or community channel for the APIs.
+deprecated_operations: []
+maturity:
+  - api: ferc:ferc-open-data-api
+    stage: generally available
+    launched: '2024'
+    launch_source: https://www.ferc.gov/news-events/news/ferc-launches-new-data-website-datafercgov
+    note: >-
+      Data assets are added over time — FERC describes "a growing collection of data assets and
+      datasets" — but additions are not announced through a dated changelog.
+  - api: ferc:ferc-eforms-xbrl-submission-api
+    stage: generally available
+    launched: '2020-12'
+    launch_source: >-
+      https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+    note: >-
+      The step-by-step guide and Postman collection are both dated 12/4/2020 and are still the
+      current published artefacts as of 2026-07-27.

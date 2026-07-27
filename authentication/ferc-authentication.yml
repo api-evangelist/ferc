@@ -1,0 +1,108 @@
+generated: '2026-07-27'
+method: searched
+source: openapi/ferc-data-api-openapi.json
+docs: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+summary:
+  types:
+    - apiKey
+    - oauth2
+    - http
+  api_key_in:
+    - header
+    - query
+  oauth2_flows:
+    - password
+  note: >-
+    Two independent auth models. The public Open Data API uses a free 40-character API key issued by
+    email from a self-serve sign-up form; the eForms XBRL API uses an OAuth 2.0 password grant that
+    exchanges FERC eRegistration / Company Registration credentials for a bearer token. Neither API
+    issues scopes. Note that a subset of the eForms API answers with NO authentication at all — see
+    openapi/ferc-eforms-api-openapi-derived.yml.
+schemes:
+  - name: ApiKeyHeaderAuth
+    api: ferc:ferc-open-data-api
+    type: apiKey
+    in: header
+    parameter: X-Api-Key
+    recommended: true
+    description: >-
+      Recommended method per FERC's API Key Usage page — keeps the key out of the URL and out of
+      logs. NOT declared in FERC's published OpenAPI, which only describes the query parameter; added
+      here from the documentation.
+    sources:
+      - https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  - name: ApiKeyQueryAuth
+    api: ferc:ferc-open-data-api
+    type: apiKey
+    in: query
+    parameter: api_key
+    recommended: false
+    description: >-
+      Alternative method. FERC documents it as "useful for quick testing but less secure as the key
+      becomes visible in URLs and logs."
+    sources:
+      - openapi/ferc-data-api-openapi.json
+      - https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  - name: FilerPasswordGrant
+    api: ferc:ferc-eforms-xbrl-submission-api
+    type: oauth2
+    flow: password
+    tokenUrl: https://ecollection.ferc.gov/api/token
+    grant_parameters:
+      grant_type: password
+      role: filer
+    scopes: []
+    description: >-
+      OAuth 2.0 Resource Owner Password Credentials grant (RFC 6749 section 4.3). Credentials are the
+      filer's FERC eRegistration username (email) and password; the filer must be registered to file
+      for the company. No scopes are issued.
+    sources:
+      - collections/ferc-xbrl-submission-api.postman_collection.json
+      - https://www.ferc.gov/media/ferc-submission-api-step-step-guide
+  - name: filerBearer
+    api: ferc:ferc-eforms-xbrl-submission-api
+    type: http
+    scheme: bearer
+    description: Bearer token returned by the password grant, presented on the filing endpoints.
+    sources:
+      - openapi/ferc-eforms-api-openapi-derived.yml
+credential_issuance:
+  - api: ferc:ferc-open-data-api
+    method: self-serve web form
+    url: https://data.ferc.gov/developer/gettingstarted/sign-up-form/
+    cost: free
+    key_format: 40-character key delivered by email
+    delivery: >-
+      Usually instant; FERC documents delivery may take up to 24 hours. Lost keys are replaced by
+      re-submitting the sign-up form; old keys are deactivated on request via support.
+  - api: ferc:ferc-eforms-xbrl-submission-api
+    method: FERC eRegistration + Company Registration
+    url: https://www.ferc.gov/company-registration
+    cost: free
+    note: >-
+      Not a developer credential. The filer must be an individual registered with FERC and authorized
+      to file for a specific company CID.
+anonymous_access:
+  - api: ferc:ferc-eforms-xbrl-submission-api
+    note: >-
+      Verified 2026-07-27 — GET /PublicSubmissionHistory, /SubmissionDetail/{filingID},
+      /SubmissionHistory/forms, /getTestStatus, /TaxonomyHistory (and its file/sample/release-notes
+      children) and /faq all return HTTP 200 with no credential of any kind. FERC does not document
+      these as a public API.
+evidence:
+  - probe: GET https://api.data.ferc.gov/v1/data-assets/ with no key
+    date: '2026-07-27'
+    status: 403
+    body: '{"error":{"code":"API_KEY_MISSING"}}'
+  - probe: GET https://api.data.ferc.gov/v1/data-assets/?api_key=<invalid>
+    date: '2026-07-27'
+    status: 403
+    body: '{"error":{"code":"API_KEY_INVALID"}}'
+  - probe: GET https://ecollection.ferc.gov/api/token
+    date: '2026-07-27'
+    status: 400
+    body: '{"error":"unsupported_grant_type"}'
+  - probe: GET https://ecollection.ferc.gov/api/claims
+    date: '2026-07-27'
+    status: 401
+    body: '{"message":"Authorization has been denied for this request."}'

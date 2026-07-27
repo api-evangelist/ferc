@@ -1,0 +1,97 @@
+generated: '2026-07-27'
+method: derived
+source: openapi/ferc-data-api-openapi.json
+summary: Response examples for the FERC Open Data API, lifted verbatim from the response `example` objects
+  in FERC's own published OpenAPI at https://data.ferc.gov/openapi.json. These are FERC's shape placeholders
+  ("string", 0, "URL"), not live rows — the live API requires a key, and no key is used or stored in this
+  repository. Request examples are the curl calls FERC publishes on its API Key Usage page.
+request_examples:
+- name: Header auth (recommended)
+  operationId: detail-id
+  curl: curl -X GET "https://api.data.ferc.gov/v1/dataset/0/details/" -H "X-Api-key:[YOUR_API_KEY]"
+  source: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+- name: Query parameter auth
+  operationId: detail-id
+  curl: curl -X GET "https://api.data.ferc.gov/v1/dataset/0/details/?api_key=[YOUR-API-KEY]"
+  source: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+error_examples:
+- status: 403
+  probed: '2026-07-27'
+  body:
+    error:
+      code: API_KEY_MISSING
+      message: No api_key was supplied. Sign-up for a key at https://data.ferc.gov/developer/gettingstarted/sign-up-form/
+- status: 403
+  probed: '2026-07-27'
+  body:
+    error:
+      code: API_KEY_INVALID
+      message: An invalid api_key was supplied. Sign-up for a key at https://data.ferc.gov/developer/gettingstarted/sign-up-form/
+response_examples:
+- operationId: data-asset-id
+  method: GET
+  path: /data-assets/
+  summary: Fetch metadata information on the data asset and its associated Datasets.
+  source: openapi/ferc-data-api-openapi.json
+  method_note: verbatim from FERC's published OpenAPI response example
+  response_200:
+    data assets:
+    - id: 0
+      title: string
+      description: String
+      program_office: String
+      url: URL
+      point_of_contact_email: string
+      point_of_contact_name: String
+      source: URL
+      data-sets:
+      - id: 0
+        title: string
+        url: string
+        description: string
+      - '...': '...'
+- operationId: detail-id
+  method: GET
+  path: /dataset/{id}/details/
+  summary: Fetch metadata, data asset, row count, and column information.
+  source: openapi/ferc-data-api-openapi.json
+  method_note: verbatim from FERC's published OpenAPI response example
+  response_200:
+    metadata:
+      id: 0
+      title: string
+      description: String
+      program_office: String
+      url: URL
+      point_of_contact_email: string
+      point_of_contact_name: String
+      source: URL
+      data-sets:
+      - id: 0
+        title: string
+        url: string
+        description: string
+      - '...': '...'
+- operationId: data-id
+  method: GET
+  path: /dataset/{id}/data/
+  summary: Fetch the actual dataset rows
+  source: openapi/ferc-data-api-openapi.json
+  method_note: verbatim from FERC's published OpenAPI response example
+  response_200:
+    row_data:
+    - '...': '...'
+- operationId: dictionary-id
+  method: GET
+  path: /dataset/{id}/dictionary/
+  summary: Fetch column descriptions and definitions from available data.
+  source: openapi/ferc-data-api-openapi.json
+  method_note: verbatim from FERC's published OpenAPI response example
+  response_200:
+    dictionary:
+    - column_id: 0
+      column_name: string
+      data_type: DOUBLE
+      description: string
+      description_url: ''
+    - '...': '...'

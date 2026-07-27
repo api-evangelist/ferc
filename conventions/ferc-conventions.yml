@@ -1,0 +1,111 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  https://data.ferc.gov/developer/gettingstarted/api-key-usage/,
+  https://data.ferc.gov/developer/gettingstarted/understanding-our-apis/,
+  https://data.ferc.gov/developer/helpandsupport/api-faqs/, plus live probes 2026-07-27
+apis:
+  - ferc:ferc-open-data-api
+  - ferc:ferc-eforms-xbrl-submission-api
+authentication:
+  style: api-key (Open Data) and OAuth2 password-grant bearer (eForms)
+  header: X-Api-Key
+  query_alternative: api_key
+  recommended: header
+  detail: authentication/ferc-authentication.yml
+idempotency:
+  supported: false
+  note: >-
+    No idempotency contract. The Open Data API is read-only (GET on all four operations), so
+    idempotency is a property of the method rather than a key. The one write operation FERC
+    publishes — POST /SubmissionHistory/ExternalFiling — accepts no idempotency key and no request
+    identifier; a repeated submission creates a second filing. There is nothing here to claim.
+pagination:
+  supported: false
+  note: >-
+    Explicitly absent. FERC documents "There is currently no ability to return a filtered subset of
+    this data" for the Data endpoint; a call returns the entire dataset, and the Details endpoint's
+    record count is the only way to size it in advance. The interactive console on the API Endpoints
+    page truncates to the first 100 rows, but the same call from a client returns the full dataset —
+    a documented behavioural difference, not a page size. GET /PublicSubmissionHistory on the eForms
+    API likewise returns the whole 37,588-record, 10.6 MB array in one response.
+filtering:
+  supported: false
+  note: >-
+    No query filter, sort or field-selection parameters on any operation. The only parameter on the
+    Open Data API is the {id} path segment.
+field_expansion:
+  supported: false
+versioning:
+  scheme: uri-path
+  current: v1
+  base: https://api.data.ferc.gov/v1
+  note: >-
+    The Open Data API pins the major version in the path. The eForms API is unversioned
+    (https://ecollection.ferc.gov/api); its versioning surface is the XBRL taxonomy release, dated
+    YYYY-MM-DD and bound to a reporting window — see changelog/ferc-changelog.yml.
+  detail: lifecycle/ferc-lifecycle.yml
+identifiers:
+  dataset_id:
+    type: integer-as-string
+    stability: unstable
+    note: >-
+      FERC warns twice that dataset IDs may change over time and that the Data-Assets endpoint is
+      always the authoritative source. Do not hard-code a dataset ID; resolve it per run.
+  cid:
+    type: string
+    format: "C followed by 6 digits, e.g. C006939"
+    note: FERC Company Registration identifier, used on eForms filings.
+  accession_number:
+    type: string
+    format: YYYYMMDD-NNNN
+    note: FERC accession number for a filed document, resolvable in eLibrary.
+rate_limiting:
+  limit: 1000 requests per hour per API key, rolling
+  scope: api-key
+  headers:
+    - X-RateLimit-Limit
+    - X-RateLimit-Remaining
+  retry_after: not documented
+  on_exceed: 429 and the key is temporarily blocked
+  raise_limit: contact support
+  detail: rate-limits/ferc-rate-limits.yml
+request_tracing:
+  header: x-api-umbrella-request-id
+  also:
+    - x-vcap-request-id
+  note: >-
+    Both are set by the api.data.gov API Umbrella gateway on cloud.gov and returned on every Open
+    Data API response, including errors. Quote x-api-umbrella-request-id when contacting support.
+    The eForms API sets no correlation header.
+error_envelope:
+  open_data: '{"error": {"code": "...", "message": "..."}}'
+  eforms: '{"message": "..."} or {"error": "..."}'
+  rfc9457: false
+  detail: errors/ferc-problem-types.yml
+content_types:
+  request: application/x-www-form-urlencoded and multipart/form-data (eForms writes only)
+  response:
+    - application/json
+    - application/octet-stream (taxonomy and sample-form downloads)
+cors:
+  open_data:
+    access_control_allow_origin: '*'
+    note: Browser clients can call api.data.ferc.gov directly — which also means the key is exposed.
+security_headers:
+  open_data:
+    - 'strict-transport-security: max-age=31536000; includeSubDomains; preload'
+    - 'x-content-type-options: nosniff'
+    - 'x-frame-options: DENY'
+    - 'x-xss-protection: 1; mode=block'
+  eforms:
+    - 'strict-transport-security: max-age=31536000; includeSubDomains'
+    - 'content-security-policy: frame-ancestors https://*.ferc.gov:*'
+webhooks:
+  supported: false
+  note: No event, webhook or streaming surface on either API.
+data_license:
+  terms: https://data.ferc.gov/disclaimer/
+  note: >-
+    Works of the U.S. federal government; FERC publishes a disclaimer rather than a licence. Filing
+    content is the public regulatory record.

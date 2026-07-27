@@ -1,0 +1,132 @@
+generated: '2026-07-27'
+method: derived
+source: openapi/ferc-data-api-openapi.json
+docs: https://data.ferc.gov/developer/helpandsupport/common-errors/
+format: custom-json
+note: >-
+  Neither FERC API uses RFC 9457 problem+json. Two different error envelopes are in play, one per
+  API. The Open Data API sits behind the api.data.gov API Umbrella gateway, whose envelope is
+  `{"error":{"code":"...","message":"..."}}`; the OpenAPI's documented 401 for auth failure is
+  contradicted by the live gateway, which returns 403 with API_KEY_MISSING / API_KEY_INVALID. The
+  eForms API returns an ASP.NET Web API envelope, `{"message":"..."}` or `{"error":"..."}`.
+envelopes:
+  - api: ferc:ferc-open-data-api
+    shape: '{"error": {"code": "STRING", "message": "STRING"}}'
+    content_type: application/json
+    gateway: api.data.gov API Umbrella (cloud.gov)
+    correlation_header: x-api-umbrella-request-id
+  - api: ferc:ferc-eforms-xbrl-submission-api
+    shape: '{"message": "STRING"} or {"error": "STRING"}'
+    content_type: application/json
+    stack: ASP.NET Web API
+problems:
+  - status: 403
+    code: API_KEY_MISSING
+    api: ferc:ferc-open-data-api
+    title: No api_key was supplied
+    detail: >-
+      "No api_key was supplied. Sign-up for a key at
+      https://data.ferc.gov/developer/gettingstarted/sign-up-form/"
+    remediation: Send the key in the X-Api-Key header (recommended) or the api_key query parameter.
+    method: probed
+    probed: '2026-07-27'
+  - status: 403
+    code: API_KEY_INVALID
+    api: ferc:ferc-open-data-api
+    title: An invalid api_key was supplied
+    detail: >-
+      "An invalid api_key was supplied. Sign-up for a key at
+      https://data.ferc.gov/developer/gettingstarted/sign-up-form/"
+    remediation: >-
+      Confirm the 40-character key is copied whole. If it was deactivated, request a new one from the
+      sign-up form.
+    method: probed
+    probed: '2026-07-27'
+  - status: 404
+    code: NOT_FOUND
+    api: ferc:ferc-open-data-api
+    title: Resource not found
+    detail: Returned by the gateway for an unrouted path on api.data.ferc.gov.
+    method: probed
+    probed: '2026-07-27'
+  - status: 400
+    api: ferc:ferc-open-data-api
+    title: Bad Request - Invalid query parameters
+    source_operation: openapi/ferc-data-api-openapi.json#data-id
+    method: derived
+  - status: 401
+    api: ferc:ferc-open-data-api
+    title: Unauthorized - Request unsuccessful due to lack of validation
+    detail: >-
+      Declared on all four operations in FERC's OpenAPI. The live gateway returns 403 for missing or
+      invalid keys, so this documented status was not reproducible on 2026-07-27.
+    source_operation: openapi/ferc-data-api-openapi.json#data-asset-id
+    method: derived
+  - status: 404
+    api: ferc:ferc-open-data-api
+    title: Not Found - Dataset ID does not exist
+    detail: >-
+      Also returned by the Dictionary endpoint when a dataset has no published data dictionary —
+      "Data dictionaries do not exist for every dataset."
+    source_operation: openapi/ferc-data-api-openapi.json#dictionary-id
+    method: derived
+  - status: 405
+    api: ferc:ferc-open-data-api
+    title: Method Not Allowed - Only GET requests are allowed
+    source_operation: openapi/ferc-data-api-openapi.json#data-asset-id
+    method: derived
+  - status: 429
+    api: ferc:ferc-open-data-api
+    title: Too Many Requests - Blocked due to multiple requests in a short period
+    detail: >-
+      Raised on exceeding the 1,000 requests/hour rolling limit. Check X-RateLimit-Limit and
+      X-RateLimit-Remaining on every response to avoid it.
+    source_operation: openapi/ferc-data-api-openapi.json#data-asset-id
+    method: derived
+  - status: 500
+    api: ferc:ferc-open-data-api
+    title: Internal Server Error - Database error or server failure
+    source_operation: openapi/ferc-data-api-openapi.json#data-asset-id
+    method: derived
+  - status: 400
+    code: unsupported_grant_type
+    api: ferc:ferc-eforms-xbrl-submission-api
+    title: Unsupported grant type
+    detail: Returned by POST /token when grant_type is absent or is not "password".
+    method: probed
+    probed: '2026-07-27'
+  - status: 400
+    api: ferc:ferc-eforms-xbrl-submission-api
+    title: Failed validating user in company registration
+    detail: >-
+      Returned by POST /token when the supplied credentials are not a filer registered for the
+      company in FERC Company Registration.
+    remediation: Complete FERC eRegistration and Company Registration for the CID being filed for.
+    method: probed
+    probed: '2026-07-27'
+  - status: 401
+    api: ferc:ferc-eforms-xbrl-submission-api
+    title: Authorization has been denied for this request
+    detail: >-
+      Returned by the credentialed endpoints (/claims, /SubmissionHistory, /TaxonomyRevision,
+      /AuthenticateUser) when no bearer token is presented.
+    method: probed
+    probed: '2026-07-27'
+  - status: 404
+    api: ferc:ferc-eforms-xbrl-submission-api
+    title: No HTTP resource was found that matches the request URI
+    detail: >-
+      ASP.NET routing miss. The message echoes an internal origin URI (https://localhost:443/...)
+      rather than the public host — an information-disclosure smell worth reporting to FERC, not an
+      exploitable issue.
+    method: probed
+    probed: '2026-07-27'
+  - status: 200
+    api: ferc:ferc-eforms-xbrl-submission-api
+    title: 'Request Rejected (WAF interstitial)'
+    detail: >-
+      GET /TaxonomyHistory/TaxonomyPackage/{id} returned HTTP 200 with an HTML "The requested URL was
+      rejected" body rather than a JSON error — a WAF interstitial served with a success status.
+      Clients must not treat 200 as success without checking the content type.
+    method: probed
+    probed: '2026-07-27'
