@@ -1,0 +1,475 @@
+aid: ferc
+name: FERC
+review:
+  question: Does FERC publish a real, documented, publicly accessible API — and does
+    any consumer energy data mandate apply to or originate from it?
+  answer: true
+  date: '2026-07-27'
+  reviewer: API Evangelist
+  homeMarket: United States
+  tier: regulator
+findings:
+  summary: 'FERC publishes a genuine, well-documented, self-serve open data API at
+
+    https://api.data.ferc.gov/v1, described by a real OpenAPI 3.0 document served
+
+    at https://data.ferc.gov/openapi.json, plus a separate credentialed OAuth2
+
+    XBRL submission API at https://ecollection.ferc.gov/api for mandated eForms
+
+    filings. FERC publishes NO consumer energy data API of any kind and imposes
+
+    no consumer data obligation on anyone, because retail customer data sits with
+
+    the fifty state public utility commissions, not with FERC. The split is
+
+    absolute: market and regulatory data is open behind a free key; consumer data
+
+    does not exist in FERC''s surface at all.
+
+    '
+mandateAndAccess:
+  homeMarket: United States
+  mandateRegime: other
+  mandateRegimeVerbatim: 'FERC imposes its own statutory data-reporting mandates on
+
+    the wholesale industry it regulates, and none of them is a consumer data
+
+    right. The obligations are: Electric Quarterly Reports (EQR), required of
+
+    public utilities with market-based rate authority; and the eForms annual and
+
+    quarterly financial and operational filings — FERC Form Nos. 1, 2, 3-Q, 6,
+
+    60, 552, and 714 — which must be submitted as XBRL through FERC''s eForms
+
+    portal or its Submission API by a credentialed filer. FERC also incorporates
+
+    NAESB Wholesale Gas Quadrant and Wholesale Electric Quadrant business
+
+    practice standards by reference into its regulations. Green Button / ESPI is
+
+    NAESB Retail Electric Quadrant Book 21 — a RETAIL standard. FERC has no
+
+    retail jurisdiction, has not adopted Green Button, and mandates nothing about
+
+    customer usage data. No cdr-energy, no green-button-ontario, no
+
+    green-button-voluntary, no smart-meter-infrastructure regime applies here.
+
+    '
+  mandateStatus: live-implemented
+  mandateStatusEvidence: 'The mandate FERC issues is verifiably implemented, and
+
+    the implementation was probed, not assumed:
+
+    - https://ecollection.ferc.gov/ (FERC eForms XBRL portal) returned HTTP 200
+      on 2026-07-27.
+
+    - POST https://ecollection.ferc.gov/api/token with grant_type=password and
+      role=filer but no valid credentials returned HTTP 400 with the JSON body
+      {"error":"Failed validating user in company registration"} — a live
+      authorization server rejecting an unregistered filer, not a marketing page.
+
+    - POST https://ecollection.ferc.gov/api/SubmissionHistory/ExternalFiling is
+      documented in FERC''s own downloadable Postman collection (harvested).
+
+    - https://eqrreportviewer.ferc.gov/ (EQR Report Viewer) returned HTTP 200.
+
+    - The outputs of the mandate are published: FERC Form No. 552 and the
+      Market-Based Rate Database appear as data assets in the anonymously
+      browsable Data Catalog at https://data.ferc.gov/datacatalog/ (HTTP 200).
+
+    NOTHING here is a claim taken on trust. Equally, nothing here is a consumer
+
+    data right — see consumerVsMarketData below.
+
+    '
+  consumerDataApi: false
+  consumerDataEvidence: 'No consumer or customer-level data API exists at FERC. No
+
+    Green Button endpoint, no ESPI resource tree, no Download My Data, no Connect
+
+    My Data, no OAuth consent flow for customer usage, no accredited-recipient
+
+    register. This is not an omission — FERC regulates wholesale interstate
+
+    transmission and sales, licenses hydropower, and oversees ISO/RTO markets;
+
+    retail service and retail customer data are state PUC jurisdiction. Probed
+
+    and found absent: no consumer-data references anywhere under
+
+    https://data.ferc.gov/datacatalog/ (7 data assets, all corporate/market/
+
+    regulatory), and the Data Catalog industry filters are Natural Gas, Oil,
+
+    Electric, and Hydropower — there is no residential or customer category.
+
+    '
+  marketDataOpen: true
+  marketDataEvidence: 'FERC publishes genuinely open market and regulatory data.
+
+    The Data Catalog at https://data.ferc.gov/datacatalog/ is browsable
+
+    anonymously (HTTP 200) and lists 7 data assets: Annual Charges, Company
+
+    Registration, FERC Form 556 (Certification of Qualifying Facility Status),
+
+    FERC Information Collections Management, Form No. 552 (natural gas
+
+    transactions), the Market-Based Rate Database, and the NEPA Schedule for
+
+    Pending Infrastructure Projects. The same data is retrievable programmatically
+
+    through the Open Data API with a free key. EQR wholesale transaction data is
+
+    separately downloadable through https://eqrreportviewer.ferc.gov/ (HTTP 200),
+
+    which is a web report viewer with bulk download — probing
+
+    https://eqrreportviewer.ferc.gov/api returned HTTP 404, so there is NO EQR
+
+    API. eLibrary (https://elibrary.ferc.gov/eLibrary/, HTTP 200) is likewise web
+
+    only: /eLibrary/v3/api-docs and /eLibrary/swagger-ui.html both return HTTP 200
+
+    but serve the Angular SPA shell, not a spec. The only official public API is
+
+    the data.ferc.gov one.
+
+    '
+  consumerVsMarketDataSplit: 'The split at FERC is total and structural. Market
+
+    data: open, catalogued, documented, API-accessible with a free self-serve key.
+
+    Consumer data: does not exist and cannot exist within FERC''s statutory reach.
+
+    A regulator that publishes a cleanly documented, rate-limited, OpenAPI-described
+
+    public API while the retail utilities under state jurisdiction publish nothing
+
+    comparable is the recurring finding of this series, and FERC is another
+
+    instance of it.
+
+    '
+  dataStandard: 'XBRL (FERC eForms taxonomies, Release 2.0 codesets) for the mandated
+
+    filings; NAESB WGQ/WEQ wholesale business practice standards incorporated by
+
+    reference into FERC regulations. NO Green Button / ESPI (that is NAESB REQ
+
+    Book 21, retail, outside FERC jurisdiction). The Open Data API itself follows
+
+    no energy data standard — its payloads are a generic proprietary
+
+    data-asset / dataset / row shape with no CIM, no IEEE 2030.5, no OpenADR, no
+
+    OCPP/OCPI.
+
+    '
+  accessGate: self-serve
+  accessGateSteps: 'For the Open Data API a developer: (1) reads the Disclaimer /
+
+    Terms of Use at https://data.ferc.gov/disclaimer/; (2) completes the sign-up
+
+    form at https://data.ferc.gov/developer/gettingstarted/sign-up-form/; (3)
+
+    receives a unique 40-character API key by email — FERC''s own wording is
+
+    "After submitting the form, you will receive an email containing your unique
+
+    40-character API key", i.e. automated issuance, no review board, no
+
+    accreditation, no licence signature, no fee; (4) authorizes on
+
+    https://data.ferc.gov/developer/apiendpoints/ or sends the key directly. There
+
+    is no organizational eligibility test. For the eForms XBRL Submission API the
+
+    gate is entirely different and much harder: the filer must hold FERC
+
+    eRegistration credentials AND be authorized under a company''s FERC Company
+
+    Registration (https://www.ferc.gov/company-registration) as an eligible filer
+
+    for that CID. That is customer-account-required in practice and is a write
+
+    path only.
+
+    '
+  authModel: 'Open Data API — API key. Two accepted transports, both documented:
+
+    the recommended HTTP header X-Api-Key, and the query parameter api_key. The
+
+    published OpenAPI declares only the query form
+
+    (securitySchemes.ApiKeyQueryAuth: {type: apiKey, in: query, name: api_key}),
+
+    so the spec under-describes the documented header method. Rate limit 1,000
+
+    requests/hour rolling, exposed via X-RateLimit-Limit and X-RateLimit-Remaining
+
+    response headers. Platform is api.data.gov API Umbrella (x-api-umbrella-request-id
+
+    header observed) on cloud.gov (x-vcap-request-id observed).
+
+    eForms Submission API — OAuth2 Resource Owner Password Credentials grant
+
+    (grant_type=password, role=filer) at POST https://ecollection.ferc.gov/api/token,
+
+    returning a bearer token used on the filing POST. No mTLS, no client
+
+    certificates, no accreditation regime.
+
+    OpenID Connect — none served. https://www.ferc.gov/.well-known/openid-configuration
+
+    returned HTTP 404; https://data.ferc.gov/.well-known/openid-configuration
+
+    returned HTTP 404; https://ecollection.ferc.gov/.well-known/openid-configuration
+
+    returned HTTP 200 but served the Angular SPA HTML shell, not JSON — NOT a
+
+    discovery document.
+
+    '
+probes:
+- url: https://www.ferc.gov/
+  status: 403 over HTTP/2, 200 over HTTP/1.1
+  note: 'The main FERC website rejects HTTP/2 requests from non-browser clients with
+
+    403. Every www.ferc.gov URL in this review had to be fetched with --http1.1.
+
+    A real accessibility barrier for automated agents.
+
+    '
+- url: https://data.ferc.gov/
+  status: 200
+  note: Next.js open data portal. Public, anonymous, no login wall.
+- url: https://data.ferc.gov/openapi.json
+  status: 200
+  note: Real OpenAPI 3.0.0 document, 10,127 bytes, parses as JSON. Harvested to
+    openapi/ferc-data-api-openapi.json.
+- url: https://data.ferc.gov/datacatalog/
+  status: 200
+  note: 7 data assets listed, browsable anonymously.
+- url: https://data.ferc.gov/developer/gettingstarted/
+  status: 200
+- url: https://data.ferc.gov/developer/gettingstarted/sign-up-form/
+  status: 200
+- url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  status: 200
+  note: Documents X-Api-Key header, api_key query param, and the 1,000/hour limit.
+- url: https://data.ferc.gov/developer/gettingstarted/understanding-our-apis/
+  status: 200
+- url: https://data.ferc.gov/developer/gettingstarted/dataset-retrieval/
+  status: 200
+- url: https://data.ferc.gov/developer/apiendpoints/
+  status: 200
+  note: Swagger-UI style try-it console; endpoint list renders client-side after
+    Authorize.
+- url: https://data.ferc.gov/developer/helpandsupport/
+  status: 200
+- url: https://data.ferc.gov/disclaimer/
+  status: 200
+  note: 'Open Data Disclaimer / Terms of Use. Data provided "as is", no warranty,
+
+    "The disclosure of the data does not result in any additional legal
+
+    obligation." No licence signature required, no attribution clause, no
+
+    commercial restriction stated.
+
+    '
+- url: https://api.data.ferc.gov/v1/data-assets/
+  status: 403
+  note: 'JSON body {"error":{"code":"API_KEY_MISSING","message":"No api_key was
+
+    supplied. Sign-up for a key at
+
+    https://data.ferc.gov/developer/gettingstarted/sign-up-form/"}}. Live
+
+    production API confirmed.
+
+    '
+- url: https://api.data.ferc.gov/v1/data-assets/ (with a bogus 40-char key)
+  status: 403
+  note: JSON body {"error":{"code":"API_KEY_INVALID",...}} — key validation is real.
+- url: https://api-staging.data.ferc.gov/v1/data-assets/
+  status: 403
+  note: Staging host is also live and key-gated.
+- url: https://ecollection.ferc.gov/
+  status: 200
+  note: FERC eForms Angular portal.
+- url: https://ecollection.ferc.gov/api/token
+  status: 400
+  note: '{"error":"Failed validating user in company registration"} — live OAuth2
+
+    password-grant token endpoint.
+
+    '
+- url: https://www.ferc.gov/vendor-files-library
+  status: 200 (HTTP/1.1)
+  note: Links the FERC Submission API step-by-step guide and the JSON collection file.
+- url: https://www.ferc.gov/media/json-collection-file
+  status: 200 (HTTP/1.1)
+  note: Links FERC-XBRL-PROD_postman_collection.zip.
+- url: https://www.ferc.gov/sites/default/files/2020-12/FERC-XBRL-PROD_postman_collection.zip
+  status: 200
+  note: 1,293-byte zip containing FERC-XBRL.PROD_postman_collection.json (3,935
+    bytes, Postman v2.1). Harvested and validated.
+- url: https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+  status: 200
+  note: 805,856-byte application/pdf. Referenced by URL, not stored.
+- url: https://elibrary.ferc.gov/eLibrary/
+  status: 200
+  note: Angular SPA. /eLibrary/v3/api-docs and /eLibrary/swagger-ui.html both return
+    200 but serve the SPA HTML shell — FALSE POSITIVES, no spec, no public API.
+- url: https://eqrreportviewer.ferc.gov/
+  status: 200
+  note: Classic ASP.NET Report Viewer. /api returned 404 — no EQR API.
+- url: https://ecollection.ferc.gov/openapi.json
+  status: 200
+  note: FALSE POSITIVE — serves the Angular SPA HTML shell, not a spec.
+- url: https://ecollection.ferc.gov/.well-known/openid-configuration
+  status: 200
+  note: FALSE POSITIVE — SPA HTML shell, not an OIDC discovery document.
+- url: https://www.ferc.gov/.well-known/openid-configuration
+  status: 404
+- url: https://data.ferc.gov/.well-known/openid-configuration
+  status: 404
+- url: https://data.ferc.gov/data.json
+  status: 404
+  note: No Project Open Data catalog served at the portal.
+- url: https://www.ferc.gov/data.json
+  status: 404 (HTTP/1.1)
+- url: https://data.ferc.gov/apis.json
+  status: 404
+- url: https://data.ferc.gov/.well-known/api-catalog
+  status: 404
+- url: https://api.ferc.gov/
+  status: 000
+  note: Host does not resolve / no response.
+- url: https://developer.ferc.gov/
+  status: 000
+  note: Host does not resolve / no response.
+- url: https://data.ferc.gov/robots.txt
+  status: 200
+  note: 'User-agent: * / Disallow: (nothing disallowed).'
+specDefects:
+- spec: openapi/ferc-data-api-openapi.json
+  issue: 'Declares "openapi": "3.0.0" but uses Swagger 2.0 root fields — "host",
+
+    "schemes" — instead of the OpenAPI 3 "servers" array. There is no servers
+
+    block at all, so no OpenAPI 3 tooling can resolve a base URL from this
+
+    document.
+
+    '
+- spec: openapi/ferc-data-api-openapi.json
+  issue: 'The "host" value is "https://api-staging.data.ferc.gov/v1" — a STAGING
+
+    host — while FERC''s own API Key Usage documentation and every working example
+
+    use the production host https://api.data.ferc.gov/v1. The published contract
+
+    points developers at staging.
+
+    '
+- spec: openapi/ferc-data-api-openapi.json
+  issue: 'securitySchemes declares only ApiKeyQueryAuth (api_key in query). The
+
+    documented and RECOMMENDED X-Api-Key header scheme is absent from the spec.
+
+    '
+- spec: openapi/ferc-data-api-openapi.json
+  issue: 'Response schemas are typed only as generic arrays of untyped objects
+
+    carrying "example" blobs — no properties, no named components, no $refs. The
+
+    spec describes shape by example rather than by schema.
+
+    '
+- spec: openapi/ferc-data-api-openapi.json
+  issue: info has no version field, and the description contains a typo
+    ("documentaiton").
+- spec: openapi/ferc-data-api-openapi.json
+  issue: 'x-logo points at "/public/logo512.png", which returns HTTP 404 on
+
+    data.ferc.gov.
+
+    '
+artifacts:
+- path: openapi/ferc-data-api-openapi.json
+  type: OpenAPI
+  sourceURL: https://data.ferc.gov/openapi.json
+  httpStatus: 200
+  fetched: '2026-07-27'
+  bytes: 10127
+  parsed: true
+  note: Verbatim, unmodified. 4 GET operations across 4 tags (Data-Assets, Details,
+    Data, Dictionary).
+- path: collections/ferc-xbrl-submission-api.postman_collection.json
+  type: PostmanCollection
+  sourceURL: https://www.ferc.gov/sites/default/files/2020-12/FERC-XBRL-PROD_postman_collection.zip
+  httpStatus: 200
+  fetched: '2026-07-27'
+  bytes: 3935
+  parsed: true
+  note: 'Verbatim, unmodified, extracted from FERC''s own published zip. 2 requests:
+
+    "API Token - PROD" (POST /api/token) and "External Filing - PROD"
+
+    (POST /api/SubmissionHistory/ExternalFiling).
+
+    '
+notFound:
+- Green Button / ESPI endpoint or reference of any kind
+- Consumer or customer usage/billing API
+- Public eLibrary API (SPA only; the only wrapper is a third-party community project)
+- EQR API (bulk web download only)
+- GraphQL endpoint
+- MCP server
+- llms.txt
+- SDKs or client libraries published by FERC
+- Public GitHub organization for FERC
+- Status page for the Open Data API
+- Webhooks or event/notification API
+- data.json (Project Open Data) catalog
+sources:
+- url: https://data.ferc.gov/developer/gettingstarted/
+  type: Documentation
+  note: Getting Started — the four-step onboarding (Disclaimer, Understand, Sign Up,
+    Test).
+- url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  type: Authentication
+  note: X-Api-Key header, api_key query param, 1,000 req/hour, X-RateLimit-* headers.
+- url: https://data.ferc.gov/developer/gettingstarted/understanding-our-apis/
+  type: Documentation
+  note: Data-Assets is the entry point; dataset IDs may change; no filtering on the
+    Data endpoint.
+- url: https://data.ferc.gov/openapi.json
+  type: OpenAPI
+  note: The machine-readable contract, harvested.
+- url: https://www.ferc.gov/vendor-files-library
+  type: Documentation
+  note: Source of the XBRL Submission API guide and Postman collection.
+- url: https://www.ferc.gov/filing-forms/eforms-refresh
+  type: Documentation
+  note: The eForms XBRL collection programme.
+actions:
+  openapiHarvested: true
+  specsCount: 1
+  collectionsHarvested: 1
+  apisYmlCreated: true
+  reason: 'FERC has a real, self-serve, documented public API with a downloadable
+
+    OpenAPI, plus a second credentialed write API with a downloadable Postman
+
+    collection. Both were probed live and both artifacts were harvested verbatim.
+
+    No consumer energy data surface exists and none was invented.
+
+    '

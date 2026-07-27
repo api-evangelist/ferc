@@ -1,0 +1,280 @@
+{
+  "openapi": "3.0.0",
+
+  "info": {
+    "title": "API Endpoints",
+    "description": "Our API provides the necessary services to access data programmatically. You first need to utilize the **Data-Assets endpoint** to obtain the **dataset ID** before you can call the Details, Data, and Dictionary endpoints. The dataset ID is required to retrieve the respective dataset information.\n\n Please note that executing the endpoints directly on this page will only return the first 100 rows, whereas you can expect the full dataset when executing them from the browser or your application. You can get a  [better understanding of our APIs](/developer/gettingstarted/understanding-our-apis/) by reviewing our documentaiton.",
+    "x-logo": {
+      "url": "/public/logo512.png"
+    }
+  },
+  "host": "https://api-staging.data.ferc.gov/v1",
+  "components": {
+    "securitySchemes": {
+      "ApiKeyQueryAuth": {
+        "type": "apiKey",
+        "in": "query",
+        "name": "api_key"
+      }
+    }
+  },
+  "security": [{ "ApiKeyQueryAuth": [] }],
+
+  "schemes": ["https"],
+  "paths": {
+    "/data-assets/": {
+      "get": {
+        "tags": ["Data-Assets"],
+        "summary": "Fetch metadata information on the data asset and its associated Datasets.",
+        "description": "This endpoint displays the metadata, including descriptions and titles, which will help you determine which datasets are available. After identifying the dataset you want to explore further, record it’s ID number and enter it for the other endpoints to retrieve data.",
+        "operationId": "data-asset-id",
+        "responses": {
+          "200": {
+            "description": "Successfully returned list of data assets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "example": {
+                      "data assets": [
+                        {
+                          "id": 0,
+                          "title": "string",
+                          "description": "String",
+                          "program_office": "String",
+                          "url": "URL",
+                          "point_of_contact_email": "string",
+                          "point_of_contact_name": "String",
+                          "source": "URL",
+                          "data-sets": [
+                            {
+                              "id": 0,
+                              "title": "string",
+                              "url": "string",
+                              "description": "string"
+                            },
+                            { "...": "..." }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Unauthorized - Request unsuccessful due to lack of validation"
+          },
+          "405": {
+            "description": "Method Not Allowed - Only GET requests are allowed"
+          },
+          "429": {
+            "description": "Too Many Requests - Blocked due to multiple requests in a short period"
+          },
+          "500": {
+            "description": "Internal Server Error - Database error or server failure"
+          }
+        }
+      }
+    },
+
+    "/dataset/{id}/details/": {
+      "get": {
+        "tags": ["Details"],
+        "summary": "Fetch metadata, data asset, row count, and column information.",
+        "description": "The Detail endpoint provides metadata information about a specific dataset by providing its ***dataset ID number***. This endpoint returns the description of the dataset, the associated industry, the most recent update date and time, the source URL, and the designated point of contact information for further inquiries on the dataset.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Enter the dataset ID number you want to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": 1
+            }
+          }
+        ],
+        "operationId": "detail-id",
+        "responses": {
+          "200": {
+            "description": "Successfully returned list of datasets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "example": {
+                      "metadata": {
+                        "id": 0,
+                        "title": "string",
+                        "description": "String",
+                        "program_office": "String",
+                        "url": "URL",
+                        "point_of_contact_email": "string",
+                        "point_of_contact_name": "String",
+                        "source": "URL",
+                        "data-sets": [
+                          {
+                            "id": 0,
+                            "title": "string",
+                            "url": "string",
+                            "description": "string"
+                          },
+                          { "...": "..." }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Request unsuccessful due to lack of validation"
+          },
+          "404": {
+            "description": "Not Found - Dataset ID does not exist"
+          },
+          "405": {
+            "description": "Method Not Allowed - Only GET requests are allowed"
+          },
+          "429": {
+            "description": "Too Many Requests - Blocked due to multiple requests in a short period"
+          },
+          "500": {
+            "description": "Internal Server Error - Database error or server failure"
+          }
+        }
+      }
+    },
+    "/dataset/{id}/data/": {
+      "get": {
+        "tags": ["Data"],
+        "summary": "Fetch the actual dataset rows",
+        "description": "This endpoint returns all the data for the ID you provide. First, use Data-Assets endpoint to find a valid dataset ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Enter the dataset ID number you want to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": 1
+            }
+          }
+        ],
+        "operationId": "data-id",
+        "responses": {
+          "200": {
+            "description": "Successfully returned list of datasets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "example": {
+                      "row_data": [
+                        {
+                          "...": "..."
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid query parameters"
+          },
+          "401": {
+            "description": "Unauthorized - Request unsuccessful due to lack of validation"
+          },
+          "404": {
+            "description": "Not Found - Dataset ID does not exist"
+          },
+          "405": {
+            "description": "Method Not Allowed - Only GET requests are allowed"
+          },
+          "429": {
+            "description": "Too Many Requests - Blocked due to multiple requests in a short period"
+          },
+          "500": {
+            "description": "Internal Server Error - Database error or server failure"
+          }
+        }
+      }
+    },
+    "/dataset/{id}/dictionary/": {
+      "get": {
+        "tags": ["Dictionary"],
+        "summary": "Fetch column descriptions and definitions from available data.",
+        "description": "Get column descriptions and definitions from available data dictionaries (404 error if not available).",
+
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Enter the ID number you want to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": 1
+            }
+          }
+        ],
+        "operationId": "dictionary-id",
+        "responses": {
+          "200": {
+            "description": "Successfully returned object containing dictionary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "example": {
+                      "dictionary": [
+                        {
+                          "column_id": 0,
+                          "column_name": "string",
+                          "data_type": "DOUBLE",
+                          "description": "string",
+                          "description_url": ""
+                        },
+                        { "...": "..." }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Request unsuccessful due to lack of validation"
+          },
+          "404": {
+            "description": "Not Found - Dataset ID does not exist"
+          },
+          "405": {
+            "description": "Method Not Allowed - Only GET requests are allowed"
+          },
+          "429": {
+            "description": "Too Many Requests - Blocked due to multiple requests in a short period"
+          },
+          "500": {
+            "description": "Internal Server Error - Database error or server failure"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,167 @@
+{
+	"info": {
+		"_postman_id": "ff60c485-6114-420d-a448-0da1312b3cd0",
+		"name": "FERC-XBRL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "API Token - PROD",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "<filer-username>@company.com",
+							"description": "Email address of the filer. FIler should be eligibale to submit for the company.",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "<filer password>",
+							"description": "Password of the filer",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"description": "Please do not change. This value must remain \"password\"",
+							"type": "text"
+						},
+						{
+							"key": "role",
+							"value": "filer",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://ecollection.ferc.gov/api/token",
+					"protocol": "https",
+					"host": [
+						"ecollection",
+						"ferc",
+						"gov"
+					],
+					"path": [
+						"api",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "External Filing - PROD",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "conten",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "zipFiling",
+							"description": "The zip file containing the submission and any associated additional files as per XBRL specification.",
+							"type": "file",
+							"src": []
+						},
+						{
+							"key": "cid",
+							"value": "Company CID",
+							"description": "CID e.g. \"C006939\"",
+							"type": "text"
+						},
+						{
+							"key": "reportYear",
+							"value": "2020",
+							"description": "The 4-digit report year filing is to be made for",
+							"type": "text"
+						},
+						{
+							"key": "reportPeriod",
+							"value": "Q4",
+							"description": "The quartetly period filing is being made for. This would be \"Q1\", \"Q2\" or \"Q3\" for quarterly forms, and \"Q4\" for annual forms.",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "filer@company.com",
+							"description": "Email address of the filer. FIler should be eligibale to submit for the company.",
+							"type": "text"
+						},
+						{
+							"key": "form",
+							"value": "4",
+							"description": "Form Identifier.  e.g. Form 1 is \"1\", Form 2 is \"4\". Please refer to documentation for precise mapping ID for your Form.",
+							"type": "text"
+						},
+						{
+							"key": "test",
+							"value": "true",
+							"description": "Indicate if this is a test submission: \"true\" or \"false\"",
+							"type": "text"
+						},
+						{
+							"key": "additionalNotes",
+							"value": "This is a test submission for PROD",
+							"description": "Any additional notes intended to accompany the submission.",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://ecollection.ferc.gov/api/SubmissionHistory/ExternalFiling",
+					"protocol": "https",
+					"host": [
+						"ecollection",
+						"ferc",
+						"gov"
+					],
+					"path": [
+						"api",
+						"SubmissionHistory",
+						"ExternalFiling"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
