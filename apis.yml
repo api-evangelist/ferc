@@ -44,7 +44,7 @@ x-artifacts-note: >-
   /.well-known/ document on any host (twenty probes, 2026-07-27 — see well-known/ferc-well-known.yml)
   and publishes no MCP server (mcp/ferc-mcp.yml is a candidate tool surface only). Both artifacts
   record the absence; neither claims a capability FERC does not have.
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: ferc:ferc-open-data-api
   name: FERC Open Data API
