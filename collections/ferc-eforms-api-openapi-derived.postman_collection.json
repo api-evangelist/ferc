@@ -1,0 +1,1675 @@
+{
+  "item": [
+    {
+      "id": "3ce96b20-8bf0-42b9-8dc8-4ac50f963291",
+      "name": "Public Filings",
+      "description": {
+        "content": "Anonymous read access to the public FERC eForms submission record.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "dc3935cc-7ebf-4b3c-bd78-6b7e020a1fb1",
+          "name": "List the public FERC eForms submission history",
+          "request": {
+            "name": "List the public FERC eForms submission history",
+            "description": {
+              "content": "Returns the complete public record of eForms submissions. Answers anonymously with no API key and no token. Observed 2026-07-27 returning 37,588 records in a single 10.6 MB JSON array with no pagination. A `formID` query parameter appears in FERC's client but the observed response was identical in size with and without it.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "PublicSubmissionHistory"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "formID",
+                  "value": "<integer>",
+                  "description": "Form identifier (1-10). Observed to have no effect on the anonymous response."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "79ce0ce1-9345-45a8-80ec-b128c10cdbf7",
+              "name": "Array of public submission records.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "PublicSubmissionHistory"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "formID",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"filingID\": 2709,\n    \"cid\": \"string\",\n    \"companyName\": \"string\",\n    \"formName\": \"string\",\n    \"year\": 1594,\n    \"period\": \"string\",\n    \"submittedOn\": \"2003-10-26T12:18:58.933Z\",\n    \"status\": \"string\",\n    \"isConfidential\": true,\n    \"isTestSubmission\": \"string\",\n    \"filerEmail\": \"GZF4XwEVPM@mcxeUIWqWXRWovUIWVngA.oc\"\n  },\n  {\n    \"filingID\": 7332,\n    \"cid\": \"string\",\n    \"companyName\": \"string\",\n    \"formName\": \"string\",\n    \"year\": 9233,\n    \"period\": \"string\",\n    \"submittedOn\": \"1980-03-10T10:09:07.928Z\",\n    \"status\": \"string\",\n    \"isConfidential\": false,\n    \"isTestSubmission\": \"string\",\n    \"filerEmail\": \"msz@yFsRXISFBYRSslzrVviveDm.evuh\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ac2c3eb5-e226-4951-845b-d7dbe848e2f0",
+          "name": "Get the detail and attachment manifest for one filing",
+          "request": {
+            "name": "Get the detail and attachment manifest for one filing",
+            "description": {
+              "content": "Returns the accession number, additional notes, CPA certification flags and the attachment manifest (XBRL instance file and HTML rendering) for a single filing. Answers anonymously.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "SubmissionDetail",
+                ":filingID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "filingID",
+                  "description": "(Required) filingID from GET /PublicSubmissionHistory."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "15f28bb3-7a1c-4049-a254-b914434aa804",
+              "name": "Submission detail.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "SubmissionDetail",
+                    ":filingID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "filingID",
+                      "description": "(Required) filingID from GET /PublicSubmissionHistory."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"additionalNotes\": \"string\",\n  \"accessionNumber\": \"string\",\n  \"privilegedAccessionNumber\": \"string\",\n  \"attachments\": [\n    {\n      \"fileID\": 2293,\n      \"fileType\": \"string\",\n      \"fileName\": \"string\",\n      \"isConfidential\": false,\n      \"fileBlob\": \"string\"\n    },\n    {\n      \"fileID\": 3865,\n      \"fileType\": \"string\",\n      \"fileName\": \"string\",\n      \"isConfidential\": false,\n      \"fileBlob\": \"string\"\n    }\n  ],\n  \"cpaCertRequired\": true,\n  \"cpaCertUploaded\": false,\n  \"isFiledThrougheForms\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "a345cfd3-388a-4946-8c6d-857729a5aa1a",
+      "name": "Taxonomy",
+      "description": {
+        "content": "XBRL taxonomy versions, packages and sample forms for the FERC eForms.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a23f704f-dc90-423d-97e0-fe257f758146",
+          "name": "List published XBRL taxonomy versions",
+          "request": {
+            "name": "List published XBRL taxonomy versions",
+            "description": {
+              "content": "Returns every published FERC eForms XBRL taxonomy version with the reporting window it applies to and the schema (.xsd) URLs for each form in the release. Answers anonymously. Observed 2026-07-27 returning 25 versions across Form 1, Form 2, Form 6, Form 60 and Form 714.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "TaxonomyHistory"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ab230016-b1a3-4cab-96d9-018bbd94a7bf",
+              "name": "Taxonomy version history.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "TaxonomyHistory"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"versionID\": 4282,\n    \"formID\": 8721,\n    \"formName\": \"string\",\n    \"startYear\": 1877,\n    \"startPeriod\": \"string\",\n    \"endYear\": 1744,\n    \"endPeriod\": \"string\",\n    \"version\": \"string\",\n    \"versionCount\": 5031,\n    \"publishString\": \"string\",\n    \"revisionNumber\": 2265\n  },\n  {\n    \"versionID\": 4438,\n    \"formID\": 3509,\n    \"formName\": \"string\",\n    \"startYear\": 4978,\n    \"startPeriod\": \"string\",\n    \"endYear\": 8041,\n    \"endPeriod\": \"string\",\n    \"version\": \"string\",\n    \"versionCount\": 3061,\n    \"publishString\": \"string\",\n    \"revisionNumber\": 5454\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9c767f2c-4975-426f-bf3d-23e5be71eebb",
+          "name": "Download the taxonomy file bundle for a version",
+          "request": {
+            "name": "Download the taxonomy file bundle for a version",
+            "description": {},
+            "url": {
+              "path": [
+                "TaxonomyHistory",
+                "TaxonomyFile",
+                ":versionID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionID",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/octet-stream"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5076bb5e-0b18-42c8-a09b-b41461caecac",
+              "name": "Zip archive.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "TaxonomyHistory",
+                    "TaxonomyFile",
+                    ":versionID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionID",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/octet-stream"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/octet-stream"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f8a58b8d-216a-4d19-8770-34e2c9e713b1",
+          "name": "Download the sample/blank rendered form bundle for a taxonomy version",
+          "request": {
+            "name": "Download the sample/blank rendered form bundle for a taxonomy version",
+            "description": {},
+            "url": {
+              "path": [
+                "TaxonomyHistory",
+                "SampleForm",
+                ":versionID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionID",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/octet-stream"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "73162453-2e4c-4b6a-83bd-80687047c40d",
+              "name": "Zip archive.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "TaxonomyHistory",
+                    "SampleForm",
+                    ":versionID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionID",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/octet-stream"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/octet-stream"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "71e4d5f4-8995-4f1b-aa42-035e66123c65",
+          "name": "Get the taxonomy release notes document",
+          "request": {
+            "name": "Get the taxonomy release notes document",
+            "description": {
+              "content": "Returns a base64-encoded PDF of the current taxonomy release notes.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "TaxonomyHistory",
+                "getReleaseFiles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "833bfe9a-f285-4b99-8df0-3bfee1331ea1",
+              "name": "Base64-encoded PDF document.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "TaxonomyHistory",
+                    "getReleaseFiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fa64ffd1-dca1-4639-bf7f-59b8efe71d95",
+          "name": "List taxonomy revisions (administrative)",
+          "request": {
+            "name": "List taxonomy revisions (administrative)",
+            "description": {
+              "content": "Credentialed. Returns 401 anonymously; authenticated shape not observed.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "TaxonomyRevision"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1569f43d-bdd8-4161-a367-632f1a478d6f",
+              "name": "Taxonomy revisions. Shape not observed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "TaxonomyRevision"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "99e147fd-5d05-498b-bba9-4649ed9a7be8",
+              "name": "Authorization denied.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "TaxonomyRevision"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "cc437e38-8bec-42be-ae87-4a4b65811007",
+      "name": "Filing",
+      "description": {
+        "content": "Credentialed machine-to-machine submission of XBRL filings.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "29df1828-db3c-4831-ac3a-e6db221b740d",
+          "name": "Exchange FERC eRegistration credentials for a bearer token",
+          "request": {
+            "name": "Exchange FERC eRegistration credentials for a bearer token",
+            "description": {
+              "content": "OAuth 2.0 Resource Owner Password Credentials grant (RFC 6749 section 4.3). Credentials are the filer's FERC eRegistration / Company Registration username (email) and password; the filer must be authorized to submit for the company. Documented in FERC's Postman collection and step-by-step guide.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "token"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "username",
+                  "value": "<string>",
+                  "description": "(Required) Email address of the filer, eligible to submit for the company."
+                },
+                {
+                  "disabled": false,
+                  "key": "password",
+                  "value": "<password>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "grant_type",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "role",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0827927d-68e8-4b53-aa32-4dd07bf9c035",
+              "name": "Bearer token issued.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Email address of the filer, eligible to submit for the company.",
+                        "type": "text/plain"
+                      },
+                      "key": "username",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "password",
+                      "value": "<password>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "grant_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "role",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "490cf3fd-3bf7-4b5d-890b-48e4e54e8e86",
+              "name": "Grant or credential failure. Observed bodies: `{\"error\":\"unsupported_grant_type\"}` on a GET/empty body, and `{\"error\":\"Failed validating user in company registration\"}` for an unregistered filer.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Email address of the filer, eligible to submit for the company.",
+                        "type": "text/plain"
+                      },
+                      "key": "username",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "password",
+                      "value": "<password>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "grant_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "role",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9bd44160-770c-47fa-97c1-67ae3d40ee4a",
+          "name": "Submit a zipped XBRL filing",
+          "request": {
+            "name": "Submit a zipped XBRL filing",
+            "description": {
+              "content": "Machine-to-machine submission of a FERC eForms XBRL filing. Requires the bearer token from POST /token. Parameter semantics and the numeric form mapping are taken verbatim from FERC's published step-by-step guide.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "SubmissionHistory",
+                "ExternalFiling"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "zipFiling",
+                  "type": "file",
+                  "description": "(Required) Zip archive containing the XBRL instance and any additional files required by the XBRL specification. Only the .zip extension is accepted."
+                },
+                {
+                  "key": "cid",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "(Required) Company CID from FERC Company Registration, e.g. C006939."
+                },
+                {
+                  "key": "reportYear",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "(Required) Four-digit report year the filing is made for."
+                },
+                {
+                  "key": "reportPeriod",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "(Required) Q1, Q2 or Q3 for quarterly forms; Q4 for annual forms. (This can only be one of Q1,Q2,Q3,Q4)"
+                },
+                {
+                  "key": "email",
+                  "value": "<email>",
+                  "type": "text",
+                  "description": "(Required) Email address of the filer, eligible to submit for the company."
+                },
+                {
+                  "key": "form",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "(Required) Numeric form identifier. Published mapping — Form 1:1, Form 1F:2, Form 3Q Electric:3, Form 2:4, Form 2A:5, Form 3Q Natural Gas:6, Form 6:7, Form 6Q:8, Form 60:9, Form 714:10. (This can only be one of 1,2,3,4,5,6,7,8,9,10)"
+                },
+                {
+                  "key": "test",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "Indicate whether this is a test submission. (This can only be one of true,false)"
+                },
+                {
+                  "key": "additionalNotes",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "Notes accompanying the submission."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0fd278ad-97b2-4069-9a5e-860f6f9eaefe",
+              "name": "Submission accepted for processing.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "SubmissionHistory",
+                    "ExternalFiling"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) Zip archive containing the XBRL instance and any additional files required by the XBRL specification. Only the .zip extension is accepted.",
+                        "type": "text/plain"
+                      },
+                      "key": "zipFiling",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Company CID from FERC Company Registration, e.g. C006939.",
+                        "type": "text/plain"
+                      },
+                      "key": "cid",
+                      "value": "C006939",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Four-digit report year the filing is made for.",
+                        "type": "text/plain"
+                      },
+                      "key": "reportYear",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Q1, Q2 or Q3 for quarterly forms; Q4 for annual forms. (This can only be one of Q1,Q2,Q3,Q4)",
+                        "type": "text/plain"
+                      },
+                      "key": "reportPeriod",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Email address of the filer, eligible to submit for the company.",
+                        "type": "text/plain"
+                      },
+                      "key": "email",
+                      "value": "<email>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Numeric form identifier. Published mapping — Form 1:1, Form 1F:2, Form 3Q Electric:3, Form 2:4, Form 2A:5, Form 3Q Natural Gas:6, Form 6:7, Form 6Q:8, Form 60:9, Form 714:10. (This can only be one of 1,2,3,4,5,6,7,8,9,10)",
+                        "type": "text/plain"
+                      },
+                      "key": "form",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Indicate whether this is a test submission. (This can only be one of true,false)",
+                        "type": "text/plain"
+                      },
+                      "key": "test",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Notes accompanying the submission.",
+                        "type": "text/plain"
+                      },
+                      "key": "additionalNotes",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "99096831-2a6f-49f4-aabe-e94b80799af3",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "SubmissionHistory",
+                    "ExternalFiling"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) Zip archive containing the XBRL instance and any additional files required by the XBRL specification. Only the .zip extension is accepted.",
+                        "type": "text/plain"
+                      },
+                      "key": "zipFiling",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Company CID from FERC Company Registration, e.g. C006939.",
+                        "type": "text/plain"
+                      },
+                      "key": "cid",
+                      "value": "C006939",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Four-digit report year the filing is made for.",
+                        "type": "text/plain"
+                      },
+                      "key": "reportYear",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Q1, Q2 or Q3 for quarterly forms; Q4 for annual forms. (This can only be one of Q1,Q2,Q3,Q4)",
+                        "type": "text/plain"
+                      },
+                      "key": "reportPeriod",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Email address of the filer, eligible to submit for the company.",
+                        "type": "text/plain"
+                      },
+                      "key": "email",
+                      "value": "<email>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Numeric form identifier. Published mapping — Form 1:1, Form 1F:2, Form 3Q Electric:3, Form 2:4, Form 2A:5, Form 3Q Natural Gas:6, Form 6:7, Form 6Q:8, Form 60:9, Form 714:10. (This can only be one of 1,2,3,4,5,6,7,8,9,10)",
+                        "type": "text/plain"
+                      },
+                      "key": "form",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Indicate whether this is a test submission. (This can only be one of true,false)",
+                        "type": "text/plain"
+                      },
+                      "key": "test",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Notes accompanying the submission.",
+                        "type": "text/plain"
+                      },
+                      "key": "additionalNotes",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0167c627-cf8b-45a4-af3e-2c4a0903ce5d",
+          "name": "Get the authenticated filer's claims",
+          "request": {
+            "name": "Get the authenticated filer's claims",
+            "description": {
+              "content": "Credentialed. Returns 401 `{\"message\":\"Authorization has been denied for this request.\"}` anonymously; the response body for an authenticated caller was not observed and is deliberately not described.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "claims"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d990dfa2-5291-4233-b0ce-d17a48dff21f",
+              "name": "Filer claims. Shape not observed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "claims"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6b01eebf-7de6-47d4-ace2-930da6f3e678",
+              "name": "Authorization denied.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "claims"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e49dd13c-cbe3-4ab0-a1f3-4887beb2eded",
+          "name": "List the authenticated filer's submission history",
+          "request": {
+            "name": "List the authenticated filer's submission history",
+            "description": {
+              "content": "Credentialed. Returns 401 anonymously; the authenticated response shape was not observed and is deliberately not described.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "SubmissionHistory"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "28f5259c-933b-49ec-ae9c-ac0a74e64611",
+              "name": "Filer submission history. Shape not observed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "SubmissionHistory"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7ac0eac5-92b5-4e11-8915-b2743f9d1927",
+              "name": "Authorization denied.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "SubmissionHistory"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "9abecd3c-af37-4ad6-88a1-d4a7b6005706",
+      "name": "Reference",
+      "description": {
+        "content": "Form lists and submission constraints.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "85624313-b170-4dc6-9ef8-bbe35d0fd655",
+          "name": "List the eForms form names and identifiers",
+          "request": {
+            "name": "List the eForms form names and identifiers",
+            "description": {
+              "content": "Returns the form names, their numeric identifiers, and which identifiers are annual forms.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "SubmissionHistory",
+                "forms"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6b2edbc4-5568-41d5-9dd7-6342a7677ae5",
+              "name": "Form reference lists.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "SubmissionHistory",
+                    "forms"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"formList\": [\n    \"string\",\n    \"string\"\n  ],\n  \"formIDList\": [\n    1113,\n    8133\n  ],\n  \"annualForms\": [\n    2550,\n    7356\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b8cf5f42-1531-40ad-85d1-b960a916e5ea",
+          "name": "Get submission constraints and test-mode status",
+          "request": {
+            "name": "Get submission constraints and test-mode status",
+            "description": {
+              "content": "Returns whether the environment is in test status plus the submission constraints the filing client enforces — maximum XBRL name length, maximum file name length, maximum file size in bytes, and the allowed additional-file tags.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "getTestStatus"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d06b3f3d-4e48-4067-a9f7-f79320d515ff",
+              "name": "Submission constraints.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "getTestStatus"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": false,\n  \"maxAllowedXbrlName\": 1598,\n  \"maxAllowedFileName\": 1140,\n  \"maxAllowedFileSize\": 4579,\n  \"allowedFileTags\": \"string\",\n  \"showReleaseNotesButton\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9e81ca37-f4be-4ea5-a987-867610af443e",
+          "name": "List eForms portal FAQ entries",
+          "request": {
+            "name": "List eForms portal FAQ entries",
+            "description": {},
+            "url": {
+              "path": [
+                "faq"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c7290417-825b-422a-86ef-6900bce9d3d9",
+              "name": "FAQ entries. Observed as an empty array on 2026-07-27.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "faq"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://ecollection.ferc.gov/api",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "3bb6eba7-36bd-447c-8259-f2af94db19a3",
+    "name": "FERC eForms (eCollection) API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Machine-readable description of the FERC eForms XBRL API hosted at https://ecollection.ferc.gov/api. FERC publishes NO OpenAPI for this API. This document is DERIVED, not harvested: every path below is a literal URL string taken from FERC's own shipped production JavaScript bundle (https://ecollection.ferc.gov/main.6c69ecbce3fd46f494eb.js, `environment.apiURL = \"https://eCollection.ferc.gov/api/\"`), or from FERC's published Postman collection and Submission API step-by-step guide, and each was probed live on 2026-07-27 with the HTTP status recorded in `x-evidence`. Response schemas are derived ONLY from responses actually observed on those probes — no field is invented. Endpoints that answered 401 are described by path and method only, with no invented request or response body.\n\nTwo surfaces live here. (1) An ANONYMOUS PUBLIC READ surface — the public submission history of every FERC eForms filing, per-filing detail, the XBRL taxonomy version history and taxonomy packages, the form list, and the submission constraints — none of which is advertised on data.ferc.gov or in FERC's developer documentation. (2) The CREDENTIALED WRITE surface — the OAuth2 password-grant token endpoint and the external filing endpoint documented in FERC's vendor files library for regulated filers.\n\nPERSONAL DATA NOTICE: GET /PublicSubmissionHistory returns a `filerEmail` field carrying the work email address of the individual who submitted each filing, served anonymously with no authentication. The field is documented here structurally; no example in this repository carries a real value, and no agent skill or MCP tool in this repository is built on this endpoint.\n\nContact Support:\n Name: FERC Online Support",
+      "type": "text/plain"
+    }
+  }
+}

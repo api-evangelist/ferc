@@ -2,86 +2,85 @@ generated: '2026-07-27'
 method: derived
 status: candidate
 published: false
-source: >-
-  openapi/ferc-data-api-openapi.json, openapi/ferc-eforms-api-openapi-derived.yml
-summary: >-
-  FERC publishes no Model Context Protocol server, hosted or local, and nothing FERC-official appears
-  in the MCP registries or under @modelcontextprotocol. The tool set below is a CANDIDATE surface
-  DERIVED from operations that genuinely exist and were probed live on 2026-07-27 — a proposal, not a
-  FERC product. No apis.yml MCPServer pointer is wired for FERC, because there is no server to point
-  at.
+source: openapi/ferc-data-api-openapi.json, openapi/ferc-eforms-api-openapi-derived.yml
+summary: FERC publishes no Model Context Protocol server, hosted or local, and nothing FERC-official appears
+  in the MCP registries or under @modelcontextprotocol. The tool set below is a CANDIDATE surface DERIVED
+  from operations that genuinely exist and were probed live on 2026-07-27 — a proposal, not a FERC product.
+  No apis.yml MCPServer pointer is wired for FERC, because there is no server to point at.
 server:
   name: ferc
   transport: http
   url: null
   note: Candidate only. No endpoint exists.
 tools:
-  - name: list_data_assets
-    description: >-
-      List FERC's open data assets and the datasets inside each, with titles, descriptions, program
-      office and point of contact. The entry point — dataset IDs come from here and may change.
-    source_operation: openapi/ferc-data-api-openapi.json#data-asset-id
-    auth: X-Api-Key
-    read_only: true
-  - name: get_dataset_details
-    description: >-
-      Get metadata for one dataset — record count, industry, last updated timestamp, source URL and
-      point of contact.
-    source_operation: openapi/ferc-data-api-openapi.json#detail-id
-    inputs: [id]
-    auth: X-Api-Key
-    read_only: true
-  - name: get_dataset_dictionary
-    description: >-
-      Get column names, descriptions and data types for a dataset. Call before get_dataset_data so
-      the rows can be interpreted. 404 means the dataset has no published dictionary.
-    source_operation: openapi/ferc-data-api-openapi.json#dictionary-id
-    inputs: [id]
-    auth: X-Api-Key
-    read_only: true
-  - name: get_dataset_data
-    description: >-
-      Retrieve the full row set for a dataset. No filtering, no pagination — check the record count
-      from get_dataset_details first, because this returns everything.
-    source_operation: openapi/ferc-data-api-openapi.json#data-id
-    inputs: [id]
-    auth: X-Api-Key
-    read_only: true
-    caution: Unbounded response size.
-  - name: list_eforms_forms
-    description: List the FERC eForms form names, their numeric identifiers, and which are annual.
-    source_operation: openapi/ferc-eforms-api-openapi-derived.yml#listForms
-    auth: none
-    read_only: true
-  - name: list_taxonomy_versions
-    description: >-
-      List published FERC XBRL taxonomy releases with the reporting window each applies to and the
-      schema URLs for each form.
-    source_operation: openapi/ferc-eforms-api-openapi-derived.yml#listTaxonomyHistory
-    auth: none
-    read_only: true
-  - name: get_filing_detail
-    description: >-
-      Get the accession number and attachment manifest (XBRL instance, HTML rendering) for one
-      filing, so the filing can be resolved in eLibrary.
-    source_operation: openapi/ferc-eforms-api-openapi-derived.yml#getSubmissionDetail
-    inputs: [filingID]
-    auth: none
-    read_only: true
+- name: list_data_assets
+  description: List FERC's open data assets and the datasets inside each, with titles, descriptions, program
+    office and point of contact. The entry point — dataset IDs come from here and may change.
+  source_operation: openapi/ferc-data-api-openapi.json#data-asset-id
+  auth: X-Api-Key
+  read_only: true
+- name: get_dataset_details
+  description: Get metadata for one dataset — record count, industry, last updated timestamp, source URL
+    and point of contact.
+  source_operation: openapi/ferc-data-api-openapi.json#detail-id
+  inputs:
+  - id
+  auth: X-Api-Key
+  read_only: true
+- name: get_dataset_dictionary
+  description: Get column names, descriptions and data types for a dataset. Call before get_dataset_data
+    so the rows can be interpreted. 404 means the dataset has no published dictionary.
+  source_operation: openapi/ferc-data-api-openapi.json#dictionary-id
+  inputs:
+  - id
+  auth: X-Api-Key
+  read_only: true
+- name: get_dataset_data
+  description: Retrieve the full row set for a dataset. No filtering, no pagination — check the record
+    count from get_dataset_details first, because this returns everything.
+  source_operation: openapi/ferc-data-api-openapi.json#data-id
+  inputs:
+  - id
+  auth: X-Api-Key
+  read_only: true
+  caution: Unbounded response size.
+- name: list_eforms_forms
+  description: List the FERC eForms form names, their numeric identifiers, and which are annual.
+  source_operation: openapi/ferc-eforms-api-openapi-derived.yml#listForms
+  auth: none
+  read_only: true
+- name: list_taxonomy_versions
+  description: List published FERC XBRL taxonomy releases with the reporting window each applies to and
+    the schema URLs for each form.
+  source_operation: openapi/ferc-eforms-api-openapi-derived.yml#listTaxonomyHistory
+  auth: none
+  read_only: true
+- name: get_filing_detail
+  description: Get the accession number and attachment manifest (XBRL instance, HTML rendering) for one
+    filing, so the filing can be resolved in eLibrary.
+  source_operation: openapi/ferc-eforms-api-openapi-derived.yml#getSubmissionDetail
+  inputs:
+  - filingID
+  auth: none
+  read_only: true
 excluded_tools:
-  - operation: openapi/ferc-eforms-api-openapi-derived.yml#listPublicSubmissionHistory
-    proposed_name: list_public_filings
-    excluded: true
-    reason: >-
-      DELIBERATE OMISSION. The endpoint returns 37,588 records carrying a filerEmail field — the
-      individual filer's work email address — with no authentication. Packaging it as an agent tool
-      would ship a bulk personal-data harvester. The endpoint is documented in
-      openapi/ferc-eforms-api-openapi-derived.yml and the exposure is recorded in
-      security/ferc-vulnerability-disclosure.yml; it is not, and should not become, a tool. A future
-      tool would be acceptable only if it projected away filerEmail and constrained the result set.
-  - operation: openapi/ferc-eforms-api-openapi-derived.yml#postExternalFiling
-    proposed_name: submit_xbrl_filing
-    excluded: true
-    reason: >-
-      Writes a mandated regulatory filing to production on behalf of a credentialed filer, with no
-      idempotency key and no undo. Not an agent-appropriate action.
+- operation: openapi/ferc-eforms-api-openapi-derived.yml#listPublicSubmissionHistory
+  proposed_name: list_public_filings
+  excluded: true
+  reason: DELIBERATE OMISSION. The endpoint returns 37,588 records carrying a filerEmail field — the individual
+    filer's work email address — with no authentication. Packaging it as an agent tool would ship a bulk
+    personal-data harvester. The endpoint is documented in openapi/ferc-eforms-api-openapi-derived.yml
+    and the exposure is recorded in security/ferc-vulnerability-disclosure.yml; it is not, and should
+    not become, a tool. A future tool would be acceptable only if it projected away filerEmail and constrained
+    the result set.
+- operation: openapi/ferc-eforms-api-openapi-derived.yml#postExternalFiling
+  proposed_name: submit_xbrl_filing
+  excluded: true
+  reason: Writes a mandated regulatory filing to production on behalf of a credentialed filer, with no
+    idempotency key and no undo. Not an agent-appropriate action.
+deployment:
+  mode: none
+  verified: derived
+  tools: 7
+  checked: '2026-08-12'
+  source: catalog MCP census

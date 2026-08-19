@@ -1,0 +1,308 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FERC eForms (eCollection) API",
+    "version": "2026-07-27"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Filing",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Exchange FERC eRegistration credentials for a bearer token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://ecollection.ferc.gov/api/token",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "username",
+                  "value": ""
+                },
+                {
+                  "name": "password",
+                  "value": ""
+                },
+                {
+                  "name": "grant_type",
+                  "value": ""
+                },
+                {
+                  "name": "role",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "OAuth 2.0 Resource Owner Password Credentials grant (RFC 6749 section 4.3). Credentials are the filer's FERC eRegistration / Company Registration username (email) and password; the filer must be authorized to submit for the company. Documented in FERC's Postman collection and step-by-step guide."
+        },
+        {
+          "info": {
+            "name": "Submit a zipped XBRL filing",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://ecollection.ferc.gov/api/SubmissionHistory/ExternalFiling",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "zipFiling",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "cid",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "reportYear",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "reportPeriod",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "email",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "form",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "test",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "additionalNotes",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Machine-to-machine submission of a FERC eForms XBRL filing. Requires the bearer token from POST /token. Parameter semantics and the numeric form mapping are taken verbatim from FERC's published step-by-step guide."
+        },
+        {
+          "info": {
+            "name": "Get the authenticated filer's claims",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://ecollection.ferc.gov/api/claims",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Credentialed. Returns 401 `{\"message\":\"Authorization has been denied for this request.\"}` anonymously; the response body for an authenticated caller was not observed and is deliberately not described."
+        },
+        {
+          "info": {
+            "name": "List the authenticated filer's submission history",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://ecollection.ferc.gov/api/SubmissionHistory",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Credentialed. Returns 401 anonymously; the authenticated response shape was not observed and is deliberately not described."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Public Filings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List the public FERC eForms submission history",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://ecollection.ferc.gov/api/PublicSubmissionHistory",
+            "params": [
+              {
+                "name": "formID",
+                "value": "",
+                "type": "query",
+                "description": "Form identifier (1-10). Observed to have no effect on the anonymous response."
+              }
+            ]
+          },
+          "docs": "Returns the complete public record of eForms submissions. Answers anonymously with no API key and no token. Observed 2026-07-27 returning 37,588 records in a single 10.6 MB JSON array with no pagination. A `formID` query parameter appears in FERC's client but the observed response was identical in size with and without it."
+        },
+        {
+          "info": {
+            "name": "Get the detail and attachment manifest for one filing",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://ecollection.ferc.gov/api/SubmissionDetail/:filingID",
+            "params": [
+              {
+                "name": "filingID",
+                "value": "",
+                "type": "path",
+                "description": "filingID from GET /PublicSubmissionHistory."
+              }
+            ]
+          },
+          "docs": "Returns the accession number, additional notes, CPA certification flags and the attachment manifest (XBRL instance file and HTML rendering) for a single filing. Answers anonymously."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Reference",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List the eForms form names and identifiers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://ecollection.ferc.gov/api/SubmissionHistory/forms"
+          },
+          "docs": "Returns the form names, their numeric identifiers, and which identifiers are annual forms."
+        },
+        {
+          "info": {
+            "name": "Get submission constraints and test-mode status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://ecollection.ferc.gov/api/getTestStatus"
+          },
+          "docs": "Returns whether the environment is in test status plus the submission constraints the filing client enforces — maximum XBRL name length, maximum file name length, maximum file size in bytes, and the allowed additional-file tags."
+        },
+        {
+          "info": {
+            "name": "List eForms portal FAQ entries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://ecollection.ferc.gov/api/faq"
+          },
+          "docs": "List eForms portal FAQ entries"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Taxonomy",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List published XBRL taxonomy versions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://ecollection.ferc.gov/api/TaxonomyHistory"
+          },
+          "docs": "Returns every published FERC eForms XBRL taxonomy version with the reporting window it applies to and the schema (.xsd) URLs for each form in the release. Answers anonymously. Observed 2026-07-27 returning 25 versions across Form 1, Form 2, Form 6, Form 60 and Form 714."
+        },
+        {
+          "info": {
+            "name": "Download the taxonomy file bundle for a version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://ecollection.ferc.gov/api/TaxonomyHistory/TaxonomyFile/:versionID",
+            "params": [
+              {
+                "name": "versionID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Download the taxonomy file bundle for a version"
+        },
+        {
+          "info": {
+            "name": "Download the sample/blank rendered form bundle for a taxonomy version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://ecollection.ferc.gov/api/TaxonomyHistory/SampleForm/:versionID",
+            "params": [
+              {
+                "name": "versionID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Download the sample/blank rendered form bundle for a taxonomy version"
+        },
+        {
+          "info": {
+            "name": "Get the taxonomy release notes document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://ecollection.ferc.gov/api/TaxonomyHistory/getReleaseFiles"
+          },
+          "docs": "Returns a base64-encoded PDF of the current taxonomy release notes."
+        },
+        {
+          "info": {
+            "name": "List taxonomy revisions (administrative)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://ecollection.ferc.gov/api/TaxonomyRevision",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Credentialed. Returns 401 anonymously; authenticated shape not observed."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

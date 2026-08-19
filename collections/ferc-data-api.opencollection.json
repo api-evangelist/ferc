@@ -1,0 +1,117 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "API Endpoints"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "api_key",
+      "value": "{{api_key}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Data-Assets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch metadata information on the data asset and its associated Datasets.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/data-assets/"
+          },
+          "docs": "This endpoint displays the metadata, including descriptions and titles, which will help you determine which datasets are available. After identifying the dataset you want to explore further, record it’s ID number and enter it for the other endpoints to retrieve data."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Details",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch metadata, data asset, row count, and column information.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/dataset/:id/details/",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Enter the dataset ID number you want to retrieve"
+              }
+            ]
+          },
+          "docs": "The Detail endpoint provides metadata information about a specific dataset by providing its ***dataset ID number***. This endpoint returns the description of the dataset, the associated industry, the most recent update date and time, the source URL, and the designated point of contact information for further inquiries on the dataset."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch the actual dataset rows",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/dataset/:id/data/",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Enter the dataset ID number you want to retrieve"
+              }
+            ]
+          },
+          "docs": "This endpoint returns all the data for the ID you provide. First, use Data-Assets endpoint to find a valid dataset ID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Dictionary",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch column descriptions and definitions from available data.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/dataset/:id/dictionary/",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Enter the ID number you want to retrieve"
+              }
+            ]
+          },
+          "docs": "Get column descriptions and definitions from available data dictionaries (404 error if not available)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
