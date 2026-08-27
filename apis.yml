@@ -46,27 +46,16 @@ x-artifacts-note: >-
   record the absence; neither claims a capability FERC does not have.
 specificationVersion: '0.23'
 apis:
-- aid: ferc:ferc-open-data-api
-  name: FERC Open Data API
-  description: FERC's public open data API, serving the same data assets and datasets
-    published in the data.ferc.gov Data Catalog. A Data-Assets endpoint returns the
-    catalog and the dataset IDs; Details, Data, and Dictionary endpoints return per-dataset
-    metadata, full row data, and column definitions. Free self-serve API key, 1,000
-    requests per hour, X-Api-Key header or api_key query parameter. Runs on the api.data.gov
-    API Umbrella stack (x-api-umbrella-request-id) hosted on cloud.gov. Verified live
-    2026-07-27 — an unauthenticated GET returns HTTP 403 with API_KEY_MISSING and a
-    bogus key returns HTTP 403 with API_KEY_INVALID.
+- aid: ferc:ferc-data-api
+  name: FERC Data API
+  description: The Data API from FERC — 1 operation(s) for data.
   humanURL: https://data.ferc.gov/developer/gettingstarted/
   baseURL: https://api.data.ferc.gov/v1
   tags:
-  - Open Data
-  - Energy Markets
-  - Electricity
-  - Natural Gas
-  - Regulatory Data
+  - Data
   properties:
   - type: OpenAPI
-    url: openapi/ferc-data-api-openapi.json
+    url: openapi/ferc-data-api-openapi.yml
   - type: Documentation
     url: https://data.ferc.gov/developer/gettingstarted/
   - type: APIReference
@@ -87,41 +76,314 @@ apis:
     url: https://data.ferc.gov/datacatalog/
   - type: FAQ
     url: https://data.ferc.gov/faq/
-- aid: ferc:ferc-eforms-xbrl-submission-api
-  name: FERC eForms XBRL Submission API
-  description: The machine-to-machine API behind FERC's mandated eForms. Credentialed
-    filers exchange their FERC eRegistration and Company Registration username and
-    password for a bearer token at POST /api/token (OAuth2 password grant, role=filer),
-    then POST a zipped XBRL submission to /api/SubmissionHistory/ExternalFiling with
-    the company CID, report year, report period, and form identifier. FERC documents
-    only that write path, but the API is not write-only — a second-round probe on 2026-07-27
-    found an undocumented ANONYMOUS read surface on the same host — GET /api/PublicSubmissionHistory
-    (37,588 filing records, 10.6 MB, no key), /api/SubmissionDetail/{filingID} (accession
-    number and attachment manifest), /api/SubmissionHistory/forms, /api/getTestStatus,
-    /api/faq, and the full XBRL taxonomy release history at /api/TaxonomyHistory with
-    its taxonomy packages, sample forms and release notes. Those endpoints are described
-    in a DERIVED OpenAPI in this repo (FERC publishes none), built from FERC's own production
-    JavaScript bundle plus its published Postman collection, with every path probed live.
-    Verified 2026-07-27 — POST /api/token without valid credentials returns HTTP 400
-    with "Failed validating user in company registration", and the credentialed endpoints
-    (/api/claims, /api/SubmissionHistory, /api/TaxonomyRevision) return HTTP 401.
-  humanURL: https://www.ferc.gov/vendor-files-library
-  baseURL: https://ecollection.ferc.gov/api
-  tags:
-  - XBRL
-  - Regulatory Filing
-  - eForms
-  - Compliance
-  properties:
-  - type: OpenAPI
-    url: openapi/ferc-eforms-api-openapi-derived.yml
-    name: Derived OpenAPI 3.1 (not published by FERC)
   - type: PostmanCollection
     url: collections/ferc-xbrl-submission-api.postman_collection.json
   - type: Documentation
     url: https://www.ferc.gov/media/ferc-submission-api-step-step-guide
   - type: GettingStarted
-    url: https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+    url: >-
+      https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+  - type: Portal
+    url: https://ecollection.ferc.gov/
+  - type: Registration
+    url: https://www.ferc.gov/company-registration
+  - type: Documentation
+    url: https://www.ferc.gov/filing-forms/eforms-refresh
+- aid: ferc:ferc-data-assets-api
+  name: FERC Data Assets API
+  description: The Data-Assets API from FERC — 1 operation(s) for data-assets.
+  humanURL: https://data.ferc.gov/developer/gettingstarted/
+  baseURL: https://api.data.ferc.gov/v1
+  tags:
+  - Data-Assets
+  properties:
+  - type: OpenAPI
+    url: openapi/ferc-data-assets-api-openapi.yml
+  - type: Documentation
+    url: https://data.ferc.gov/developer/gettingstarted/
+  - type: APIReference
+    url: https://data.ferc.gov/developer/apiendpoints/
+  - type: GettingStarted
+    url: https://data.ferc.gov/developer/gettingstarted/understanding-our-apis/
+  - type: Signup
+    url: https://data.ferc.gov/developer/gettingstarted/sign-up-form/
+  - type: Authentication
+    url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  - type: RateLimits
+    url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  - type: Support
+    url: https://data.ferc.gov/developer/helpandsupport/
+  - type: TermsOfService
+    url: https://data.ferc.gov/disclaimer/
+  - type: DataCatalog
+    url: https://data.ferc.gov/datacatalog/
+  - type: FAQ
+    url: https://data.ferc.gov/faq/
+  - type: PostmanCollection
+    url: collections/ferc-xbrl-submission-api.postman_collection.json
+  - type: Documentation
+    url: https://www.ferc.gov/media/ferc-submission-api-step-step-guide
+  - type: GettingStarted
+    url: >-
+      https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+  - type: Portal
+    url: https://ecollection.ferc.gov/
+  - type: Registration
+    url: https://www.ferc.gov/company-registration
+  - type: Documentation
+    url: https://www.ferc.gov/filing-forms/eforms-refresh
+- aid: ferc:ferc-details-api
+  name: FERC Details API
+  description: The Details API from FERC — 1 operation(s) for details.
+  humanURL: https://data.ferc.gov/developer/gettingstarted/
+  baseURL: https://api.data.ferc.gov/v1
+  tags:
+  - Details
+  properties:
+  - type: OpenAPI
+    url: openapi/ferc-details-api-openapi.yml
+  - type: Documentation
+    url: https://data.ferc.gov/developer/gettingstarted/
+  - type: APIReference
+    url: https://data.ferc.gov/developer/apiendpoints/
+  - type: GettingStarted
+    url: https://data.ferc.gov/developer/gettingstarted/understanding-our-apis/
+  - type: Signup
+    url: https://data.ferc.gov/developer/gettingstarted/sign-up-form/
+  - type: Authentication
+    url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  - type: RateLimits
+    url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  - type: Support
+    url: https://data.ferc.gov/developer/helpandsupport/
+  - type: TermsOfService
+    url: https://data.ferc.gov/disclaimer/
+  - type: DataCatalog
+    url: https://data.ferc.gov/datacatalog/
+  - type: FAQ
+    url: https://data.ferc.gov/faq/
+  - type: PostmanCollection
+    url: collections/ferc-xbrl-submission-api.postman_collection.json
+  - type: Documentation
+    url: https://www.ferc.gov/media/ferc-submission-api-step-step-guide
+  - type: GettingStarted
+    url: >-
+      https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+  - type: Portal
+    url: https://ecollection.ferc.gov/
+  - type: Registration
+    url: https://www.ferc.gov/company-registration
+  - type: Documentation
+    url: https://www.ferc.gov/filing-forms/eforms-refresh
+- aid: ferc:ferc-dictionary-api
+  name: FERC Dictionary API
+  description: The Dictionary API from FERC — 1 operation(s) for dictionary.
+  humanURL: https://data.ferc.gov/developer/gettingstarted/
+  baseURL: https://api.data.ferc.gov/v1
+  tags:
+  - Dictionary
+  properties:
+  - type: OpenAPI
+    url: openapi/ferc-dictionary-api-openapi.yml
+  - type: Documentation
+    url: https://data.ferc.gov/developer/gettingstarted/
+  - type: APIReference
+    url: https://data.ferc.gov/developer/apiendpoints/
+  - type: GettingStarted
+    url: https://data.ferc.gov/developer/gettingstarted/understanding-our-apis/
+  - type: Signup
+    url: https://data.ferc.gov/developer/gettingstarted/sign-up-form/
+  - type: Authentication
+    url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  - type: RateLimits
+    url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  - type: Support
+    url: https://data.ferc.gov/developer/helpandsupport/
+  - type: TermsOfService
+    url: https://data.ferc.gov/disclaimer/
+  - type: DataCatalog
+    url: https://data.ferc.gov/datacatalog/
+  - type: FAQ
+    url: https://data.ferc.gov/faq/
+  - type: PostmanCollection
+    url: collections/ferc-xbrl-submission-api.postman_collection.json
+  - type: Documentation
+    url: https://www.ferc.gov/media/ferc-submission-api-step-step-guide
+  - type: GettingStarted
+    url: >-
+      https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+  - type: Portal
+    url: https://ecollection.ferc.gov/
+  - type: Registration
+    url: https://www.ferc.gov/company-registration
+  - type: Documentation
+    url: https://www.ferc.gov/filing-forms/eforms-refresh
+- aid: ferc:ferc-filing-api
+  name: FERC Filing API
+  description: Credentialed machine-to-machine submission of XBRL filings.
+  humanURL: https://data.ferc.gov/developer/gettingstarted/
+  baseURL: https://api.data.ferc.gov/v1
+  tags:
+  - Filing
+  properties:
+  - type: OpenAPI
+    url: openapi/ferc-filing-api-openapi.yml
+  - type: Documentation
+    url: https://data.ferc.gov/developer/gettingstarted/
+  - type: APIReference
+    url: https://data.ferc.gov/developer/apiendpoints/
+  - type: GettingStarted
+    url: https://data.ferc.gov/developer/gettingstarted/understanding-our-apis/
+  - type: Signup
+    url: https://data.ferc.gov/developer/gettingstarted/sign-up-form/
+  - type: Authentication
+    url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  - type: RateLimits
+    url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  - type: Support
+    url: https://data.ferc.gov/developer/helpandsupport/
+  - type: TermsOfService
+    url: https://data.ferc.gov/disclaimer/
+  - type: DataCatalog
+    url: https://data.ferc.gov/datacatalog/
+  - type: FAQ
+    url: https://data.ferc.gov/faq/
+  - type: PostmanCollection
+    url: collections/ferc-xbrl-submission-api.postman_collection.json
+  - type: Documentation
+    url: https://www.ferc.gov/media/ferc-submission-api-step-step-guide
+  - type: GettingStarted
+    url: >-
+      https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+  - type: Portal
+    url: https://ecollection.ferc.gov/
+  - type: Registration
+    url: https://www.ferc.gov/company-registration
+  - type: Documentation
+    url: https://www.ferc.gov/filing-forms/eforms-refresh
+- aid: ferc:ferc-public-filings-api
+  name: FERC Public Filings API
+  description: Anonymous read access to the public FERC eForms submission record.
+  humanURL: https://data.ferc.gov/developer/gettingstarted/
+  baseURL: https://api.data.ferc.gov/v1
+  tags:
+  - Public Filings
+  properties:
+  - type: OpenAPI
+    url: openapi/ferc-public-filings-api-openapi.yml
+  - type: Documentation
+    url: https://data.ferc.gov/developer/gettingstarted/
+  - type: APIReference
+    url: https://data.ferc.gov/developer/apiendpoints/
+  - type: GettingStarted
+    url: https://data.ferc.gov/developer/gettingstarted/understanding-our-apis/
+  - type: Signup
+    url: https://data.ferc.gov/developer/gettingstarted/sign-up-form/
+  - type: Authentication
+    url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  - type: RateLimits
+    url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  - type: Support
+    url: https://data.ferc.gov/developer/helpandsupport/
+  - type: TermsOfService
+    url: https://data.ferc.gov/disclaimer/
+  - type: DataCatalog
+    url: https://data.ferc.gov/datacatalog/
+  - type: FAQ
+    url: https://data.ferc.gov/faq/
+  - type: PostmanCollection
+    url: collections/ferc-xbrl-submission-api.postman_collection.json
+  - type: Documentation
+    url: https://www.ferc.gov/media/ferc-submission-api-step-step-guide
+  - type: GettingStarted
+    url: >-
+      https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+  - type: Portal
+    url: https://ecollection.ferc.gov/
+  - type: Registration
+    url: https://www.ferc.gov/company-registration
+  - type: Documentation
+    url: https://www.ferc.gov/filing-forms/eforms-refresh
+- aid: ferc:ferc-reference-api
+  name: FERC Reference API
+  description: Form lists and submission constraints.
+  humanURL: https://data.ferc.gov/developer/gettingstarted/
+  baseURL: https://api.data.ferc.gov/v1
+  tags:
+  - Reference
+  properties:
+  - type: OpenAPI
+    url: openapi/ferc-reference-api-openapi.yml
+  - type: Documentation
+    url: https://data.ferc.gov/developer/gettingstarted/
+  - type: APIReference
+    url: https://data.ferc.gov/developer/apiendpoints/
+  - type: GettingStarted
+    url: https://data.ferc.gov/developer/gettingstarted/understanding-our-apis/
+  - type: Signup
+    url: https://data.ferc.gov/developer/gettingstarted/sign-up-form/
+  - type: Authentication
+    url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  - type: RateLimits
+    url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  - type: Support
+    url: https://data.ferc.gov/developer/helpandsupport/
+  - type: TermsOfService
+    url: https://data.ferc.gov/disclaimer/
+  - type: DataCatalog
+    url: https://data.ferc.gov/datacatalog/
+  - type: FAQ
+    url: https://data.ferc.gov/faq/
+  - type: PostmanCollection
+    url: collections/ferc-xbrl-submission-api.postman_collection.json
+  - type: Documentation
+    url: https://www.ferc.gov/media/ferc-submission-api-step-step-guide
+  - type: GettingStarted
+    url: >-
+      https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+  - type: Portal
+    url: https://ecollection.ferc.gov/
+  - type: Registration
+    url: https://www.ferc.gov/company-registration
+  - type: Documentation
+    url: https://www.ferc.gov/filing-forms/eforms-refresh
+- aid: ferc:ferc-taxonomy-api
+  name: FERC Taxonomy API
+  description: XBRL taxonomy versions, packages and sample forms for the FERC eForms.
+  humanURL: https://data.ferc.gov/developer/gettingstarted/
+  baseURL: https://api.data.ferc.gov/v1
+  tags:
+  - Taxonomy
+  properties:
+  - type: OpenAPI
+    url: openapi/ferc-taxonomy-api-openapi.yml
+  - type: Documentation
+    url: https://data.ferc.gov/developer/gettingstarted/
+  - type: APIReference
+    url: https://data.ferc.gov/developer/apiendpoints/
+  - type: GettingStarted
+    url: https://data.ferc.gov/developer/gettingstarted/understanding-our-apis/
+  - type: Signup
+    url: https://data.ferc.gov/developer/gettingstarted/sign-up-form/
+  - type: Authentication
+    url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  - type: RateLimits
+    url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+  - type: Support
+    url: https://data.ferc.gov/developer/helpandsupport/
+  - type: TermsOfService
+    url: https://data.ferc.gov/disclaimer/
+  - type: DataCatalog
+    url: https://data.ferc.gov/datacatalog/
+  - type: FAQ
+    url: https://data.ferc.gov/faq/
+  - type: PostmanCollection
+    url: collections/ferc-xbrl-submission-api.postman_collection.json
+  - type: Documentation
+    url: https://www.ferc.gov/media/ferc-submission-api-step-step-guide
+  - type: GettingStarted
+    url: >-
+      https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
   - type: Portal
     url: https://ecollection.ferc.gov/
   - type: Registration
