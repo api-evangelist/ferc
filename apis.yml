@@ -23,6 +23,18 @@ description: The Federal Energy Regulatory Commission (FERC) is the independent 
   in FERC's surface, because retail customer data is outside its statutory reach.
   FERC is therefore an open-market-data, zero-consumer-data regulator, and it publishes
   a better documented API than most of the utilities it indirectly touches.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://ecollection.ferc.gov/assets/images/ferc-logo/ferc%20logo.png
 tags:
 - Energy
