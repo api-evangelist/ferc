@@ -107,6 +107,8 @@ apis:
   humanURL: https://data.ferc.gov/developer/gettingstarted/
   baseURL: https://api.data.ferc.gov/v1
   tags:
+  - Data Assets
+  tags_raw:
   - Data-Assets
   properties:
   - type: OpenAPI
@@ -236,6 +238,8 @@ apis:
   humanURL: https://data.ferc.gov/developer/gettingstarted/
   baseURL: https://api.data.ferc.gov/v1
   tags:
+  - Filings
+  tags_raw:
   - Filing
   properties:
   - type: OpenAPI
