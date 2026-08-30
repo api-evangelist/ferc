@@ -1,0 +1,130 @@
+openapi: 3.2.0
+info:
+  title: FERC eForms (eCollection) Reference API
+  version: '2026-07-27'
+  description: 'Machine-readable description of the FERC eForms XBRL API hosted at https://ecollection.ferc.gov/api. FERC publishes NO OpenAPI for this API. This document is DERIVED, not harvested: every path below is a literal URL string taken from FERC''s own shipped production JavaScript bundle (https://ecollection.ferc.gov/main.6c69ecbce3fd46f494eb.js, `environment.apiURL = "https://eCollection.ferc.gov/api/"`), or from FERC''s published Postman collection and Submission API step-by-step guide, and each was probed live on 2026-07-27 with the HTTP status recorded in `x-evidence`. Response schemas are derived ONLY from responses actually observed on those probes — no field is invented. Endpoints that answered 401 are described by path and method only, with no invented request or response body.
+
+
+    Two surfaces live here. (1) An ANONYMOUS PUBLIC READ surface — the public submission history of every FERC eForms filing, per-filing detail, the XBRL taxonomy version history and taxonomy packages, the form list, and the submission constraints — none of which is advertised on data.ferc.gov or in FERC''s developer documentation. (2) The CREDENTIALED WRITE surface — the OAuth2 password-grant token endpoint and the external filing endpoint documented in FERC''s vendor files library for regulated filers.
+
+
+    PERSONAL DATA NOTICE: GET /PublicSubmissionHistory returns a `filerEmail` field carrying the work email address of the individual who submitted each filing, served anonymously with no authentication. The field is documented here structurally; no example in this repository carries a real value, and no agent skill or MCP tool in this repository is built on this endpoint.'
+  contact:
+    name: FERC Online Support
+    url: https://www.ferc.gov/ferc-online/overview
+  license:
+    name: U.S. Government Work (public domain, 17 U.S.C. 105)
+    url: https://data.ferc.gov/disclaimer/
+  x-provenance:
+    generated: '2026-07-27'
+    method: derived
+    sources:
+    - https://ecollection.ferc.gov/main.6c69ecbce3fd46f494eb.js
+    - collections/ferc-xbrl-submission-api.postman_collection.json
+    - https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+    - live HTTP probes 2026-07-27
+    note: Not published by FERC. Derived by API Evangelist from FERC's own production client bundle plus live anonymous probes. Report inaccuracies rather than treating this as an authoritative contract.
+servers:
+- url: https://ecollection.ferc.gov/api
+  description: Production
+tags:
+- name: Reference
+  description: Form lists and submission constraints.
+paths:
+  /SubmissionHistory/forms:
+    get:
+      tags:
+      - Reference
+      operationId: listForms
+      summary: List the eForms form names and identifiers
+      description: Returns the form names, their numeric identifiers, and which identifiers are annual forms.
+      security: []
+      responses:
+        '200':
+          description: Form reference lists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormList'
+      x-evidence:
+        probed: '2026-07-27'
+        status: 200
+        authentication: none
+  /getTestStatus:
+    get:
+      tags:
+      - Reference
+      operationId: getTestStatus
+      summary: Get submission constraints and test-mode status
+      description: Returns whether the environment is in test status plus the submission constraints the filing client enforces — maximum XBRL name length, maximum file name length, maximum file size in bytes, and the allowed additional-file tags.
+      security: []
+      responses:
+        '200':
+          description: Submission constraints.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestStatus'
+      x-evidence:
+        probed: '2026-07-27'
+        status: 200
+        authentication: none
+  /faq:
+    get:
+      tags:
+      - Reference
+      operationId: listFaq
+      summary: List eForms portal FAQ entries
+      security: []
+      responses:
+        '200':
+          description: FAQ entries. Observed as an empty array on 2026-07-27.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      x-evidence:
+        probed: '2026-07-27'
+        status: 200
+        body: '[]'
+        authentication: none
+components:
+  schemas:
+    TestStatus:
+      type: object
+      properties:
+        status:
+          type: boolean
+        maxAllowedXbrlName:
+          type: integer
+        maxAllowedFileName:
+          type: integer
+        maxAllowedFileSize:
+          type: integer
+          description: Bytes.
+        allowedFileTags:
+          type: string
+        showReleaseNotesButton:
+          type: boolean
+    FormList:
+      type: object
+      properties:
+        formList:
+          type: array
+          items:
+            type: string
+        formIDList:
+          type: array
+          items:
+            type: integer
+        annualForms:
+          type: array
+          items:
+            type: integer
+  securitySchemes:
+    filerBearer:
+      type: http
+      scheme: bearer
+      description: Bearer token issued by POST /token via the OAuth 2.0 password grant with role=filer.

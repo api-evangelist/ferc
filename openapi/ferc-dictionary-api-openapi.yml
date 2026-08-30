@@ -1,0 +1,62 @@
+openapi: 3.2.0
+info:
+  title: Endpoints Dictionary API
+  description: "Our API provides the necessary services to access data programmatically. You first need to utilize the **Data-Assets endpoint** to obtain the **dataset ID** before you can call the Details, Data, and Dictionary endpoints. The dataset ID is required to retrieve the respective dataset information.\n\n Please note that executing the endpoints directly on this page will only return the first 100 rows, whereas you can expect the full dataset when executing them from the browser or your application. You can get a  [better understanding of our APIs](/developer/gettingstarted/understanding-our-apis/) by reviewing our documentaiton."
+  x-logo:
+    url: /public/logo512.png
+host: https://api-staging.data.ferc.gov/v1
+schemes:
+- https
+security:
+- ApiKeyQueryAuth: []
+tags:
+- name: Dictionary
+paths:
+  /dataset/{id}/dictionary/:
+    get:
+      tags:
+      - Dictionary
+      summary: Fetch column descriptions and definitions from available data.
+      description: Get column descriptions and definitions from available data dictionaries (404 error if not available).
+      parameters:
+      - name: id
+        in: path
+        description: Enter the ID number you want to retrieve
+        required: true
+        schema:
+          type: string
+          example: 1
+      operationId: dictionary-id
+      responses:
+        '200':
+          description: Successfully returned object containing dictionary
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  example:
+                    dictionary:
+                    - column_id: 0
+                      column_name: string
+                      data_type: DOUBLE
+                      description: string
+                      description_url: ''
+                    - '...': '...'
+        '401':
+          description: Unauthorized - Request unsuccessful due to lack of validation
+        '404':
+          description: Not Found - Dataset ID does not exist
+        '405':
+          description: Method Not Allowed - Only GET requests are allowed
+        '429':
+          description: Too Many Requests - Blocked due to multiple requests in a short period
+        '500':
+          description: Internal Server Error - Database error or server failure
+components:
+  securitySchemes:
+    ApiKeyQueryAuth:
+      type: apiKey
+      in: query
+      name: api_key
