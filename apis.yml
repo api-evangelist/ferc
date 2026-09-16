@@ -2,27 +2,23 @@ aid: ferc
 url: https://raw.githubusercontent.com/api-evangelist/ferc/refs/heads/main/apis.yml
 name: FERC
 kind: company
-description: The Federal Energy Regulatory Commission (FERC) is the independent United
-  States federal agency that regulates the interstate transmission of electricity,
-  natural gas, and oil, licenses hydropower projects, and oversees the wholesale power
-  markets run by the seven ISOs and RTOs. FERC sits on the wholesale side of the US
-  energy value chain — it does not regulate retail utility service, retail rates, or
-  the customer relationship, which remain with the fifty state public utility commissions.
-  That jurisdictional line defines FERC's API posture exactly. FERC operates a real,
-  self-serve open data API at api.data.ferc.gov, documented at data.ferc.gov with a
-  published OpenAPI 3.0 description, a free 40-character API key issued from a sign-up
-  form, a 1,000-request-per-hour rate limit, and X-Api-Key header or api_key query
-  authentication on the api.data.gov API Umbrella stack — genuinely open market and
-  regulatory data covering the Market-Based Rate Database, FERC Form No. 552 natural
-  gas transactions, FERC Form 556 qualifying facility certifications, Company Registration,
-  Annual Charges, Information Collections Management, and the NEPA infrastructure
-  schedule. FERC also runs a credentialed OAuth2 XBRL submission API at ecollection.ferc.gov
-  for the mandated eForms filings (Form Nos. 1, 2, 3-Q, 6, 60, 552, 714). What FERC
-  does NOT do is any part of consumer energy data — there is no Green Button, no ESPI,
-  no consumer data right, and no individual customer usage or billing API anywhere
-  in FERC's surface, because retail customer data is outside its statutory reach.
-  FERC is therefore an open-market-data, zero-consumer-data regulator, and it publishes
-  a better documented API than most of the utilities it indirectly touches.
+description: The Federal Energy Regulatory Commission (FERC) is the independent United States federal
+  agency that regulates the interstate transmission of electricity, natural gas, and oil, licenses hydropower
+  projects, and oversees the wholesale power markets run by the seven ISOs and RTOs. FERC sits on the
+  wholesale side of the US energy value chain — it does not regulate retail utility service, retail rates,
+  or the customer relationship, which remain with the fifty state public utility commissions. That jurisdictional
+  line defines FERC's API posture exactly. FERC operates a real, self-serve open data API at api.data.ferc.gov,
+  documented at data.ferc.gov with a published OpenAPI 3.0 description, a free 40-character API key issued
+  from a sign-up form, a 1,000-request-per-hour rate limit, and X-Api-Key header or api_key query authentication
+  on the api.data.gov API Umbrella stack — genuinely open market and regulatory data covering the Market-Based
+  Rate Database, FERC Form No. 552 natural gas transactions, FERC Form 556 qualifying facility certifications,
+  Company Registration, Annual Charges, Information Collections Management, and the NEPA infrastructure
+  schedule. FERC also runs a credentialed OAuth2 XBRL submission API at ecollection.ferc.gov for the mandated
+  eForms filings (Form Nos. 1, 2, 3-Q, 6, 60, 552, 714). What FERC does NOT do is any part of consumer
+  energy data — there is no Green Button, no ESPI, no consumer data right, and no individual customer
+  usage or billing API anywhere in FERC's surface, because retail customer data is outside its statutory
+  reach. FERC is therefore an open-market-data, zero-consumer-data regulator, and it publishes a better
+  documented API than most of the utilities it indirectly touches.
 deliveryModel:
   model: saas
   open_source: false
@@ -65,12 +61,11 @@ tags:
 - Hydropower
 - Oil Pipelines
 created: '2026-07-27'
-modified: '2026-07-27'
-x-artifacts-note: >-
-  No WellKnown pointer and no MCPServer pointer are wired for FERC on purpose. FERC serves no
-  /.well-known/ document on any host (twenty probes, 2026-07-27 — see well-known/ferc-well-known.yml)
-  and publishes no MCP server (mcp/ferc-mcp.yml is a candidate tool surface only). Both artifacts
-  record the absence; neither claims a capability FERC does not have.
+modified: '2026-09-16'
+x-artifacts-note: No WellKnown pointer and no MCPServer pointer are wired for FERC on purpose. FERC serves
+  no /.well-known/ document on any host (twenty probes, 2026-07-27 — see well-known/ferc-well-known.yml)
+  and publishes no MCP server (mcp/ferc-mcp.yml is a candidate tool surface only). Both artifacts record
+  the absence; neither claims a capability FERC does not have.
 specificationVersion: '0.23'
 apis:
 - aid: ferc:ferc-data-api
@@ -108,8 +103,7 @@ apis:
   - type: Documentation
     url: https://www.ferc.gov/media/ferc-submission-api-step-step-guide
   - type: GettingStarted
-    url: >-
-      https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+    url: https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
   - type: Portal
     url: https://ecollection.ferc.gov/
   - type: Registration
@@ -153,8 +147,7 @@ apis:
   - type: Documentation
     url: https://www.ferc.gov/media/ferc-submission-api-step-step-guide
   - type: GettingStarted
-    url: >-
-      https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+    url: https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
   - type: Portal
     url: https://ecollection.ferc.gov/
   - type: Registration
@@ -196,8 +189,7 @@ apis:
   - type: Documentation
     url: https://www.ferc.gov/media/ferc-submission-api-step-step-guide
   - type: GettingStarted
-    url: >-
-      https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+    url: https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
   - type: Portal
     url: https://ecollection.ferc.gov/
   - type: Registration
@@ -239,8 +231,7 @@ apis:
   - type: Documentation
     url: https://www.ferc.gov/media/ferc-submission-api-step-step-guide
   - type: GettingStarted
-    url: >-
-      https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+    url: https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
   - type: Portal
     url: https://ecollection.ferc.gov/
   - type: Registration
@@ -284,8 +275,7 @@ apis:
   - type: Documentation
     url: https://www.ferc.gov/media/ferc-submission-api-step-step-guide
   - type: GettingStarted
-    url: >-
-      https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+    url: https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
   - type: Portal
     url: https://ecollection.ferc.gov/
   - type: Registration
@@ -327,8 +317,7 @@ apis:
   - type: Documentation
     url: https://www.ferc.gov/media/ferc-submission-api-step-step-guide
   - type: GettingStarted
-    url: >-
-      https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+    url: https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
   - type: Portal
     url: https://ecollection.ferc.gov/
   - type: Registration
@@ -370,8 +359,7 @@ apis:
   - type: Documentation
     url: https://www.ferc.gov/media/ferc-submission-api-step-step-guide
   - type: GettingStarted
-    url: >-
-      https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+    url: https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
   - type: Portal
     url: https://ecollection.ferc.gov/
   - type: Registration
@@ -413,8 +401,7 @@ apis:
   - type: Documentation
     url: https://www.ferc.gov/media/ferc-submission-api-step-step-guide
   - type: GettingStarted
-    url: >-
-      https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
+    url: https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf
   - type: Portal
     url: https://ecollection.ferc.gov/
   - type: Registration
@@ -423,10 +410,10 @@ apis:
     url: https://www.ferc.gov/filing-forms/eforms-refresh
 common:
 - type: OpenAPI
-  url: openapi/ferc-data-api-openapi.json
+  url: openapi/_original/ferc-data-api-openapi.json
   name: FERC Open Data API — OpenAPI 3.0 published by FERC
 - type: OpenAPI
-  url: openapi/ferc-eforms-api-openapi-derived.yml
+  url: openapi/_original/ferc-eforms-api-openapi-derived.yml
   name: FERC eForms API — OpenAPI 3.1 derived by API Evangelist
 - type: Overlay
   url: overlays/ferc-data-api-overlay.yaml
