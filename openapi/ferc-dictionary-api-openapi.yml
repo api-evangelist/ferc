@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Endpoints Dictionary API
-  description: "Our API provides the necessary services to access data programmatically. You first need to utilize the **Data-Assets endpoint** to obtain the **dataset ID** before you can call the Details, Data, and Dictionary endpoints. The dataset ID is required to retrieve the respective dataset information.\n\n Please note that executing the endpoints directly on this page will only return the first 100 rows, whereas you can expect the full dataset when executing them from the browser or your application. You can get a  [better understanding of our APIs](/developer/gettingstarted/understanding-our-apis/) by reviewing our documentaiton."
+  description: Our API provides the necessary services to access data programmatically.
   x-logo:
     url: /public/logo512.png
 host: https://api-staging.data.ferc.gov/v1
@@ -16,7 +16,7 @@ paths:
     get:
       tags:
       - Dictionary
-      summary: Fetch column descriptions and definitions from available data.
+      summary: Fetch column descriptions and definitions from available data
       description: Get column descriptions and definitions from available data dictionaries (404 error if not available).
       parameters:
       - name: id

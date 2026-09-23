@@ -2,13 +2,7 @@ openapi: 3.2.0
 info:
   title: FERC eForms (eCollection) Filing API
   version: '2026-07-27'
-  description: 'Machine-readable description of the FERC eForms XBRL API hosted at https://ecollection.ferc.gov/api. FERC publishes NO OpenAPI for this API. This document is DERIVED, not harvested: every path below is a literal URL string taken from FERC''s own shipped production JavaScript bundle (https://ecollection.ferc.gov/main.6c69ecbce3fd46f494eb.js, `environment.apiURL = "https://eCollection.ferc.gov/api/"`), or from FERC''s published Postman collection and Submission API step-by-step guide, and each was probed live on 2026-07-27 with the HTTP status recorded in `x-evidence`. Response schemas are derived ONLY from responses actually observed on those probes — no field is invented. Endpoints that answered 401 are described by path and method only, with no invented request or response body.
-
-
-    Two surfaces live here. (1) An ANONYMOUS PUBLIC READ surface — the public submission history of every FERC eForms filing, per-filing detail, the XBRL taxonomy version history and taxonomy packages, the form list, and the submission constraints — none of which is advertised on data.ferc.gov or in FERC''s developer documentation. (2) The CREDENTIALED WRITE surface — the OAuth2 password-grant token endpoint and the external filing endpoint documented in FERC''s vendor files library for regulated filers.
-
-
-    PERSONAL DATA NOTICE: GET /PublicSubmissionHistory returns a `filerEmail` field carrying the work email address of the individual who submitted each filing, served anonymously with no authentication. The field is documented here structurally; no example in this repository carries a real value, and no agent skill or MCP tool in this repository is built on this endpoint.'
+  description: Machine-readable description of the FERC eForms XBRL API hosted at https://ecollection.ferc.gov/api.
   contact:
     name: FERC Online Support
     url: https://www.ferc.gov/ferc-online/overview

@@ -1,0 +1,42 @@
+{
+  "provider": "ferc",
+  "sources": [
+    "_original/ferc-data-api-openapi.json",
+    "_original/ferc-eforms-api-openapi-derived.yml"
+  ],
+  "outputs": [
+    "ferc-data-api-openapi.yml",
+    "ferc-data-assets-api-openapi.yml",
+    "ferc-details-api-openapi.yml",
+    "ferc-dictionary-api-openapi.yml",
+    "ferc-filing-api-openapi.yml",
+    "ferc-public-filings-api-openapi.yml",
+    "ferc-reference-api-openapi.yml",
+    "ferc-taxonomy-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [
+    "ferc-data-api-openapi.json: info.version missing"
+  ],
+  "notes": [
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "ferc-data-api-openapi.json: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "ferc-data-api-openapi.json: declared missing tag: Data",
+    "ferc-data-api-openapi.json: declared missing tag: Data-Assets",
+    "ferc-data-api-openapi.json: declared missing tag: Details",
+    "ferc-data-api-openapi.json: declared missing tag: Dictionary",
+    "ferc-eforms-api-openapi-derived.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "ferc-data-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ferc-data-assets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ferc-details-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ferc-dictionary-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ferc-filing-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ferc-public-filings-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ferc-reference-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ferc-taxonomy-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

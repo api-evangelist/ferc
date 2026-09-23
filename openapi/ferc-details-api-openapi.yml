@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Endpoints Details API
-  description: "Our API provides the necessary services to access data programmatically. You first need to utilize the **Data-Assets endpoint** to obtain the **dataset ID** before you can call the Details, Data, and Dictionary endpoints. The dataset ID is required to retrieve the respective dataset information.\n\n Please note that executing the endpoints directly on this page will only return the first 100 rows, whereas you can expect the full dataset when executing them from the browser or your application. You can get a  [better understanding of our APIs](/developer/gettingstarted/understanding-our-apis/) by reviewing our documentaiton."
+  description: Our API provides the necessary services to access data programmatically.
   x-logo:
     url: /public/logo512.png
 host: https://api-staging.data.ferc.gov/v1
@@ -16,7 +16,7 @@ paths:
     get:
       tags:
       - Details
-      summary: Fetch metadata, data asset, row count, and column information.
+      summary: Fetch metadata, data asset, row count, and column information
       description: The Detail endpoint provides metadata information about a specific dataset by providing its ***dataset ID number***. This endpoint returns the description of the dataset, the associated industry, the most recent update date and time, the source URL, and the designated point of contact information for further inquiries on the dataset.
       parameters:
       - name: id

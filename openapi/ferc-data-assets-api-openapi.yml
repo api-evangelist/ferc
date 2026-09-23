@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Endpoints Data Assets API
-  description: "Our API provides the necessary services to access data programmatically. You first need to utilize the **Data-Assets endpoint** to obtain the **dataset ID** before you can call the Details, Data, and Dictionary endpoints. The dataset ID is required to retrieve the respective dataset information.\n\n Please note that executing the endpoints directly on this page will only return the first 100 rows, whereas you can expect the full dataset when executing them from the browser or your application. You can get a  [better understanding of our APIs](/developer/gettingstarted/understanding-our-apis/) by reviewing our documentaiton."
+  description: Our API provides the necessary services to access data programmatically.
   x-logo:
     url: /public/logo512.png
 host: https://api-staging.data.ferc.gov/v1
@@ -10,13 +10,13 @@ schemes:
 security:
 - ApiKeyQueryAuth: []
 tags:
-- name: Data-Assets
+- name: Data Assets
 paths:
   /data-assets/:
     get:
       tags:
-      - Data-Assets
-      summary: Fetch metadata information on the data asset and its associated Datasets.
+      - Data Assets
+      summary: Fetch metadata information on the data asset and its associated Datasets
       description: This endpoint displays the metadata, including descriptions and titles, which will help you determine which datasets are available. After identifying the dataset you want to explore further, record it’s ID number and enter it for the other endpoints to retrieve data.
       operationId: data-asset-id
       responses:
