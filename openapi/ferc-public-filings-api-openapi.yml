@@ -83,40 +83,6 @@ paths:
         authentication: none
 components:
   schemas:
-    SubmissionDetail:
-      type: object
-      properties:
-        additionalNotes:
-          type: string
-        accessionNumber:
-          type: string
-          description: FERC accession number, e.g. 20260727-8000.
-        privilegedAccessionNumber:
-          type:
-          - string
-          - 'null'
-        attachments:
-          type: array
-          items:
-            type: object
-            properties:
-              fileID:
-                type: integer
-              fileType:
-                type: string
-                description: e.g. XBRL_INSTANCE_FILE, HTML_RENDERING.
-              fileName:
-                type: string
-              isConfidential:
-                type: boolean
-              fileBlob:
-                type: string
-        cpaCertRequired:
-          type: boolean
-        cpaCertUploaded:
-          type: boolean
-        isFiledThrougheForms:
-          type: boolean
     PublicSubmission:
       type: object
       description: One public eForms filing record. Field set observed verbatim on 2026-07-27; no field added.
@@ -152,6 +118,40 @@ components:
           format: email
           description: PERSONAL DATA. The work email address of the individual filer, served anonymously. Do not harvest; no example value is recorded in this repository.
           x-personal-data: true
+    SubmissionDetail:
+      type: object
+      properties:
+        additionalNotes:
+          type: string
+        accessionNumber:
+          type: string
+          description: FERC accession number, e.g. 20260727-8000.
+        privilegedAccessionNumber:
+          type:
+          - string
+          - 'null'
+        attachments:
+          type: array
+          items:
+            type: object
+            properties:
+              fileID:
+                type: integer
+              fileType:
+                type: string
+                description: e.g. XBRL_INSTANCE_FILE, HTML_RENDERING.
+              fileName:
+                type: string
+              isConfidential:
+                type: boolean
+              fileBlob:
+                type: string
+        cpaCertRequired:
+          type: boolean
+        cpaCertUploaded:
+          type: boolean
+        isFiledThrougheForms:
+          type: boolean
   securitySchemes:
     filerBearer:
       type: http
