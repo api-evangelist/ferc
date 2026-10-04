@@ -86,6 +86,21 @@ paths:
         authentication: none
 components:
   schemas:
+    FormList:
+      type: object
+      properties:
+        formList:
+          type: array
+          items:
+            type: string
+        formIDList:
+          type: array
+          items:
+            type: integer
+        annualForms:
+          type: array
+          items:
+            type: integer
     TestStatus:
       type: object
       properties:
@@ -102,21 +117,6 @@ components:
           type: string
         showReleaseNotesButton:
           type: boolean
-    FormList:
-      type: object
-      properties:
-        formList:
-          type: array
-          items:
-            type: string
-        formIDList:
-          type: array
-          items:
-            type: integer
-        annualForms:
-          type: array
-          items:
-            type: integer
   securitySchemes:
     filerBearer:
       type: http
