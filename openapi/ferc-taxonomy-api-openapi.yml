@@ -144,6 +144,13 @@ paths:
         status: 401
 components:
   schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        error:
+          type: string
     TaxonomyVersion:
       type: object
       properties:
@@ -179,13 +186,6 @@ components:
           description: JSON-encoded string of the published schema URLs for the release, keyed url0, url1, ...
         revisionNumber:
           type: integer
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-        error:
-          type: string
   securitySchemes:
     filerBearer:
       type: http
