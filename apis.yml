@@ -202,6 +202,8 @@ apis:
   humanURL: https://data.ferc.gov/developer/gettingstarted/
   baseURL: https://api.data.ferc.gov/v1
   tags:
+  - Dictionaries
+  tags_raw:
   - Dictionary
   properties:
   - type: OpenAPI
