@@ -2,7 +2,7 @@
   "provider": "ferc",
   "sources": [
     "_original/ferc-data-api-openapi.json",
-    "_original/ferc-eforms-api-openapi-derived.yml"
+    "_ae-authored/ferc-eforms-api-openapi-derived.yml"
   ],
   "outputs": [
     "ferc-data-api-openapi.yml",
@@ -20,7 +20,7 @@
     "ferc-data-api-openapi.json: info.version missing"
   ],
   "notes": [
-    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "ferc-data-api-openapi.json: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
     "ferc-data-api-openapi.json: declared missing tag: Data",
     "ferc-data-api-openapi.json: declared missing tag: Data-Assets",

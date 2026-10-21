@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/ferc/main/json-schema/ferc-public-submission-schema.json",
+  "title": "PublicSubmission",
+  "description": "One public eForms filing record. Field set observed verbatim on 2026-07-27; no field added.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/ferc-public-filings-api-openapi.yml#/components/schemas/PublicSubmission",
+  "type": "object",
+  "properties": {
+    "filingID": {
+      "type": "integer"
+    },
+    "cid": {
+      "type": "string",
+      "description": "FERC Company Registration company identifier, e.g. C0#####."
+    },
+    "companyName": {
+      "type": "string"
+    },
+    "formName": {
+      "type": "string",
+      "description": "e.g. \"Form 1\", \"Form 3Q Electric\", \"Form 714\"."
+    },
+    "year": {
+      "type": "integer"
+    },
+    "period": {
+      "type": "string",
+      "description": "Q1, Q2, Q3 or Q4."
+    },
+    "submittedOn": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "description": "e.g. \"Accepted\"."
+    },
+    "isConfidential": {
+      "type": "boolean"
+    },
+    "isTestSubmission": {
+      "type": "string",
+      "description": "e.g. \"Not Test\"."
+    },
+    "filerEmail": {
+      "type": "string",
+      "format": "email",
+      "description": "PERSONAL DATA. The work email address of the individual filer, served anonymously. Do not harvest; no example value is recorded in this repository.",
+      "x-personal-data": true
+    }
+  }
+}

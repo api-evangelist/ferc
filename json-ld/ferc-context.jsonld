@@ -1,0 +1,178 @@
+{
+  "@context": {
+    "@vocab": "https://ferc.gov/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "ferc": "https://ferc.gov/schema#",
+    "Error": "ferc:Error",
+    "message": {
+      "@id": "ferc:message",
+      "@type": "xsd:string"
+    },
+    "error": {
+      "@id": "ferc:error",
+      "@type": "xsd:string"
+    },
+    "PublicSubmission": "ferc:PublicSubmission",
+    "filingID": {
+      "@id": "ferc:filingID",
+      "@type": "xsd:integer"
+    },
+    "cid": {
+      "@id": "ferc:cid",
+      "@type": "xsd:string"
+    },
+    "companyName": {
+      "@id": "ferc:companyName",
+      "@type": "xsd:string"
+    },
+    "formName": {
+      "@id": "ferc:formName",
+      "@type": "xsd:string"
+    },
+    "year": {
+      "@id": "ferc:year",
+      "@type": "xsd:integer"
+    },
+    "period": {
+      "@id": "ferc:period",
+      "@type": "xsd:string"
+    },
+    "submittedOn": {
+      "@id": "ferc:submittedOn",
+      "@type": "xsd:dateTime"
+    },
+    "status": {
+      "@id": "ferc:status",
+      "@type": "xsd:string"
+    },
+    "isConfidential": {
+      "@id": "ferc:isConfidential",
+      "@type": "xsd:boolean"
+    },
+    "isTestSubmission": {
+      "@id": "ferc:isTestSubmission",
+      "@type": "xsd:string"
+    },
+    "filerEmail": {
+      "@id": "ferc:filerEmail",
+      "@type": "xsd:string"
+    },
+    "SubmissionDetail": "ferc:SubmissionDetail",
+    "additionalNotes": {
+      "@id": "ferc:additionalNotes",
+      "@type": "xsd:string"
+    },
+    "accessionNumber": {
+      "@id": "ferc:accessionNumber",
+      "@type": "xsd:string"
+    },
+    "privilegedAccessionNumber": {
+      "@id": "ferc:privilegedAccessionNumber",
+      "@type": "xsd:string"
+    },
+    "attachments": {
+      "@id": "ferc:attachments",
+      "@container": "@list"
+    },
+    "cpaCertRequired": {
+      "@id": "ferc:cpaCertRequired",
+      "@type": "xsd:boolean"
+    },
+    "cpaCertUploaded": {
+      "@id": "ferc:cpaCertUploaded",
+      "@type": "xsd:boolean"
+    },
+    "isFiledThrougheForms": {
+      "@id": "ferc:isFiledThrougheForms",
+      "@type": "xsd:boolean"
+    },
+    "FormList": "ferc:FormList",
+    "formList": {
+      "@id": "ferc:formList",
+      "@container": "@list"
+    },
+    "formIDList": {
+      "@id": "ferc:formIDList",
+      "@container": "@list"
+    },
+    "annualForms": {
+      "@id": "ferc:annualForms",
+      "@container": "@list"
+    },
+    "TestStatus": "ferc:TestStatus",
+    "maxAllowedXbrlName": {
+      "@id": "ferc:maxAllowedXbrlName",
+      "@type": "xsd:integer"
+    },
+    "maxAllowedFileName": {
+      "@id": "ferc:maxAllowedFileName",
+      "@type": "xsd:integer"
+    },
+    "maxAllowedFileSize": {
+      "@id": "ferc:maxAllowedFileSize",
+      "@type": "xsd:integer"
+    },
+    "allowedFileTags": {
+      "@id": "ferc:allowedFileTags",
+      "@type": "xsd:string"
+    },
+    "showReleaseNotesButton": {
+      "@id": "ferc:showReleaseNotesButton",
+      "@type": "xsd:boolean"
+    },
+    "TaxonomyVersion": "ferc:TaxonomyVersion",
+    "versionID": {
+      "@id": "ferc:versionID",
+      "@type": "xsd:integer"
+    },
+    "formID": {
+      "@id": "ferc:formID",
+      "@type": "xsd:integer"
+    },
+    "startYear": {
+      "@id": "ferc:startYear",
+      "@type": "xsd:integer"
+    },
+    "startPeriod": {
+      "@id": "ferc:startPeriod",
+      "@type": "xsd:string"
+    },
+    "endYear": {
+      "@id": "ferc:endYear",
+      "@type": "xsd:integer"
+    },
+    "endPeriod": {
+      "@id": "ferc:endPeriod",
+      "@type": "xsd:string"
+    },
+    "version": {
+      "@id": "ferc:version",
+      "@type": "xsd:string"
+    },
+    "versionCount": {
+      "@id": "ferc:versionCount",
+      "@type": "xsd:integer"
+    },
+    "publishString": {
+      "@id": "ferc:publishString",
+      "@type": "xsd:string"
+    },
+    "revisionNumber": {
+      "@id": "ferc:revisionNumber",
+      "@type": "xsd:integer"
+    }
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "FERC API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects FERC's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-20) from openapi/ferc-data-api-openapi.yml, openapi/ferc-data-assets-api-openapi.yml, openapi/ferc-details-api-openapi.yml.",
+  "dcterms:created": "2026-10-20",
+  "dcterms:source": [
+    "openapi/ferc-data-api-openapi.yml",
+    "openapi/ferc-data-assets-api-openapi.yml",
+    "openapi/ferc-details-api-openapi.yml",
+    "openapi/ferc-dictionary-api-openapi.yml",
+    "openapi/ferc-filing-api-openapi.yml"
+  ]
+}

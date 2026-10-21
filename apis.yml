@@ -1,24 +1,25 @@
 aid: ferc
+
 url: https://raw.githubusercontent.com/api-evangelist/ferc/refs/heads/main/apis.yml
+
 name: FERC
+
 kind: company
-description: The Federal Energy Regulatory Commission (FERC) is the independent United States federal
-  agency that regulates the interstate transmission of electricity, natural gas, and oil, licenses hydropower
-  projects, and oversees the wholesale power markets run by the seven ISOs and RTOs. FERC sits on the
-  wholesale side of the US energy value chain — it does not regulate retail utility service, retail rates,
-  or the customer relationship, which remain with the fifty state public utility commissions. That jurisdictional
-  line defines FERC's API posture exactly. FERC operates a real, self-serve open data API at api.data.ferc.gov,
-  documented at data.ferc.gov with a published OpenAPI 3.0 description, a free 40-character API key issued
-  from a sign-up form, a 1,000-request-per-hour rate limit, and X-Api-Key header or api_key query authentication
-  on the api.data.gov API Umbrella stack — genuinely open market and regulatory data covering the Market-Based
-  Rate Database, FERC Form No. 552 natural gas transactions, FERC Form 556 qualifying facility certifications,
-  Company Registration, Annual Charges, Information Collections Management, and the NEPA infrastructure
-  schedule. FERC also runs a credentialed OAuth2 XBRL submission API at ecollection.ferc.gov for the mandated
-  eForms filings (Form Nos. 1, 2, 3-Q, 6, 60, 552, 714). What FERC does NOT do is any part of consumer
-  energy data — there is no Green Button, no ESPI, no consumer data right, and no individual customer
-  usage or billing API anywhere in FERC's surface, because retail customer data is outside its statutory
-  reach. FERC is therefore an open-market-data, zero-consumer-data regulator, and it publishes a better
-  documented API than most of the utilities it indirectly touches.
+
+description: The Federal Energy Regulatory Commission (FERC) is the independent United States federal agency that regulates the interstate transmission
+  of electricity, natural gas, and oil, licenses hydropower projects, and oversees the wholesale power markets run by the seven ISOs and RTOs.
+  FERC sits on the wholesale side of the US energy value chain — it does not regulate retail utility service, retail rates, or the customer relationship,
+  which remain with the fifty state public utility commissions. That jurisdictional line defines FERC's API posture exactly. FERC operates a real,
+  self-serve open data API at api.data.ferc.gov, documented at data.ferc.gov with a published OpenAPI 3.0 description, a free 40-character API
+  key issued from a sign-up form, a 1,000-request-per-hour rate limit, and X-Api-Key header or api_key query authentication on the api.data.gov
+  API Umbrella stack — genuinely open market and regulatory data covering the Market-Based Rate Database, FERC Form No. 552 natural gas transactions,
+  FERC Form 556 qualifying facility certifications, Company Registration, Annual Charges, Information Collections Management, and the NEPA infrastructure
+  schedule. FERC also runs a credentialed OAuth2 XBRL submission API at ecollection.ferc.gov for the mandated eForms filings (Form Nos. 1, 2,
+  3-Q, 6, 60, 552, 714). What FERC does NOT do is any part of consumer energy data — there is no Green Button, no ESPI, no consumer data right,
+  and no individual customer usage or billing API anywhere in FERC's surface, because retail customer data is outside its statutory reach. FERC
+  is therefore an open-market-data, zero-consumer-data regulator, and it publishes a better documented API than most of the utilities it indirectly
+  touches.
+
 deliveryModel:
   model: saas
   open_source: false
@@ -31,6 +32,7 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
+
 accessModel:
   pricing: unknown
   onboarding: self-serve
@@ -46,7 +48,9 @@ accessModel:
   - sandbox
   generated: '2026-09-02'
   method: derived
+
 image: https://ecollection.ferc.gov/assets/images/ferc-logo/ferc%20logo.png
+
 tags:
 - Energy
 - United States
@@ -60,13 +64,127 @@ tags:
 - Wholesale Power Markets
 - Hydropower
 - Oil Pipelines
+
 created: '2026-07-27'
+
 modified: '2026-09-16'
-x-artifacts-note: No WellKnown pointer and no MCPServer pointer are wired for FERC on purpose. FERC serves
-  no /.well-known/ document on any host (twenty probes, 2026-07-27 — see well-known/ferc-well-known.yml)
-  and publishes no MCP server (mcp/ferc-mcp.yml is a candidate tool surface only). Both artifacts record
-  the absence; neither claims a capability FERC does not have.
+
+x-artifacts-note: No WellKnown pointer and no MCPServer pointer are wired for FERC on purpose. FERC serves no /.well-known/ document on any host
+  (twenty probes, 2026-07-27 — see well-known/ferc-well-known.yml) and publishes no MCP server (mcp/ferc-mcp.yml is a candidate tool surface only).
+  Both artifacts record the absence; neither claims a capability FERC does not have.
+
 specificationVersion: '0.23'
+
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
+
+common:
+- type: Spectral
+  url: rules/ferc-rules.yml
+- type: JSONLD
+  url: json-ld/ferc-context.jsonld
+- type: Vocabulary
+  url: vocabulary/ferc-vocabulary.yml
+- type: Deprecation
+  url: lifecycle/ferc-lifecycle.yml
+- type: Hosts
+  url: hosts/ferc-hosts.yml
+- type: Vendors
+  url: vendors/ferc-vendors.yml
+- type: Newsroom
+  url: https://www.ferc.gov/news-events/news/decisions-notices?new=
+- type: OpenAPI
+  url: openapi/_original/ferc-data-api-openapi.json
+  name: FERC Open Data API — OpenAPI 3.0 published by FERC
+- type: OpenAPI
+  url: openapi/_ae-authored/ferc-eforms-api-openapi-derived.yml
+  name: FERC eForms API — OpenAPI 3.1 derived by API Evangelist
+- type: Overlay
+  url: overlays/ferc-data-api-overlay.yaml
+- type: AgenticAccess
+  url: agentic-access/ferc-agentic-access.yml
+- type: DomainSecurity
+  url: security/ferc-domain-security.yml
+- type: Authentication
+  url: authentication/ferc-authentication.yml
+- type: Conventions
+  url: conventions/ferc-conventions.yml
+- type: ErrorCatalog
+  url: errors/ferc-problem-types.yml
+- type: Examples
+  url: examples/ferc-data-api-examples.yml
+- type: Examples
+  url: examples/ferc-eforms-api-examples.yml
+- type: RateLimits
+  url: rate-limits/ferc-rate-limits.yml
+- type: Lifecycle
+  url: lifecycle/ferc-lifecycle.yml
+- type: ChangeLog
+  url: changelog/ferc-changelog.yml
+  name: FERC eForms XBRL taxonomy release history
+- type: DataModel
+  url: data-model/ferc-data-model.yml
+- type: Conformance
+  url: conformance/ferc-conformance.yml
+- type: Sandbox
+  url: sandbox/ferc-sandbox.yml
+- type: Console
+  url: https://data.ferc.gov/developer/apiendpoints/
+  name: Interactive Swagger console — authorize a key and execute every endpoint
+  name: No official SDKs — registries probed, community packages recorded
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Arazzo
+  url: arazzo/ferc-dataset-discovery-and-retrieval.yml
+  name: Discover a FERC dataset and retrieve it
+- type: Postman
+  url: collections/ferc-xbrl-submission-api.postman_collection.json
+  name: FERC-XBRL submission collection published by FERC
+- type: Website
+  url: https://www.ferc.gov
+- type: Portal
+  url: https://data.ferc.gov/
+- type: Documentation
+  url: https://data.ferc.gov/developer/gettingstarted/
+- type: APIReference
+  url: https://data.ferc.gov/developer/apiendpoints/
+- type: GettingStarted
+  url: https://data.ferc.gov/developer/gettingstarted/understanding-our-apis/
+- type: DataCatalog
+  url: https://data.ferc.gov/datacatalog/
+- type: SignUp
+  url: https://data.ferc.gov/developer/gettingstarted/sign-up-form/
+- type: Authentication
+  url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+- type: RateLimits
+  url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
+- type: Support
+  url: https://data.ferc.gov/developer/helpandsupport/
+- type: FAQ
+  url: https://data.ferc.gov/developer/helpandsupport/api-faqs/
+- type: TermsOfService
+  url: https://data.ferc.gov/disclaimer/
+- type: PrivacyPolicy
+  url: https://www.ferc.gov/privacy
+- type: Security
+  url: https://www.ferc.gov/media/ferc-vulnerability-disclosure-policy
+  name: FERC Vulnerability Disclosure Policy v3.0 (CISA BOD 20-01)
+- type: VulnerabilityDisclosure
+  url: security/ferc-vulnerability-disclosure.yml
+- type: VulnerabilityDisclosure
+  url: https://www.ferc.gov/vulnerability-disclosure-policy
+- type: Strategy
+  url: https://www.ferc.gov/about/what-ferc/digital-strategy
+- type: LinkedIn
+  url: https://www.linkedin.com/company/federal-energy-regulatory-commission
+- type: Documentation
+  url: https://www.ferc.gov/ferc-online/elibrary
+  name: eLibrary document repository (web only, no public API)
+- type: Documentation
+  url: https://www.ferc.gov/power-sales-and-markets/electric-quarterly-reports-eqr
+  name: Electric Quarterly Reports (EQR) — bulk download, no public API
+
 apis:
 - aid: ferc:ferc-data-api
   name: FERC Data API
@@ -326,6 +444,10 @@ apis:
     url: https://www.ferc.gov/company-registration
   - type: Documentation
     url: https://www.ferc.gov/filing-forms/eforms-refresh
+  - type: JSONSchema
+    url: json-schema/ferc-public-submission-schema.json
+  - type: JSONSchema
+    url: json-schema/ferc-submission-detail-schema.json
 - aid: ferc:ferc-reference-api
   name: FERC Reference API
   description: Form lists and submission constraints.
@@ -368,6 +490,10 @@ apis:
     url: https://www.ferc.gov/company-registration
   - type: Documentation
     url: https://www.ferc.gov/filing-forms/eforms-refresh
+  - type: JSONSchema
+    url: json-schema/ferc-test-status-schema.json
+  - type: JSONSchema
+    url: json-schema/ferc-form-list-schema.json
 - aid: ferc:ferc-taxonomy-api
   name: FERC Taxonomy API
   description: XBRL taxonomy versions, packages and sample forms for the FERC eForms.
@@ -410,101 +536,10 @@ apis:
     url: https://www.ferc.gov/company-registration
   - type: Documentation
     url: https://www.ferc.gov/filing-forms/eforms-refresh
-common:
-- type: OpenAPI
-  url: openapi/_original/ferc-data-api-openapi.json
-  name: FERC Open Data API — OpenAPI 3.0 published by FERC
-- type: OpenAPI
-  url: openapi/_original/ferc-eforms-api-openapi-derived.yml
-  name: FERC eForms API — OpenAPI 3.1 derived by API Evangelist
-- type: Overlay
-  url: overlays/ferc-data-api-overlay.yaml
-- type: AgenticAccess
-  url: agentic-access/ferc-agentic-access.yml
-- type: DomainSecurity
-  url: security/ferc-domain-security.yml
-- type: Authentication
-  url: authentication/ferc-authentication.yml
-- type: Conventions
-  url: conventions/ferc-conventions.yml
-- type: ErrorCatalog
-  url: errors/ferc-problem-types.yml
-- type: Examples
-  url: examples/ferc-data-api-examples.yml
-- type: Examples
-  url: examples/ferc-eforms-api-examples.yml
-- type: RateLimits
-  url: rate-limits/ferc-rate-limits.yml
-- type: Lifecycle
-  url: lifecycle/ferc-lifecycle.yml
-- type: ChangeLog
-  url: changelog/ferc-changelog.yml
-  name: FERC eForms XBRL taxonomy release history
-- type: DataModel
-  url: data-model/ferc-data-model.yml
-- type: Conformance
-  url: conformance/ferc-conformance.yml
-- type: Sandbox
-  url: sandbox/ferc-sandbox.yml
-- type: Console
-  url: https://data.ferc.gov/developer/apiendpoints/
-  name: Interactive Swagger console — authorize a key and execute every endpoint
-- type: Packages
-  url: packages/ferc-packages.yml
-  name: No official SDKs — registries probed, community packages recorded
-- type: AgentSkill
-  url: skills/_index.yml
-- type: Arazzo
-  url: arazzo/ferc-dataset-discovery-and-retrieval.yml
-  name: Discover a FERC dataset and retrieve it
-- type: LLMsTxt
-  url: llms/ferc-llms.txt
-- type: Postman
-  url: collections/ferc-xbrl-submission-api.postman_collection.json
-  name: FERC-XBRL submission collection published by FERC
-- type: Website
-  url: https://www.ferc.gov
-- type: Portal
-  url: https://data.ferc.gov/
-- type: Documentation
-  url: https://data.ferc.gov/developer/gettingstarted/
-- type: APIReference
-  url: https://data.ferc.gov/developer/apiendpoints/
-- type: GettingStarted
-  url: https://data.ferc.gov/developer/gettingstarted/understanding-our-apis/
-- type: DataCatalog
-  url: https://data.ferc.gov/datacatalog/
-- type: SignUp
-  url: https://data.ferc.gov/developer/gettingstarted/sign-up-form/
-- type: Authentication
-  url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
-- type: RateLimits
-  url: https://data.ferc.gov/developer/gettingstarted/api-key-usage/
-- type: Support
-  url: https://data.ferc.gov/developer/helpandsupport/
-- type: FAQ
-  url: https://data.ferc.gov/developer/helpandsupport/api-faqs/
-- type: TermsOfService
-  url: https://data.ferc.gov/disclaimer/
-- type: PrivacyPolicy
-  url: https://www.ferc.gov/privacy
-- type: Security
-  url: https://www.ferc.gov/media/ferc-vulnerability-disclosure-policy
-  name: FERC Vulnerability Disclosure Policy v3.0 (CISA BOD 20-01)
-- type: VulnerabilityDisclosure
-  url: security/ferc-vulnerability-disclosure.yml
-- type: VulnerabilityDisclosure
-  url: https://www.ferc.gov/vulnerability-disclosure-policy
-- type: Strategy
-  url: https://www.ferc.gov/about/what-ferc/digital-strategy
-- type: LinkedIn
-  url: https://www.linkedin.com/company/federal-energy-regulatory-commission
-- type: Documentation
-  url: https://www.ferc.gov/ferc-online/elibrary
-  name: eLibrary document repository (web only, no public API)
-- type: Documentation
-  url: https://www.ferc.gov/power-sales-and-markets/electric-quarterly-reports-eqr
-  name: Electric Quarterly Reports (EQR) — bulk download, no public API
-maintainers:
-- FN: Kin Lane
-  email: kin@apievangelist.com
+  - type: JSONSchema
+    url: json-schema/ferc-taxonomy-version-schema.json
+x-enrichment:
+  date: '2026-10-20'
+  status: enriched
+  artifacts_added: 0
+  pass: local-v5

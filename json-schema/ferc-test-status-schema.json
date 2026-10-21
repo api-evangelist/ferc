@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/ferc/main/json-schema/ferc-test-status-schema.json",
+  "title": "TestStatus",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/ferc-reference-api-openapi.yml#/components/schemas/TestStatus",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "boolean"
+    },
+    "maxAllowedXbrlName": {
+      "type": "integer"
+    },
+    "maxAllowedFileName": {
+      "type": "integer"
+    },
+    "maxAllowedFileSize": {
+      "type": "integer",
+      "description": "Bytes."
+    },
+    "allowedFileTags": {
+      "type": "string"
+    },
+    "showReleaseNotesButton": {
+      "type": "boolean"
+    }
+  }
+}

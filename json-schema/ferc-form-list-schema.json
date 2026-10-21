@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/ferc/main/json-schema/ferc-form-list-schema.json",
+  "title": "FormList",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/ferc-reference-api-openapi.yml#/components/schemas/FormList",
+  "type": "object",
+  "properties": {
+    "formList": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "formIDList": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "annualForms": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    }
+  }
+}

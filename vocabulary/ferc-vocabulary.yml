@@ -1,0 +1,91 @@
+generated: '2026-10-20'
+method: derived
+generator: derive-vocabulary.py
+source:
+- openapi/ferc-data-api-openapi.yml
+- openapi/ferc-data-assets-api-openapi.yml
+- openapi/ferc-details-api-openapi.yml
+- openapi/ferc-dictionary-api-openapi.yml
+- openapi/ferc-filing-api-openapi.yml
+vocabulary:
+  name: FERC Domain Vocabulary
+  description: 'Terms declared by FERC''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions. Derived,
+    not authored.'
+  version: '2026-10-20'
+  terms:
+  - term: Filing
+    definition: Credentialed machine-to-machine submission of XBRL filings.
+    tags:
+    - Resource Group
+    source: openapi/ferc-filing-api-openapi.yml
+  - term: Public Filings
+    definition: Anonymous read access to the public FERC eForms submission record.
+    tags:
+    - Resource Group
+    source: openapi/ferc-public-filings-api-openapi.yml
+  - term: Reference
+    definition: Form lists and submission constraints.
+    tags:
+    - Resource Group
+    source: openapi/ferc-reference-api-openapi.yml
+  - term: Taxonomy
+    definition: XBRL taxonomy versions, packages and sample forms for the FERC eForms.
+    tags:
+    - Resource Group
+    source: openapi/ferc-taxonomy-api-openapi.yml
+  - term: Error
+    definition: 'Object declared by the contract with fields: message, error.'
+    tags:
+    - Object
+    source: openapi/ferc-filing-api-openapi.yml#/components/schemas/Error
+  - term: PublicSubmission
+    definition: One public eForms filing record. Field set observed verbatim on 2026-07-27; no field added.
+    tags:
+    - Object
+    source: openapi/ferc-public-filings-api-openapi.yml#/components/schemas/PublicSubmission
+  - term: SubmissionDetail
+    definition: 'Object declared by the contract with fields: additionalNotes, accessionNumber, privilegedAccessionNumber, attachments, cpaCertRequired,
+      cpaCertUploaded, isFiledThrougheForms.'
+    tags:
+    - Object
+    source: openapi/ferc-public-filings-api-openapi.yml#/components/schemas/SubmissionDetail
+  - term: FormList
+    definition: 'Object declared by the contract with fields: formList, formIDList, annualForms.'
+    tags:
+    - Object
+    source: openapi/ferc-reference-api-openapi.yml#/components/schemas/FormList
+  - term: TestStatus
+    definition: 'Object declared by the contract with fields: status, maxAllowedXbrlName, maxAllowedFileName, maxAllowedFileSize, allowedFileTags,
+      showReleaseNotesButton.'
+    tags:
+    - Object
+    source: openapi/ferc-reference-api-openapi.yml#/components/schemas/TestStatus
+  - term: TaxonomyVersion
+    definition: 'Object declared by the contract with fields: versionID, formID, formName, startYear, startPeriod, endYear, endPeriod, version,
+      versionCount, publishString, revisionNumber.'
+    tags:
+    - Object
+    source: openapi/ferc-taxonomy-api-openapi.yml#/components/schemas/TaxonomyVersion
+  - term: Data
+    definition: 'Resource group in the contract; its operation GET /dataset/{id}/data/: This endpoint returns all the data for the ID you provide.'
+    tags:
+    - Resource Group
+    source: openapi/ferc-data-api-openapi.yml
+  - term: Data Assets
+    definition: 'Resource group in the contract; its operation GET /data-assets/: This endpoint displays the metadata, including descriptions
+      and titles, which will help you determine which datasets are available.'
+    tags:
+    - Resource Group
+    source: openapi/ferc-data-assets-api-openapi.yml
+  - term: Details
+    definition: 'Resource group in the contract; its operation GET /dataset/{id}/details/: The Detail endpoint provides metadata information about
+      a specific dataset by providing its ***dataset ID number***.'
+    tags:
+    - Resource Group
+    source: openapi/ferc-details-api-openapi.yml
+  - term: Dictionary
+    definition: 'Resource group in the contract; its operation GET /dataset/{id}/dictionary/: Get column descriptions and definitions from available
+      data dictionaries (404 error if not available).'
+    tags:
+    - Resource Group
+    source: openapi/ferc-dictionary-api-openapi.yml

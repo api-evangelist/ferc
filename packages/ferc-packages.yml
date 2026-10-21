@@ -1,67 +1,91 @@
-generated: '2026-07-27'
-method: searched
+generated: '2026-10-20'
+method: none
 result: no-official-sdks
-summary: >-
-  FERC publishes no client libraries in any language. Registries probed on 2026-07-27 — npm, PyPI,
-  Maven Central, NuGet, pkg.go.dev, RubyGems, Packagist and crates.io — returned nothing first-party,
-  and FERC has no GitHub organisation. The community has filled the gap, notably Catalyst
-  Cooperative's PUDL project, which extracts and normalises FERC XBRL filings. FERC's own substitute
-  for an SDK is the code-snippet generator in its Swagger console (Python, JavaScript, Java, curl),
-  which emits per-endpoint request code after you authorise a key.
+summary: FERC publishes no client libraries in any language. Registries probed on 2026-07-27 — npm, PyPI, Maven Central, NuGet,
+  pkg.go.dev, RubyGems, Packagist and crates.io — returned nothing first-party, and FERC has no GitHub organisation. The community
+  has filled the gap, notably Catalyst Cooperative's PUDL project, which extracts and normalises FERC XBRL filings. FERC's
+  own substitute for an SDK is the code-snippet generator in its Swagger console (Python, JavaScript, Java, curl), which emits
+  per-endpoint request code after you authorise a key.
 official_packages: []
 registries_probed:
-  - {registry: npm, query: ferc, official_hits: 0}
-  - {registry: pypi, query: 'ferc, ferc-api, pyferc', official_hits: 0}
-  - {registry: maven-central, official_hits: 0}
-  - {registry: nuget, official_hits: 0}
-  - {registry: pkg.go.dev, official_hits: 0}
-  - {registry: rubygems, official_hits: 0}
-  - {registry: packagist, official_hits: 0}
-  - {registry: crates.io, official_hits: 0}
-  - {registry: github, query: FERC organisation, result: 'no official org — api.github.com/orgs/ferc returns 404'}
+- registry: npm
+  query: ferc
+  official_hits: 0
+- registry: pypi
+  query: ferc, ferc-api, pyferc
+  official_hits: 0
+- registry: maven-central
+  official_hits: 0
+- registry: nuget
+  official_hits: 0
+- registry: pkg.go.dev
+  official_hits: 0
+- registry: rubygems
+  official_hits: 0
+- registry: packagist
+  official_hits: 0
+- registry: crates.io
+  official_hits: 0
+- registry: github
+  query: FERC organisation
+  result: no official org — api.github.com/orgs/ferc returns 404
 community_packages:
-  - language: python
-    registry: pypi
-    name: catalystcoop.ferc-xbrl-extractor
-    url: https://pypi.org/project/catalystcoop.ferc-xbrl-extractor/
-    install: pip install catalystcoop.ferc-xbrl-extractor
-    official: false
-    maintainer: Catalyst Cooperative
-    description: A tool for extracting data from FERC XBRL filings.
-    relevance: >-
-      Operates on the eForms XBRL output — the read side of what the eForms submission API writes.
-  - language: python
-    registry: pypi
-    name: catalystcoop.pudl
-    url: https://pypi.org/project/catalystcoop.pudl/
-    install: pip install catalystcoop.pudl
-    official: false
-    maintainer: Catalyst Cooperative
-    description: >-
-      Public Utility Data Liberation Project — an open data processing pipeline for US energy data,
-      including FERC Form 1/2/6/60/714 and EQR.
-  - language: javascript
-    registry: npm
-    name: ferc-elibrary-api
-    url: https://www.npmjs.com/package/ferc-elibrary-api
-    install: npm install ferc-elibrary-api
-    version: 1.0.2
-    official: false
-    source: https://github.com/4very/ferc-elibrary-api
-    description: >-
-      Unofficial wrapper for FERC eLibrary. Note that eLibrary itself has no public API — this
-      package wraps the web interface.
+- language: python
+  registry: pypi
+  name: catalystcoop.ferc-xbrl-extractor
+  url: https://pypi.org/project/catalystcoop.ferc-xbrl-extractor/
+  install: pip install catalystcoop.ferc-xbrl-extractor
+  official: false
+  maintainer: Catalyst Cooperative
+  description: A tool for extracting data from FERC XBRL filings.
+  relevance: Operates on the eForms XBRL output — the read side of what the eForms submission API writes.
+- language: python
+  registry: pypi
+  name: catalystcoop.pudl
+  url: https://pypi.org/project/catalystcoop.pudl/
+  install: pip install catalystcoop.pudl
+  official: false
+  maintainer: Catalyst Cooperative
+  description: Public Utility Data Liberation Project — an open data processing pipeline for US energy data, including FERC
+    Form 1/2/6/60/714 and EQR.
+- language: javascript
+  registry: npm
+  name: ferc-elibrary-api
+  url: https://www.npmjs.com/package/ferc-elibrary-api
+  install: npm install ferc-elibrary-api
+  version: 1.0.2
+  official: false
+  source: https://github.com/4very/ferc-elibrary-api
+  description: Unofficial wrapper for FERC eLibrary. Note that eLibrary itself has no public API — this package wraps the
+    web interface.
 first_party_alternatives:
-  - name: Swagger console code snippets
-    url: https://data.ferc.gov/developer/apiendpoints/
-    languages: [Python, JavaScript, Java, 'curl (bash)', 'curl (cmd)']
-    note: Generated per endpoint after authorising an API key. Copy-paste, not a versioned library.
-  - name: FERC rendering tool (Arelle plugin)
-    url: https://www.ferc.gov/vendor-files-library
-    language: python
-    note: >-
-      First-party FERC code, but a filing-rendering plugin for Arelle rather than an API client. Not
-      distributed through a package registry.
-  - name: XULE validation rulesets
-    url: https://www.ferc.gov/vendor-files-library
-    note: First-party validation rules per form category, distributed as ruleset files.
+- name: Swagger console code snippets
+  url: https://data.ferc.gov/developer/apiendpoints/
+  languages:
+  - Python
+  - JavaScript
+  - Java
+  - curl (bash)
+  - curl (cmd)
+  note: Generated per endpoint after authorising an API key. Copy-paste, not a versioned library.
+- name: FERC rendering tool (Arelle plugin)
+  url: https://www.ferc.gov/vendor-files-library
+  language: python
+  note: First-party FERC code, but a filing-rendering plugin for Arelle rather than an API client. Not distributed through
+    a package registry.
+- name: XULE validation rulesets
+  url: https://www.ferc.gov/vendor-files-library
+  note: First-party validation rules per form category, distributed as ruleset files.
+packages: []
+source: https://pypi.org/pypi/<package>/json; registry searches listed in registries_probed
+rejected:
+- name: catalystcoop.ferc-xbrl-extractor
+  registry: pypi
+  reason: 'official: false as written'
+- name: catalystcoop.pudl
+  registry: pypi
+  reason: 'official: false as written'
+- name: ferc-elibrary-api
+  registry: npm
+  reason: 'official: false as written'
+note: 'no first-party package: every candidate a model listed was unowned (harvest-packages.py --audit)'
