@@ -1,4 +1,4 @@
-# FERC (ferc)
+# FERC
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,110 +64,155 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-The Federal Energy Regulatory Commission (FERC) is the independent United States federal agency that regulates the interstate transmission of electricity, natural gas, and oil, licenses hydropower projects, and oversees the wholesale power markets run by the seven ISOs and RTOs. FERC sits on the wholesale side of the US energy value chain — it does not regulate retail utility service, retail rates, or the customer relationship, which remain with the fifty state public utility commissions. That jurisdictional line defines FERC's API posture exactly. FERC operates a real, self-serve open data API at api.data.ferc.gov, documented at data.ferc.gov with a published OpenAPI 3.0 description, a free 40-character API key issued from a sign-up form, a 1,000-request-per-hour rate limit, and X-Api-Key header or api_key query authentication on the api.data.gov API Umbrella stack. FERC also runs a credentialed OAuth2 XBRL submission API at ecollection.ferc.gov for the mandated eForms filings. What FERC does NOT do is any part of consumer energy data — there is no Green Button, no ESPI, no consumer data right, and no individual customer usage or billing API anywhere in FERC's surface.
+The Federal Energy Regulatory Commission (FERC) is the independent United States federal agency that regulates the interstate transmission of electricity, natural gas, and oil, licenses hydropower projects, and oversees the wholesale power markets run by the seven ISOs and RTOs. FERC sits on the wholesale side of the US energy value chain — it does not regulate retail utility service, retail rates, or the customer relationship, which remain with the fifty state public utility commissions. That jurisdictional line defines FERC's API posture exactly. FERC operates a real, self-serve open data API at api.data.ferc.gov, documented at data.ferc.gov with a published OpenAPI 3.0 description, a free 40-character API key issued from a sign-up form, a 1,000-request-per-hour rate limit, and X-Api-Key header or api_key query authentication on the api.data.gov API Umbrella stack — genuinely open market and regulatory data covering the Market-Based Rate Database, FERC Form No. 552 natural gas transactions, FERC Form 556 qualifying facility certifications, Company Registration, Annual Charges, Information Collections Management, and the NEPA infrastructure schedule. FERC also runs a credentialed OAuth2 XBRL submission API at ecollection.ferc.gov for the mandated eForms filings (Form Nos. 1, 2, 3-Q, 6, 60, 552, 714). What FERC does NOT do is any part of consumer energy data — there is no Green Button, no ESPI, no consumer data right, and no individual customer usage or billing API anywhere in FERC's surface, because retail customer data is outside its statutory reach. FERC is therefore an open-market-data, zero-consumer-data regulator, and it publishes a better documented API than most of the utilities it indirectly touches.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/ferc/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/ferc/refs/heads/main/apis.yml)
+**Areas:** Energy · United States · Energy Markets · Electricity · Natural Gas · Grid · Regulator · Government · Open Data · Wholesale Power Markets · Hydropower · Oil Pipelines
 
-## Tags
+## FERC on APIs.io
 
-- Energy
-- United States
-- Energy Markets
-- Electricity
-- Natural Gas
-- Grid
-- Regulator
-- Government
-- Open Data
-- Wholesale Power Markets
-- Hydropower
-- Oil Pipelines
+Everything profiled for FERC is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/ferc/](https://apis.io/providers/ferc/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (8)
 
-- **Created:** 2026-07-27
-- **Modified:** 2026-07-27
+- [FERC Data API](https://apis.io/apis/ferc/ferc-data-api/) — The Data API from FERC — 1 operation(s) for data.
+- [FERC Data Assets API](https://apis.io/apis/ferc/ferc-data-assets-api/) — The Data-Assets API from FERC — 1 operation(s) for data-assets.
+- [FERC Details API](https://apis.io/apis/ferc/ferc-details-api/) — The Details API from FERC — 1 operation(s) for details.
+- [FERC Dictionary API](https://apis.io/apis/ferc/ferc-dictionary-api/) — The Dictionary API from FERC — 1 operation(s) for dictionary.
+- [FERC Filing API](https://apis.io/apis/ferc/ferc-filing-api/) — Credentialed machine-to-machine submission of XBRL filings.
+- [FERC Public Filings API](https://apis.io/apis/ferc/ferc-public-filings-api/) — Anonymous read access to the public FERC eForms submission record.
+- [FERC Reference API](https://apis.io/apis/ferc/ferc-reference-api/) — Form lists and submission constraints.
+- [FERC Taxonomy API](https://apis.io/apis/ferc/ferc-taxonomy-api/) — XBRL taxonomy versions, packages and sample forms for the FERC eForms.
 
-## APIs
+### Published properties
 
-### FERC Open Data API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-FERC's public open data API, serving the same data assets and datasets published in the data.ferc.gov Data Catalog. A Data-Assets endpoint returns the catalog and the dataset IDs; Details, Data, and Dictionary endpoints return per-dataset metadata, full row data, and column definitions. Free self-serve API key, 1,000 requests per hour, X-Api-Key header or api_key query parameter. Runs on the api.data.gov API Umbrella stack hosted on cloud.gov. Verified live 2026-07-27 — an unauthenticated GET returns HTTP 403 with `API_KEY_MISSING` and a bogus key returns HTTP 403 with `API_KEY_INVALID`.
+#### Arazzo workflows (1)
 
-- **Human URL:** [https://data.ferc.gov/developer/gettingstarted/](https://data.ferc.gov/developer/gettingstarted/)
-- **Base URL:** `https://api.data.ferc.gov/v1`
+Multi-step workflows that chain operations into a business task.
 
-#### Tags
+- [FERC open data — discover a dataset and retrieve it](https://apis.io/arazzos/ferc/ferc-dataset-discovery-and-retrieval/)
 
-- Open Data
-- Energy Markets
-- Electricity
-- Natural Gas
-- Regulatory Data
+#### Agentic access (1)
 
-#### Properties
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- [OpenAPI](openapi/ferc-data-api-openapi.json) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Documentation](https://data.ferc.gov/developer/gettingstarted/)
-- [API Reference](https://data.ferc.gov/developer/apiendpoints/)
-- [Getting Started](https://data.ferc.gov/developer/gettingstarted/understanding-our-apis/)
-- [Signup](https://data.ferc.gov/developer/gettingstarted/sign-up-form/)
-- [Authentication](https://data.ferc.gov/developer/gettingstarted/api-key-usage/)
-- [Rate Limits](https://data.ferc.gov/developer/gettingstarted/api-key-usage/)
-- [Support](https://data.ferc.gov/developer/helpandsupport/)
-- [Terms of Service](https://data.ferc.gov/disclaimer/)
-- [Data Catalog](https://data.ferc.gov/datacatalog/)
-- [FAQ](https://data.ferc.gov/faq/)
+- [Ferc Agentic Access](https://apis.io/agentic-access/ferc/ferc-agentic-access/)
 
-### FERC eForms XBRL Submission API
+#### JSON Schema (5)
 
-The machine-to-machine filing API for FERC's mandated eForms. Credentialed filers exchange their FERC eRegistration and Company Registration username and password for a bearer token at `POST /api/token` (OAuth2 password grant, `role=filer`), then POST a zipped XBRL submission to `/api/SubmissionHistory/ExternalFiling` with the company CID, report year, report period, and form identifier. This is a write API for regulated filers, not a read API for developers — there is no public data retrieval surface here. Verified live 2026-07-27 — `POST /api/token` without valid credentials returns HTTP 400 with "Failed validating user in company registration".
+The data models the API reads and writes.
 
-- **Human URL:** [https://www.ferc.gov/vendor-files-library](https://www.ferc.gov/vendor-files-library)
-- **Base URL:** `https://ecollection.ferc.gov/api`
+- [FormList](https://apis.io/schemas/ferc/ferc-form-list/)
+- [PublicSubmission](https://apis.io/schemas/ferc/ferc-public-submission/)
+- [SubmissionDetail](https://apis.io/schemas/ferc/ferc-submission-detail/)
+- [TaxonomyVersion](https://apis.io/schemas/ferc/ferc-taxonomy-version/)
+- [TestStatus](https://apis.io/schemas/ferc/ferc-test-status/)
 
-#### Tags
+#### JSON-LD (1)
 
-- XBRL
-- Regulatory Filing
-- eForms
-- Compliance
+Linked-data contexts for the provider's vocabulary.
 
-#### Properties
+- [Ferc Context](https://apis.io/jsonld/ferc/ferc-context/)
 
-- [Postman Collection](collections/ferc-xbrl-submission-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Documentation](https://www.ferc.gov/media/ferc-submission-api-step-step-guide)
-- [Getting Started](https://www.ferc.gov/sites/default/files/2020-12/FERC_SubmissionAPI_PROD-Step-by-step-guide_v3.1.pdf)
-- [Portal](https://ecollection.ferc.gov/)
-- [Registration](https://www.ferc.gov/company-registration)
-- [Documentation](https://www.ferc.gov/filing-forms/eforms-refresh)
+#### Collections (2)
 
-## Common Properties
+Postman and Open Collection request collections.
+
+- [API Endpoints](https://apis.io/collections/ferc/open-ferc-data-api/)
+- [FERC eForms (eCollection) API](https://apis.io/collections/ferc/open-ferc-eforms-api-openapi-derived/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Ferc Data Api Overlay](https://apis.io/overlays/ferc/ferc-data-api-overlay/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [FERC API Rules](https://apis.io/rules/ferc/ferc-rules/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Ferc Authentication](https://apis.io/security/ferc/ferc-authentication/)
+- [Ferc Domain Security](https://apis.io/security/ferc/ferc-domain-security/)
+- [Ferc Vulnerability Disclosure](https://apis.io/security/ferc/ferc-vulnerability-disclosure/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Ferc Rate Limits](https://apis.io/rate-limits/ferc/ferc-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.ferc.gov)
-- [Portal](https://data.ferc.gov/)
 - [Documentation](https://data.ferc.gov/developer/gettingstarted/)
-- [Signup](https://data.ferc.gov/developer/gettingstarted/sign-up-form/)
-- [Authentication](https://data.ferc.gov/developer/gettingstarted/api-key-usage/)
-- [Rate Limits](https://data.ferc.gov/developer/gettingstarted/api-key-usage/)
+- [Getting started](https://data.ferc.gov/developer/gettingstarted/understanding-our-apis/)
+- [API reference](https://data.ferc.gov/developer/apiendpoints/)
+- [Sign up](https://data.ferc.gov/developer/gettingstarted/sign-up-form/)
 - [Support](https://data.ferc.gov/developer/helpandsupport/)
-- [Terms of Service](https://data.ferc.gov/disclaimer/)
-- [Privacy Policy](https://www.ferc.gov/privacy)
-- [Vulnerability Disclosure](https://www.ferc.gov/vulnerability-disclosure-policy)
-- [Strategy](https://www.ferc.gov/about/what-ferc/digital-strategy)
-- [LinkedIn](https://www.linkedin.com/company/federal-energy-regulatory-commission)
-- [eLibrary document repository (web only, no public API)](https://www.ferc.gov/ferc-online/elibrary)
-- [Electric Quarterly Reports (EQR) — bulk download, no public API](https://www.ferc.gov/power-sales-and-markets/electric-quarterly-reports-eqr)
+- [Security](https://www.ferc.gov/media/ferc-vulnerability-disclosure-policy)
+- [Terms of service](https://data.ferc.gov/disclaimer/)
+- [Privacy policy](https://www.ferc.gov/privacy)
 
-## Mandate Posture
+## API Evangelist rating
 
-- **Mandate regime:** `other` — FERC issues its own wholesale reporting mandates (EQR; eForms Form Nos. 1, 2, 3-Q, 6, 60, 552, 714 in XBRL) and incorporates NAESB WGQ/WEQ wholesale business practice standards by reference. It is **not** a consumer data right. Green Button / ESPI is NAESB Retail Electric Quadrant Book 21, which is retail and outside FERC's jurisdiction.
-- **Mandate status:** `live-implemented` — verified against live endpoints, not press releases. The eForms XBRL portal, the OAuth2 token endpoint, the EQR report viewer, and the published Form 552 / Market-Based Rate Database data assets were all probed directly.
-- **Consumer data API:** none. **Market data:** open.
-- **Data standard:** XBRL (FERC eForms taxonomies) for filings; no energy data standard on the Open Data API.
-- **Access gate:** self-serve — complete a form, receive a 40-character key by email.
+**Kin Score 50.4** — developing · rubric 0.25.0 · scored 2026-10-23
 
-## Maintainers
+| Facet | Score |
+|---|---|
+| Discoverability | 67.9 |
+| Contract quality | 45.0 |
+| Contract governance | 22.0 |
+| Operational transparency | 55.3 |
+| Developer ergonomics | 64.9 |
+| Access clarity | 34.2 |
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Agent readiness 31.8** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 36.1** — Energy & Utilities
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/ferc/](https://apis.io/providers/ferc/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for FERC: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/ferc/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
